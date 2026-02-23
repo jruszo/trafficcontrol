@@ -114,6 +114,10 @@ INSERT INTO parameter (
 	'global',
 	'tm.url',
 	'https://trafficops'
+), (
+	'server.xml',
+	'api.port',
+	'3333'
 )
 ON CONFLICT DO NOTHING;
 
@@ -136,6 +140,15 @@ INSERT INTO profile_parameter
 SELECT profile.id, parameter.id
 FROM profile, parameter
 WHERE parameter.config_file = 'CRConfig.json'
+AND profile."name" = 'CCR_dev'
+ON CONFLICT DO NOTHING;
+
+INSERT INTO profile_parameter
+SELECT profile.id, parameter.id
+FROM profile, parameter
+WHERE parameter.config_file = 'server.xml'
+AND parameter."name" = 'api.port'
+AND parameter."value" = '3333'
 AND profile."name" = 'CCR_dev'
 ON CONFLICT DO NOTHING;
 

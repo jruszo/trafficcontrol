@@ -21,6 +21,12 @@ set -o errexit
 set -o xtrace
 trap '[ $? -eq 0 ] && exit 0 || echo "Error on line ${LINENO} of ${0}"; exit 1' EXIT
 
+if [[ -n "$GOFLAGS" ]]; then
+	export GOFLAGS="${GOFLAGS} -mod=mod"
+else
+	export GOFLAGS="-mod=mod"
+fi
+
 cd "$TC/tc-health-client"
 
 user=ats
@@ -46,7 +52,7 @@ cd "$TC/cache-config"
 # Build area may contain non-debug binaries
 make clean && make -j debug
 
-for component in "t3c t3c-apply t3c-check t3c-check-refs t3c-check-reload t3c-diff t3c-generate t3c-preprocess t3c-request t3c-update"; do
+for component in t3c t3c-apply t3c-check t3c-check-refs t3c-check-reload t3c-diff t3c-generate t3c-preprocess t3c-request t3c-update; do
 	if [[ ! -f "/usr/bin/$component" ]]; then
 		ln -s "$TC/cache-config/$component/$component" /usr/bin
 	fi

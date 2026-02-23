@@ -28,6 +28,28 @@ function atc-compose {
 	return 1;
 }
 
+function atc-service-container {
+	if [[ $# -ne 1 ]]; then
+		echo "Usage: atc-service-container SERVICE" >&2;
+		return 1;
+	fi
+	local service="$1";
+	local container;
+	container="$(atc-compose ps -q "$service" 2>/dev/null | head -n 1)";
+	if [[ -n "$container" ]]; then
+		docker inspect --format '{{.Name}}' "$container" 2>/dev/null | sed 's#^/##';
+		return $?;
+	fi
+	for container in "trafficcontrol_${service}_1" "trafficcontrol-${service}-1"; do
+		if docker container inspect "$container" >/dev/null 2>&1; then
+			echo "$container";
+			return 0;
+		fi
+	done
+	echo "Unable to find a running container for service '$service'." >&2;
+	return 1;
+}
+
 function atc-start {
 	atc-compose up -d --build "$@";
 	return $?;
@@ -90,7 +112,7 @@ function atc-ready {
 				return 1;;
 		esac
 	fi
-	timeout 1s curl -skL "$url" >/dev/null 2>&1;
+	curl --max-time 1 -skL "$url" >/dev/null 2>&1;
 	return $?;
 }
 
@@ -99,9 +121,10 @@ function atc-exec {
 		echo "Usage: atc-exec SERVICE CMD" >&2;
 		return 1;
 	fi;
-	local service="trafficcontrol_$1_1";
+	local service;
+	service="$(atc-service-container "$1")" || return 1;
 	shift;
-	docker exec "$service" $@;
+	docker exec "$service" "$@";
 	return $?;
 }
 
@@ -110,7 +133,9 @@ function atc-connect {
 		echo "Usage: atc-connect SERVICE" >&2;
 		return 1;
 	fi;
-	docker exec -it "trafficcontrol_$1_1" /bin/sh;
+	local service;
+	service="$(atc-service-container "$1")" || return 1;
+	docker exec -it "$service" /bin/sh;
 	return $?;
 }
 

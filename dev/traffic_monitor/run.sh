@@ -36,14 +36,19 @@ if [[ "$(id -u)" != "$uid" ]]; then
 	exec su "$user" -- "$0"
 fi
 
-dlv --accept-multiclient --continue --listen=:81 --headless --api-version=2 debug -- --opsCfg="$TC/dev/traffic_monitor/ops.config.json" --config="$TC/dev/traffic_monitor/tm.config.json" &
+run_dlv() {
+	GOFLAGS="${GOFLAGS} -mod=mod" \
+		dlv --accept-multiclient --continue --listen=:81 --headless --api-version=2 debug -- --opsCfg="$TC/dev/traffic_monitor/ops.config.json" --config="$TC/dev/traffic_monitor/tm.config.json";
+}
+
+run_dlv &
 
 # "static" files need to be watched since TM caches their contents, so it needs
 # to be restarted to apply changes to them.
 while inotifywait --include '\.go$' -e modify -r . ; do
 	kill "$(netstat -nlp | grep ':80' | grep __debug_bin | head -n1 | tr -s ' ' | cut -d ' ' -f7 | cut -d '/' -f1)"
 	kill "$(netstat -nlp | grep ':81' | grep dlv | head -n1 | tr -s ' ' | cut -d ' ' -f7 | cut -d '/' -f1)"
-	dlv --accept-multiclient --continue --listen=:81 --headless --api-version=2 debug -- --opsCfg="$TC/dev/traffic_monitor/ops.config.json" --config="$TC/dev/traffic_monitor/tm.config.json" &
+	run_dlv &
 	# for whatever reason, without this the repeated call to inotifywait will
 	# sometimes lose track of th current directory. It spits out:
 	# Couldn't watch .: No such file or directory

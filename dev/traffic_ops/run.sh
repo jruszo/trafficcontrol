@@ -68,12 +68,17 @@ fi
 
 cd "$TC/traffic_ops/traffic_ops_golang"
 
-dlv --accept-multiclient --continue --listen=:6444 --headless --api-version=2 debug -- --cfg=../../dev/traffic_ops/cdn.json --dbcfg=../../dev/traffic_ops/db.config.json &
+run_dlv() {
+	GOFLAGS="${GOFLAGS} -mod=mod" \
+		dlv --accept-multiclient --continue --listen=:6444 --headless --api-version=2 debug -- --cfg=../../dev/traffic_ops/cdn.json --dbcfg=../../dev/traffic_ops/db.config.json;
+}
+
+run_dlv &
 
 while inotifywait --include '\.go$' -e modify -r . ; do
 	kill "$(netstat -nlp | grep ':443' | grep __debug_bin | head -n1 | tr -s ' ' | cut -d ' ' -f7 | cut -d '/' -f1)"
 	kill "$(netstat -nlp | grep ':6444' | grep dlv | head -n1 | tr -s ' ' | cut -d ' ' -f7 | cut -d '/' -f1)"
-	dlv --accept-multiclient --continue --listen=:6444 --headless --api-version=2 debug -- --cfg=../../dev/traffic_ops/cdn.json --dbcfg=../../dev/traffic_ops/db.config.json &
+	run_dlv &
 	# for whatever reason, without this the repeated call to inotifywait will
 	# sometimes lose track of th current directory. It spits out:
 	# Couldn't watch .: No such file or directory
