@@ -15,9 +15,36 @@
 # specific language governing permissions and limitations
 # under the License.
 
-alias atc-start="docker compose up -d --build";
-alias atc-build="docker compose build";
-alias atc-stop="docker compose kill && docker compose down -v --remove-orphans";
+function atc-compose {
+	if docker compose version >/dev/null 2>&1; then
+		docker compose "$@";
+		return $?;
+	fi
+	if command -v docker-compose >/dev/null 2>&1; then
+		docker-compose "$@";
+		return $?;
+	fi
+	echo "Docker Compose was not found. Install Docker Compose plugin support ('docker compose') or the standalone binary ('docker-compose')." >&2;
+	return 1;
+}
+
+function atc-start {
+	atc-compose up -d --build "$@";
+	return $?;
+}
+
+function atc-build {
+	atc-compose build "$@";
+	return $?;
+}
+
+function atc-stop {
+	if ! atc-compose kill "$@"; then
+		return 1;
+	fi
+	atc-compose down -v --remove-orphans "$@";
+	return $?;
+}
 
 function atc-restart {
 	if ! atc-stop $@; then
