@@ -118,6 +118,50 @@ INSERT INTO parameter (
 	'server.xml',
 	'api.port',
 	'3333'
+), (
+	'traffic_stats.config',
+	'CacheStats',
+	'bandwidth'
+), (
+	'traffic_stats.config',
+	'CacheStats',
+	'maxKbps'
+), (
+	'traffic_stats.config',
+	'CacheStats',
+	'ats.proxy.process.http.current_client_connections'
+), (
+	'traffic_stats.config',
+	'DsStats',
+	'kbps'
+), (
+	'traffic_stats.config',
+	'DsStats',
+	'tps_2xx'
+), (
+	'traffic_stats.config',
+	'DsStats',
+	'status_4xx'
+), (
+	'traffic_stats.config',
+	'DsStats',
+	'status_5xx'
+), (
+	'traffic_stats.config',
+	'DsStats',
+	'tps_3xx'
+), (
+	'traffic_stats.config',
+	'DsStats',
+	'tps_4xx'
+), (
+	'traffic_stats.config',
+	'DsStats',
+	'tps_5xx'
+), (
+	'traffic_stats.config',
+	'DsStats',
+	'tps_total'
 )
 ON CONFLICT DO NOTHING;
 
@@ -150,6 +194,14 @@ WHERE parameter.config_file = 'server.xml'
 AND parameter."name" = 'api.port'
 AND parameter."value" = '3333'
 AND profile."name" = 'CCR_dev'
+ON CONFLICT DO NOTHING;
+
+INSERT INTO profile_parameter
+SELECT profile.id, parameter.id
+FROM profile, parameter
+WHERE parameter.config_file = 'traffic_stats.config'
+AND parameter."name" IN ('CacheStats', 'DsStats')
+AND profile."name" = 'TRAFFIC_STATS'
 ON CONFLICT DO NOTHING;
 
 INSERT INTO division ("name") VALUES ('dev') ON CONFLICT DO NOTHING;
@@ -253,6 +305,28 @@ INSERT INTO "server" (
 	(SELECT id FROM status WHERE "name" = 'ONLINE'),
 	(SELECT id FROM profile WHERE "name" = 'CCR_dev'),
 	(SELECT id FROM cdn WHERE "name" = 'dev')
+), (
+	'trafficstats',
+	'dev.ciab.test',
+	80,
+	NULL,
+	(SELECT id FROM phys_location WHERE "name" = 'dev'),
+	(SELECT id FROM cachegroup WHERE "name" = 'dev'),
+	(SELECT id FROM "type" WHERE "name" = 'TRAFFIC_STATS'),
+	(SELECT id FROM status WHERE "name" = 'ONLINE'),
+	(SELECT id FROM profile WHERE "name" = 'TRAFFIC_STATS'),
+	(SELECT id FROM cdn WHERE "name" = 'dev')
+), (
+	'influxdb',
+	'dev.ciab.test',
+	8086,
+	NULL,
+	(SELECT id FROM phys_location WHERE "name" = 'dev'),
+	(SELECT id FROM cachegroup WHERE "name" = 'dev'),
+	(SELECT id FROM "type" WHERE "name" = 'INFLUXDB'),
+	(SELECT id FROM status WHERE "name" = 'ONLINE'),
+	(SELECT id FROM profile WHERE "name" = 'INFLUXDB'),
+	(SELECT id FROM cdn WHERE "name" = 'dev')
 )
 ON CONFLICT DO NOTHING;
 
@@ -277,6 +351,14 @@ INSERT INTO interface (
 	FALSE,
 	'eth0',
 	(SELECT id FROM "server" WHERE host_name = 'trafficrouter' LIMIT 1)
+), (
+	FALSE,
+	'eth0',
+	(SELECT id FROM "server" WHERE host_name = 'trafficstats' LIMIT 1)
+), (
+	FALSE,
+	'eth0',
+	(SELECT id FROM "server" WHERE host_name = 'influxdb' LIMIT 1)
 )
 ON CONFLICT DO NOTHING;
 
@@ -299,6 +381,16 @@ INSERT INTO ip_address (
 	'129.0.0.2'::inet,
 	'eth0',
 	(SELECT id FROM "server" WHERE host_name = 'trafficrouter' LIMIT 1),
+	TRUE
+), (
+	'129.0.0.3'::inet,
+	'eth0',
+	(SELECT id FROM "server" WHERE host_name = 'trafficstats' LIMIT 1),
+	TRUE
+), (
+	'129.0.0.4'::inet,
+	'eth0',
+	(SELECT id FROM "server" WHERE host_name = 'influxdb' LIMIT 1),
 	TRUE
 )
 ON CONFLICT DO NOTHING;

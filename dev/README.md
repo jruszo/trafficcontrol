@@ -25,6 +25,17 @@ To use the development environment, ensure you are in the repository's root and
 source the `dev/atc.dev.sh` file. Then, use `atc` to run commands (see
 `atc --help` for usage).
 
+After `atc start` is complete and `atc ready -w` returns, the default service
+URLs are:
+
+- Traffic Ops API: `https://localhost:6443`
+- Traffic Portal: `https://localhost:444`
+- Traffic Portal v2: `https://localhost`
+- Traffic Monitor: `http://localhost:80`
+- Traffic Router HTTP routing: `http://localhost:3080`
+- Traffic Router API: `http://localhost:3333` (or `https://localhost:2222`)
+- InfluxDB: `http://localhost:8086`
+
 ## Traffic Ops
 Traffic Ops will start with its API bound to local port 6443. The API will use a
 self-signed certificate, so `curl` commands to the API will need to use
@@ -53,6 +64,21 @@ Note that Traffic Monitor will do almost nothing useful if the edge cache server
 
 Traffic Monitor writes its backups for CDN Snapshots and Monitoring Configs in
 the `dev/traffic_monitor` directory, so you can see them.
+
+## Traffic Stats
+Traffic Stats runs as the `trafficstats` service and polls Traffic Monitor for
+cache and delivery service statistics, then writes them to InfluxDB.
+
+Traffic Stats is not exposed on a host port in this dev environment; inspect
+its process state with `atc exec trafficstats ps` and logs with
+`docker-compose logs trafficstats`.
+
+The dev startup script auto-creates the InfluxDB databases/retention
+policies/continuous queries required by Traffic Stats.
+
+## InfluxDB
+InfluxDB is exposed locally on port 8086 and stores data used by Traffic Portal
+dashboard graphs and Traffic Ops stats endpoints.
 
 ## Database/Traffic Vault
 A Postgres database listens on port 5432 (this conflicts with the default port

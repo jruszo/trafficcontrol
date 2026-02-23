@@ -121,9 +121,9 @@ ready
 Check if the development environment is ready. If it is ready the exit code is 0, and if it isn't ready the exit code is non-zero. "Readiness" is defined by the availability of the Traffic Ops API.
 
 .. code-block:: bash
-	:caption: ``atc ready [-h] [-w]`` Usage
+	:caption: ``atc ready [-h] [-w] [-d]`` Usage
 
-	atc ready [SERVICE...]
+	atc ready [-w | -d]
 
 .. option:: -h, --help
 
@@ -132,6 +132,10 @@ Check if the development environment is ready. If it is ready the exit code is 0
 .. option:: -w, --wait
 
 	Wait for ATC to be ready, instead of just checking if it is ready.
+
+.. option:: -d, --delivery-service
+
+	Wait for the development delivery service to be reachable through Traffic Router and DNS.
 
 .. code-block:: bash
 	:caption: ``atc ready`` Example
@@ -219,6 +223,23 @@ Stop the development environment.
 
 	# Stop all services
 	atc stop
+
+Default Endpoints
+-----------------
+After ``atc start`` and ``atc ready -w`` succeed, the default localhost endpoints are:
+
+* Traffic Ops API: ``https://localhost:6443``
+* Traffic Portal: ``https://localhost:444``
+* Traffic Portal v2: ``https://localhost``
+* Traffic Monitor: ``http://localhost:80``
+* Traffic Router DNS: ``localhost:3053`` (TCP/UDP)
+* Traffic Router routing HTTP: ``http://localhost:3080``
+* Traffic Router API: ``http://localhost:3333`` (``https://localhost:2222`` for HTTPS)
+* InfluxDB: ``http://localhost:8086``
+
+The default username/password for Traffic Ops and Traffic Portal is ``admin``/``twelve12``.
+
+For Traffic Portal graphs and dashboard stats to populate, ensure both ``trafficstats`` and ``t3c`` are running.
 
 t3c
 ---
