@@ -1,5 +1,4 @@
 #!/bin/sh
-
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
 # distributed with this work for additional information
@@ -27,9 +26,8 @@ else
 	export GOFLAGS="-mod=mod"
 fi
 
-cd "$TC/tc-health-client"
-
-user=ats
+cd "$TC/traffic_stats"
+user=trafficstats
 uid="$(stat -c%u "$TC")"
 gid="$(stat -c%g "$TC")"
 if [[ "$(id -u)" != "$uid" ]]; then
@@ -39,45 +37,62 @@ if [[ "$(id -u)" != "$uid" ]]; then
 		fi
 	done
 
-	sed -Ei "s/^(${user}:.*:)([0-9]+:){2}(.*)/\1${uid}:${gid}:\3/" /etc/passwd
+	adduser -Du"$uid" "$user"
 	sed -Ei "s/^(${user}:.*:)[0-9]+(:)$/\1${gid}\2/" /etc/group
-	chown -R "${uid}:${gid}" /usr/bin "/home/${user}" /etc/trafficserver /var/log/trafficserver /var/trafficserver
 	exec su "$user" -- "$0"
 fi
 
-go build --gcflags "all=-N -l" .
+wait_for_traffic_ops() {
+	until curl -skL https://trafficops/api/4.0/ping >/dev/null 2>&1; do
+		echo "waiting for Traffic Ops on https://trafficops/api/4.0/ping"
+		sleep 2
+	done
+}
 
-cd "$TC/cache-config"
+wait_for_traffic_monitor() {
+	until nc -z trafficmonitor 80 >/dev/null 2>&1; do
+		echo "waiting for Traffic Monitor on trafficmonitor:80"
+		sleep 2
+	done
+}
 
-# Build area may contain non-debug binaries
-make clean && make -j debug
+wait_for_influxdb() {
+	until nc -z influxdb 8086 >/dev/null 2>&1; do
+		echo "waiting for InfluxDB on influxdb:8086"
+		sleep 2
+	done
+}
 
-for component in t3c t3c-apply t3c-check t3c-check-refs t3c-check-reload t3c-diff t3c-generate t3c-preprocess t3c-request t3c-update; do
-	if [[ ! -f "/usr/bin/$component" ]]; then
-		ln -s "$TC/cache-config/$component/$component" /usr/bin
-	fi
-done
+init_databases() {
+	go run ./influxdb_tools/create \
+		-url http://influxdb:8086 \
+		-user influxuser \
+		-password password \
+		-replication 1
+}
 
-if [[ ! -f /usr/bin/tc-health-client ]]; then
-	ln -s "$TC/tc-health-client/tc-health-client" /usr/bin/
-fi
+run_traffic_stats() {
+	go run . -cfg "$TC/dev/traffic_stats/traffic_stats.cfg"
+}
 
-traffic_server &
+wait_for_traffic_ops
+wait_for_traffic_monitor
+wait_for_influxdb
+init_databases
 
-while inotifywait --include '\.go$' -e modify -r . -e modify -r . ; do
-	T3C_PID="$(ps | grep t3c | grep -v grep | grep -v inotifywait | grep -v run.sh | tr -s ' ' | cut -d ' ' -f2)"
-	if [[ ! -z "$T3" ]]; then
-		echo "$T3C_PID" | xargs kill;
-	fi
-	# TODO: is it even necessary to restart ATS?
-	if [[ -f /var/trafficserver/server.lock ]]; then
-		rm /var/trafficserver/server.lock;
-	fi
-	ps | grep traffic_server | grep -v grep | tr -s ' ' | cut -d ' ' -f2 | xargs kill
-	traffic_server &
+run_traffic_stats &
+ts_pid="$!"
+
+while inotifywait --include '\.go$' -e modify -r . ; do
+	kill "$ts_pid" || true
+	wait "$ts_pid" || true
+	wait_for_traffic_ops
+	wait_for_traffic_monitor
+	wait_for_influxdb
+	init_databases
+	run_traffic_stats &
+	ts_pid="$!"
 	# for whatever reason, without this the repeated call to inotifywait will
-	# sometimes lose track of th current directory. It spits out:
-	# Couldn't watch .: No such file or directory
-	# which is a bit odd.
+	# sometimes lose track of the current directory.
 	sleep 0.5
-done;
+done

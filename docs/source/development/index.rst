@@ -37,7 +37,7 @@ Use this guide to start developing applications that consume the Traffic Control
 
 The Development Environment
 ===========================
-A development environment is available in :atc-file:`dev/`. This environment only depends on `Docker <https://www.docker.com/>`_ (version 20+) and `Docker-Compose <https://docs.docker.com/compose/` (version 1.27+) and enables rapid changes to be made to components during active development. This is, in general far faster than :ref:`dev-debugging-ciab`, but covers less complex configurations for testing purposes. Continuous Integration typically makes use of CDN-in-a-Box, so developers in general are free to use the Development Environment.
+A development environment is available in :atc-file:`dev/`. This environment only depends on `Docker <https://www.docker.com/>`_ (version 20+) and `Docker Compose <https://docs.docker.com/compose/>`_ (version 1.27+) and enables rapid changes to be made to components during active development. This is, in general far faster than :ref:`dev-debugging-ciab`, but covers less complex configurations for testing purposes. Continuous Integration typically makes use of CDN-in-a-Box, so developers in general are free to use the Development Environment.
 
 .. note:: Many ports used by the development environment clash with those exposed locally by CDN-in-a-Box when the :atc-file:`infrastructure/cdn-in-a-box/docker-compose.expose-ports.yml` Compose file is included, so the two cannot be used at the same time.
 
@@ -46,6 +46,8 @@ A development environment is available in :atc-file:`dev/`. This environment onl
 atc
 ---
 The command ``atc`` is made available by sourcing :atc-file:`dev/atc.dev.sh` (e.g. ``source dev/atc.dev.sh``). While at the repository root, this command can be used to manipulate the development environment - most notably stopping and starting it.
+
+The ``atc`` script uses ``docker compose`` when available, and falls back to ``docker-compose`` when Compose is installed as a standalone executable.
 
 Sourcing this file also sets :envvar:`TO_URL`, :envvar:`TO_USER`, and :envvar:`TO_PASSWORD` to the values appropriate for the default setup of the development environment, such that :ref:`toaccess` may be used to access the development Traffic Ops instance without any extra steps.
 
@@ -119,9 +121,9 @@ ready
 Check if the development environment is ready. If it is ready the exit code is 0, and if it isn't ready the exit code is non-zero. "Readiness" is defined by the availability of the Traffic Ops API.
 
 .. code-block:: bash
-	:caption: ``atc ready [-h] [-w]`` Usage
+	:caption: ``atc ready [-h] [-w] [-d]`` Usage
 
-	atc ready [SERVICE...]
+	atc ready [-w | -d]
 
 .. option:: -h, --help
 
@@ -130,6 +132,10 @@ Check if the development environment is ready. If it is ready the exit code is 0
 .. option:: -w, --wait
 
 	Wait for ATC to be ready, instead of just checking if it is ready.
+
+.. option:: -d, --delivery-service
+
+	Wait for the development delivery service to be reachable through Traffic Router and DNS.
 
 .. code-block:: bash
 	:caption: ``atc ready`` Example
@@ -217,6 +223,23 @@ Stop the development environment.
 
 	# Stop all services
 	atc stop
+
+Default Endpoints
+-----------------
+After ``atc start`` and ``atc ready -w`` succeed, the default localhost endpoints are:
+
+* Traffic Ops API: ``https://localhost:6443``
+* Traffic Portal: ``https://localhost:444``
+* Traffic Portal v2: ``https://localhost``
+* Traffic Monitor: ``http://localhost:80``
+* Traffic Router DNS: ``localhost:3053`` (TCP/UDP)
+* Traffic Router routing HTTP: ``http://localhost:3080``
+* Traffic Router API: ``http://localhost:3333`` (``https://localhost:2222`` for HTTPS)
+* InfluxDB: ``http://localhost:8086``
+
+The default username/password for Traffic Ops and Traffic Portal is ``admin``/``twelve12``.
+
+For Traffic Portal graphs and dashboard stats to populate, ensure both ``trafficstats`` and ``t3c`` are running.
 
 t3c
 ---

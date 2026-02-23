@@ -100,6 +100,34 @@ services:
         volumes:
             - .:/go/src/github.com/apache/trafficcontrol
 
+    influxdb:
+        image: influxdb:1.8
+        hostname: influxdb
+        domainname: dev.ciab.test
+        networks:
+            - ciab
+        ports:
+            - 8086:8086
+
+    trafficstats:
+        build:
+            context: dev/traffic_stats
+            args:
+                - GO_VERSION=${GO_VERSION}
+        depends_on:
+            - trafficops
+            - trafficmonitor
+            - influxdb
+        hostname: trafficstats
+        domainname: dev.ciab.test
+        networks:
+            - ciab
+        image: trafficstats-dev
+        sysctls:
+            - net.ipv4.ip_unprivileged_port_start=0
+        volumes:
+            - .:/go/src/github.com/apache/trafficcontrol
+
     t3c:
         build:
             context: dev/t3c

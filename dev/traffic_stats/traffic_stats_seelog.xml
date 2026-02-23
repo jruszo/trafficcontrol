@@ -1,0 +1,6 @@
+<?xml version='1.0'?>
+<seelog minlevel="info">
+	<outputs formatid="std:debug-short">
+		<console/>
+	</outputs>
+</seelog>

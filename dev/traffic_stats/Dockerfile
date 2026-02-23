@@ -12,15 +12,11 @@
 #  limitations under the License.
 #
 ARG GO_VERSION
-FROM golang:${GO_VERSION}-alpine AS trafficmonitor-dev
+FROM golang:${GO_VERSION}-alpine AS trafficstats-dev
 
 ENV TC=/go/src/github.com/apache/trafficcontrol GOFLAGS="--buildvcs=false"
 VOLUME $TC
-EXPOSE 80 81
 
-RUN apk add --no-cache inotify-tools gcc libc-dev && \
-	go install github.com/go-delve/delve/cmd/dlv@v1.25.2 && \
-	rm -rf $GOPATH/pkg/*
-RUN mkdir /lib64 && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2
+RUN apk add --no-cache curl inotify-tools netcat-openbsd
 
-CMD ${TC}/dev/traffic_monitor/run.sh
+CMD ${TC}/dev/traffic_stats/run.sh
