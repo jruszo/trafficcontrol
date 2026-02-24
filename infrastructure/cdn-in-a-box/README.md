@@ -27,10 +27,9 @@ minimal CDN for full system testing.
 > For a more in-depth discussion of the CDN in a Box system, please see [the official documentation](https://traffic-control-cdn.readthedocs.io/en/latest/admin/quick_howto/ciab.html).
 
 ## Setup
-The containers run on Docker, and require Docker (tested v17.05.0-ce) and Docker
-Compose (tested v1.9.0) to build and run. On most 'nix systems these can be installed
-via the distribution's package manager under the names `docker-ce` and
-`docker compose`, respectively (e.g. `sudo dnf install docker-ce`).
+The containers run on Docker and require Docker plus Docker Compose to build and
+run. Compose may be available as either the Docker CLI plugin
+(`docker compose`) or a standalone binary (`docker-compose`).
 
 Each container (except the origin) requires an `.rpm` file to install the Traffic Control
 component for which it is responsible. You can download these `*.rpm` files from an archive
@@ -52,6 +51,12 @@ Finally, run the test CDN using the command:
 docker compose up --build
 ```
 
+If your system uses the standalone binary, use:
+
+```bash
+docker-compose up --build
+```
+
 ## Readiness
 To know if your CDN in a Box has started up successfully and is ready to use,
 you can optionally start the "readiness" container which will test your CDN and
@@ -59,6 +64,12 @@ exit successfully when your CDN in a Box is ready:
 
 ```bash
 docker compose -f docker-compose.readiness.yml up --build
+```
+
+Or, with the standalone binary:
+
+```bash
+docker-compose -f docker-compose.readiness.yml up --build
 ```
 
 If the container does not exit successfully after a reasonable amount of time,

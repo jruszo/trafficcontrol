@@ -27,6 +27,8 @@ Because it runs in Docker, the only true prerequisites are:
 * Docker version >= 17.05.0-ce
 * Docker Compose\ [1]_ version >= 1.9.0
 
+.. note:: In commands below, use ``docker compose`` when Compose is installed as a Docker CLI plugin, or ``docker-compose`` when using the standalone binary.
+
 Building
 --------
 The CDN in a Box directory is found within the Traffic Control repository at :file:`infrastructure/cdn-in-a-box/`. CDN in a Box relies on the presence of pre-built :file:`{component}.rpm` files for the following Traffic Control components:
