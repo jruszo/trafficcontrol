@@ -43,10 +43,6 @@ DOCKER_COMPOSE := $(shell \
 		echo "docker-compose"; \
 	fi)
 
-ifeq ($(strip $(DOCKER_COMPOSE)),)
-$(error Docker Compose was not found. Install Docker Compose plugin support ('docker compose') or the standalone binary ('docker-compose').)
-endif
-
 PKG_COMMAND := $(TC_DIR)/pkg
 PKG_FLAGS := -v -$(RHEL_VERSION)
 BUILD_SUFFIX := _build
@@ -229,6 +225,10 @@ $(TCH_RPM_ABSOLUTE): $(TCH_DIST_RPM)
 
 # Dist rpms
 $(ATS_DIST_RPM): $(ATS_SOURCE)
+	@if [ -z "$(strip $(DOCKER_COMPOSE))" ]; then \
+		echo "Docker Compose was not found. Install Docker Compose plugin support ('docker compose') or the standalone binary ('docker-compose')."; \
+		exit 1; \
+	fi
 	$(DOCKER_COMPOSE) -f $(TC_DIR)/cache-config/testing/docker/docker-compose-ats-build.yml build --parallel trafficserver_build && $(DOCKER_COMPOSE) -f $(TC_DIR)/cache-config/testing/docker/docker-compose-ats-build.yml run --rm trafficserver_build
 
 $(TM_DIST_RPM): $(TM_SOURCE)
