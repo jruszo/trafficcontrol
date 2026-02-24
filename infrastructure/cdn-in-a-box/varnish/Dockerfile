@@ -16,9 +16,10 @@
 # under the License.
 
 ARG BASE_IMAGE=rockylinux \
-    RHEL_VERSION=8
+    RHEL_VERSION=8 \
+    GO_VERSION=1.26.0
 
-FROM golang:1.20-alpine AS vstats-builder
+FROM golang:${GO_VERSION}-alpine AS vstats-builder
 
 COPY infrastructure/cdn-in-a-box/varnish/vstats.go /
 
@@ -70,5 +71,4 @@ COPY infrastructure/cdn-in-a-box/mid/init.d/ /opt/init.d/
 FROM common-varnish-cache-config-layers AS edge
 ENV CACHE_TYPE=edge
 COPY infrastructure/cdn-in-a-box/edge/init.d/ /opt/init.d/
-
 

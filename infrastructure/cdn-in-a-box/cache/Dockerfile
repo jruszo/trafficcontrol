@@ -134,7 +134,7 @@ COPY infrastructure/cdn-in-a-box/health/to-creds /etc/to-creds
 
 FROM common-traffic-server-dependencies AS get-delve
 RUN dnf -y install golang && \
-    go install github.com/go-delve/delve/cmd/dlv@latest
+    go install github.com/go-delve/delve/cmd/dlv@v1.26.0
 
 FROM common-cache-config-layers AS mid
 ENV CACHE_TYPE=mid

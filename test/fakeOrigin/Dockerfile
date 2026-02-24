@@ -15,7 +15,8 @@
 # specific language governing permissions and limitations
 # under the License.
 
-FROM golang:1.11
+ARG GO_VERSION=1.26.0
+FROM golang:${GO_VERSION}
 MAINTAINER dev@trafficcontrol.apache.org
 
 RUN apt-get update && \
