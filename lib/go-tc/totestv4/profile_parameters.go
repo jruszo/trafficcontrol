@@ -22,9 +22,9 @@ package totestv4
 import (
 	"testing"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
-	"github.com/apache/trafficcontrol/v8/lib/go-util/assert"
-	toclient "github.com/apache/trafficcontrol/v8/traffic_ops/v4-client"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-util/assert"
+	toclient "github.com/jruszo/trafficcontrol/v8/traffic_ops/v4-client"
 )
 
 func CreateTestProfileParameters(t *testing.T, cl *toclient.Session, td TrafficControl) {

@@ -30,10 +30,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/apache/trafficcontrol/v8/traffic_ops/traffic_ops_golang/api"
-	"github.com/apache/trafficcontrol/v8/traffic_ops/traffic_ops_golang/auth"
-	"github.com/apache/trafficcontrol/v8/traffic_ops/traffic_ops_golang/config"
-	"github.com/apache/trafficcontrol/v8/traffic_ops/traffic_ops_golang/routing/middleware"
+	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/api"
+	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/auth"
+	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/config"
+	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/routing/middleware"
 )
 
 type key int

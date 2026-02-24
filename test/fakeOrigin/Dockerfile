@@ -26,8 +26,8 @@ RUN apt-get update && \
     apt-get autoclean -y && \
     rm -rf /var/lib/apt/lists/*
 
-COPY . /go/src/github.com/apache/trafficcontrol
-WORKDIR /go/src/github.com/apache/trafficcontrol/test/fakeOrigin
+COPY . /go/src/github.com/jruszo/trafficcontrol
+WORKDIR /go/src/github.com/jruszo/trafficcontrol/test/fakeOrigin
 
 RUN go install -v ./...
 

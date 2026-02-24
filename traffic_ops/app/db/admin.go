@@ -31,7 +31,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-log"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-log"
 
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database"

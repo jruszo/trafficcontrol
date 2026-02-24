@@ -27,9 +27,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-log"
-	"github.com/apache/trafficcontrol/v8/lib/go-tc/tovalidate"
-	"github.com/apache/trafficcontrol/v8/lib/go-util"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-log"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc/tovalidate"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-util"
 
 	validation "github.com/go-ozzo/ozzo-validation"
 	"github.com/lib/pq"
@@ -190,7 +190,7 @@ type ProfileImportResponseObj struct {
 }
 
 // Validate validates an profile import request, implementing the
-// github.com/apache/trafficcontrol/v8/traffic_ops/traffic_ops_golang/api.ParseValidator
+// github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/api.ParseValidator
 // interface.
 func (profileImport *ProfileImportRequest) Validate(tx *sql.Tx) error {
 

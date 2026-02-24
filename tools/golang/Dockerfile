@@ -33,9 +33,9 @@ RUN set -o errexit; \
 
 RUN apk --no-cache add gcc musl-dev git
 
-ARG DIR=github.com/apache/trafficcontrol
+ARG DIR=github.com/jruszo/trafficcontrol
 
-WORKDIR /go/src/github.com/apache/trafficcontrol
+WORKDIR /go/src/github.com/jruszo/trafficcontrol
 
 FROM base AS lint
 
@@ -57,4 +57,4 @@ VOLUME ["/junit"]
 RUN go install github.com/wadey/gocovmerge@latest &&\
     go install github.com/jstemmer/go-junit-report@latest
 
-CMD /go/src/github.com/apache/trafficcontrol/tools/golang/unit-tests.sh
+CMD /go/src/github.com/jruszo/trafficcontrol/tools/golang/unit-tests.sh

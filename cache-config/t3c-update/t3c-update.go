@@ -21,15 +21,15 @@ package main
 
 import (
 	"fmt"
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
 	"os"
 	"time"
 
-	"github.com/apache/trafficcontrol/v8/cache-config/t3c-update/config"
-	"github.com/apache/trafficcontrol/v8/cache-config/t3cutil"
-	"github.com/apache/trafficcontrol/v8/cache-config/t3cutil/toreq"
-	"github.com/apache/trafficcontrol/v8/cache-config/t3cutil/toreq/torequtil"
-	"github.com/apache/trafficcontrol/v8/lib/go-log"
+	"github.com/jruszo/trafficcontrol/v8/cache-config/t3c-update/config"
+	"github.com/jruszo/trafficcontrol/v8/cache-config/t3cutil"
+	"github.com/jruszo/trafficcontrol/v8/cache-config/t3cutil/toreq"
+	"github.com/jruszo/trafficcontrol/v8/cache-config/t3cutil/toreq/torequtil"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-log"
 )
 
 // Version is the application version.

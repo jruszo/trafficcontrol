@@ -35,18 +35,18 @@ FROM enroller-dependencies AS enroller-builder
 ARG ENROLLER_DEBUG_BUILD=false
 
 # enroller source and dependencies
-COPY ./lib/ /go/src/github.com/apache/trafficcontrol/lib/
-COPY ./go.mod ./go.sum /go/src/github.com/apache/trafficcontrol/
-COPY ./vendor/ /go/src/github.com/apache/trafficcontrol/vendor/
-COPY ./traffic_ops/toclientlib/ /go/src/github.com/apache/trafficcontrol/traffic_ops/toclientlib/
-COPY ./traffic_ops/v4-client/ /go/src/github.com/apache/trafficcontrol/traffic_ops/v4-client/
-COPY ./traffic_ops/v5-client/ /go/src/github.com/apache/trafficcontrol/traffic_ops/v5-client/
-COPY ./infrastructure/cdn-in-a-box/ /go/src/github.com/apache/trafficcontrol/infrastructure/cdn-in-a-box/
+COPY ./lib/ /go/src/github.com/jruszo/trafficcontrol/lib/
+COPY ./go.mod ./go.sum /go/src/github.com/jruszo/trafficcontrol/
+COPY ./vendor/ /go/src/github.com/jruszo/trafficcontrol/vendor/
+COPY ./traffic_ops/toclientlib/ /go/src/github.com/jruszo/trafficcontrol/traffic_ops/toclientlib/
+COPY ./traffic_ops/v4-client/ /go/src/github.com/jruszo/trafficcontrol/traffic_ops/v4-client/
+COPY ./traffic_ops/v5-client/ /go/src/github.com/jruszo/trafficcontrol/traffic_ops/v5-client/
+COPY ./infrastructure/cdn-in-a-box/ /go/src/github.com/jruszo/trafficcontrol/infrastructure/cdn-in-a-box/
 
 # varnishcfg requires t3c for ToData struct and not needed for enroller
-RUN rm -rf /go/src/github.com/apache/trafficcontrol/lib/varnishcfg
+RUN rm -rf /go/src/github.com/jruszo/trafficcontrol/lib/varnishcfg
 
-WORKDIR /go/src/github.com/apache/trafficcontrol/infrastructure/cdn-in-a-box/enroller
+WORKDIR /go/src/github.com/jruszo/trafficcontrol/infrastructure/cdn-in-a-box/enroller
 RUN set -o errexit -o nounset; \
     go clean; \
     go mod vendor -v; \
@@ -72,10 +72,10 @@ RUN apt-get update && apt-get install -y \
         jq gettext && \
     apt-get clean
 COPY --from=enroller-builder \
-   /go/src/github.com/apache/trafficcontrol/infrastructure/cdn-in-a-box/enroller/enroller \
-   /go/src/github.com/apache/trafficcontrol/infrastructure/cdn-in-a-box/enroller/run.sh \
-   /go/src/github.com/apache/trafficcontrol/infrastructure/cdn-in-a-box/enroller/server_template.json \
-   /go/src/github.com/apache/trafficcontrol/infrastructure/cdn-in-a-box/traffic_ops/to-access.sh \
+   /go/src/github.com/jruszo/trafficcontrol/infrastructure/cdn-in-a-box/enroller/enroller \
+   /go/src/github.com/jruszo/trafficcontrol/infrastructure/cdn-in-a-box/enroller/run.sh \
+   /go/src/github.com/jruszo/trafficcontrol/infrastructure/cdn-in-a-box/enroller/server_template.json \
+   /go/src/github.com/jruszo/trafficcontrol/infrastructure/cdn-in-a-box/traffic_ops/to-access.sh \
    /
 
 COPY infrastructure/cdn-in-a-box/dns/set-dns.sh \

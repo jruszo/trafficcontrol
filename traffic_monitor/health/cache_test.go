@@ -24,13 +24,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/apache/trafficcontrol/v8/traffic_monitor/cache"
-	"github.com/apache/trafficcontrol/v8/traffic_monitor/config"
-	"github.com/apache/trafficcontrol/v8/traffic_monitor/peer"
-	"github.com/apache/trafficcontrol/v8/traffic_monitor/threadsafe"
-	"github.com/apache/trafficcontrol/v8/traffic_monitor/todata"
+	"github.com/jruszo/trafficcontrol/v8/traffic_monitor/cache"
+	"github.com/jruszo/trafficcontrol/v8/traffic_monitor/config"
+	"github.com/jruszo/trafficcontrol/v8/traffic_monitor/peer"
+	"github.com/jruszo/trafficcontrol/v8/traffic_monitor/threadsafe"
+	"github.com/jruszo/trafficcontrol/v8/traffic_monitor/todata"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
 )
 
 // TestNoMonitoredInterfacesGetVitals assures that GetVitals
@@ -468,7 +468,7 @@ func TestCalcAvailabilityThresholds(t *testing.T) {
 	}
 
 	// test that the health poll didn't override the stat poll threshold markdown and mark available
-	// https://github.com/apache/trafficcontrol/issues/3646
+	// https://github.com/jruszo/trafficcontrol/issues/3646
 
 	healthResult := result
 	healthResultInf := result.Statistics.Interfaces["bond0"]

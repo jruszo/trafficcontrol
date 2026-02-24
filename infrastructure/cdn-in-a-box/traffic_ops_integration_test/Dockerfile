@@ -29,21 +29,21 @@ RUN apk add --no-cache --update git gcc
 
 RUN go install github.com/jstemmer/go-junit-report@latest
 
-COPY ./vendor/ /go/src/github.com/apache/trafficcontrol/vendor/
+COPY ./vendor/ /go/src/github.com/jruszo/trafficcontrol/vendor/
 
 # integration source and dependencies
-COPY ./cache-config/t3cutil/ /go/src/github.com/apache/trafficcontrol/cache-config/t3cutil/
-COPY ./lib/ /go/src/github.com/apache/trafficcontrol/lib/
-COPY ./traffic_ops/toclientlib/ /go/src/github.com/apache/trafficcontrol/traffic_ops/toclientlib/
-COPY ./traffic_ops/v3-client/ /go/src/github.com/apache/trafficcontrol/traffic_ops/v3-client/
-COPY ./traffic_ops/v4-client/ /go/src/github.com/apache/trafficcontrol/traffic_ops/v4-client/
-COPY ./traffic_ops/v5-client/ /go/src/github.com/apache/trafficcontrol/traffic_ops/v5-client/
-COPY ./traffic_ops/testing/api /go/src/github.com/apache/trafficcontrol/traffic_ops/testing/api
-COPY ./traffic_ops/traffic_ops_golang /go/src/github.com/apache/trafficcontrol/traffic_ops/traffic_ops_golang
+COPY ./cache-config/t3cutil/ /go/src/github.com/jruszo/trafficcontrol/cache-config/t3cutil/
+COPY ./lib/ /go/src/github.com/jruszo/trafficcontrol/lib/
+COPY ./traffic_ops/toclientlib/ /go/src/github.com/jruszo/trafficcontrol/traffic_ops/toclientlib/
+COPY ./traffic_ops/v3-client/ /go/src/github.com/jruszo/trafficcontrol/traffic_ops/v3-client/
+COPY ./traffic_ops/v4-client/ /go/src/github.com/jruszo/trafficcontrol/traffic_ops/v4-client/
+COPY ./traffic_ops/v5-client/ /go/src/github.com/jruszo/trafficcontrol/traffic_ops/v5-client/
+COPY ./traffic_ops/testing/api /go/src/github.com/jruszo/trafficcontrol/traffic_ops/testing/api
+COPY ./traffic_ops/traffic_ops_golang /go/src/github.com/jruszo/trafficcontrol/traffic_ops/traffic_ops_golang
 
-COPY ./go.mod ./go.sum /go/src/github.com/apache/trafficcontrol/
+COPY ./go.mod ./go.sum /go/src/github.com/jruszo/trafficcontrol/
 # if we end up using a different versioning convention, the compile command will need to change
-WORKDIR /go/src/github.com/apache/trafficcontrol/traffic_ops/testing/api
+WORKDIR /go/src/github.com/jruszo/trafficcontrol/traffic_ops/testing/api
 RUN go mod vendor -v
 
 RUN set -o errexit -o xtrace;\
@@ -75,9 +75,9 @@ COPY ./traffic_ops/testing/api/v4/tc-fixtures.json /opt/integration/app/tc-fixtu
 COPY ./traffic_ops/testing/api/v5/tc-fixtures.json /opt/integration/app/tc-fixtures-v5.json
 COPY ./traffic_ops/testing/api/v5/client-intermediate-chain.crt.pem  ./traffic_ops/testing/api/v5/client.key.pem /opt/integration/app/
 COPY --from=integration-builder \
-    /go/src/github.com/apache/trafficcontrol/traffic_ops/testing/api/traffic_ops_v3_integration_test \
-    /go/src/github.com/apache/trafficcontrol/traffic_ops/testing/api/traffic_ops_v4_integration_test \
-    /go/src/github.com/apache/trafficcontrol/traffic_ops/testing/api/traffic_ops_v5_integration_test \
+    /go/src/github.com/jruszo/trafficcontrol/traffic_ops/testing/api/traffic_ops_v3_integration_test \
+    /go/src/github.com/jruszo/trafficcontrol/traffic_ops/testing/api/traffic_ops_v4_integration_test \
+    /go/src/github.com/jruszo/trafficcontrol/traffic_ops/testing/api/traffic_ops_v5_integration_test \
     /opt/integration/app/
 
 COPY --from=integration-builder \

@@ -25,7 +25,7 @@ RUN openssl genrsa -passout pass:x -out server.pass.key 2048 && \
 
 FROM golang:${GO_VERSION}-alpine AS trafficops-dev
 
-ENV TC="/go/src/github.com/apache/trafficcontrol" GOFLAGS="--buildvcs=false"
+ENV TC="/go/src/github.com/jruszo/trafficcontrol" GOFLAGS="--buildvcs=false"
 VOLUME $TC
 ENV ADMIN="$TC/traffic_ops/app/db/admin"
 EXPOSE 443 6444

@@ -61,7 +61,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-llog"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-llog"
 )
 
 // These are the loggers for the various log levels, which can be accessed

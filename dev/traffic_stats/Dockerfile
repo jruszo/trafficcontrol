@@ -14,7 +14,7 @@
 ARG GO_VERSION
 FROM golang:${GO_VERSION}-alpine AS trafficstats-dev
 
-ENV TC=/go/src/github.com/apache/trafficcontrol GOFLAGS="--buildvcs=false"
+ENV TC=/go/src/github.com/jruszo/trafficcontrol GOFLAGS="--buildvcs=false"
 VOLUME $TC
 
 RUN apk add --no-cache curl inotify-tools netcat-openbsd

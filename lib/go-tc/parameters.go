@@ -29,7 +29,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-util"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-util"
 
 	"github.com/lib/pq"
 )
@@ -159,7 +159,7 @@ type ProfileParameterByNamePost struct {
 }
 
 // Validate implements the
-// github.com/apache/trafficcontrol/v8/traffic_ops/traffic_ops_golang/api.ParseValidator
+// github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/api.ParseValidator
 // interface.
 func (p *ProfileParameterByNamePost) Validate(tx *sql.Tx) []error {
 	return validateProfileParamPostFields(p.ConfigFile, p.Name, p.Value, p.Secure)
@@ -209,7 +209,7 @@ func (pp *ProfileParametersByNamePost) UnmarshalJSON(bts []byte) error {
 }
 
 // Validate implements the
-// github.com/apache/trafficcontrol/v8/traffic_ops/traffic_ops_golang/api.ParseValidator
+// github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/api.ParseValidator
 // interface.
 func (pp *ProfileParametersByNamePost) Validate(tx *sql.Tx) error {
 	errs := []error{}
@@ -261,7 +261,7 @@ func (pp *PostProfileParam) Sanitize(tx *sql.Tx) {
 }
 
 // Validate implements the
-// github.com/apache/trafficcontrol/v8/traffic_ops/traffic_ops_golang/api.ParseValidator
+// github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/api.ParseValidator
 // interface.
 func (pp *PostProfileParam) Validate(tx *sql.Tx) error {
 	pp.Sanitize(tx)
@@ -304,7 +304,7 @@ func (pp *PostParamProfile) Sanitize(tx *sql.Tx) {
 }
 
 // Validate implements the
-// github.com/apache/trafficcontrol/v8/traffic_ops/traffic_ops_golang/api.ParseValidator
+// github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/api.ParseValidator
 // interface.
 func (pp *PostParamProfile) Validate(tx *sql.Tx) error {
 	pp.Sanitize(tx)

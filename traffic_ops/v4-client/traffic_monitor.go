@@ -23,8 +23,8 @@ import (
 	"fmt"
 	"net/url"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
-	"github.com/apache/trafficcontrol/v8/traffic_ops/toclientlib"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/traffic_ops/toclientlib"
 )
 
 // apiCDNMonitoringConfig is the API path on which Traffic Ops serves the CDN monitoring

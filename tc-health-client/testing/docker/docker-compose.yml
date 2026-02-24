@@ -62,7 +62,7 @@ services:
     depends_on: 
       - to_server
     volumes:
-      - ../../..:/root/go/src/github.com/apache/trafficcontrol
+      - ../../..:/root/go/src/github.com/jruszo/trafficcontrol
 
   to_server:
     env_file:

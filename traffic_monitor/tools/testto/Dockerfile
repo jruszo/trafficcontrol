@@ -22,10 +22,10 @@ RUN dnf -y install golang git
 
 ENV GOPATH=/go
 
-RUN mkdir -p ${GOPATH}/src/github.com/apache/trafficcontrol
-COPY . ${GOPATH}/src/github.com/apache/trafficcontrol/
+RUN mkdir -p ${GOPATH}/src/github.com/jruszo/trafficcontrol
+COPY . ${GOPATH}/src/github.com/jruszo/trafficcontrol/
 
-WORKDIR ${GOPATH}/src/github.com/apache/trafficcontrol/traffic_monitor/tools/testto
+WORKDIR ${GOPATH}/src/github.com/jruszo/trafficcontrol/traffic_monitor/tools/testto
 RUN go mod vendor && \
     go build && \
     cp testto /usr/sbin

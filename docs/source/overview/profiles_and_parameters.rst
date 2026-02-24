@@ -508,7 +508,7 @@ This Config File is meant to be on Parameters assigned to either Traffic Monitor
 health.polling.format
 	The Value_ of this Parameter should be the name of a parsing format supported by Traffic Monitor, used to decode statistics when polling for health and statistics. If this Parameter does not exist on a :term:`cache server`'s :ref:`Profile <Profiles>`, the default format (``astats``) will be used. The only supported values are
 
-	- ``astats`` parses the statistics output from the `astats_over_http plugin <https://github.com/apache/trafficcontrol/tree/master/traffic_server/plugins/astats_over_http/README.md>`_.
+	- ``astats`` parses the statistics output from the `astats_over_http plugin <https://github.com/jruszo/trafficcontrol/tree/master/traffic_server/plugins/astats_over_http/README.md>`_.
 	- ``stats_over_http`` parses the statistics output from the `stats_over_http plugin <https://docs.trafficserver.apache.org/en/latest/admin-guide/plugins/stats_over_http.en.html>`_.
 	- ``noop`` no statistics are parsed; the :term:`cache servers` using this Value_ will always be considered healthy, but statistics will never be gathered for them.
 

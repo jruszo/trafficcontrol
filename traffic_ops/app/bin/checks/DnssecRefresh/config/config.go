@@ -28,7 +28,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-log"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-log"
 	"github.com/pborman/getopt/v2"
 )
 

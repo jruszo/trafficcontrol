@@ -24,9 +24,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-log"
-	"github.com/apache/trafficcontrol/v8/traffic_monitor/tests/_integration/config"
-	"github.com/apache/trafficcontrol/v8/traffic_monitor/tmclient"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-log"
+	"github.com/jruszo/trafficcontrol/v8/traffic_monitor/tests/_integration/config"
+	"github.com/jruszo/trafficcontrol/v8/traffic_monitor/tmclient"
 )
 
 var Config config.Config

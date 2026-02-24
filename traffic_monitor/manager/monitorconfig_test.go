@@ -23,7 +23,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
 )
 
 func TestCreateServerHealthPollURL(t *testing.T) {

@@ -18,7 +18,7 @@ BuildArch:  noarch
 Release:    %{build_number}
 Summary:    Apache Tomcat Servlet/JSP Engine 9.0+, RI for Servlet 3.1/JSP 2.3 API
 License:    Apache Software License
-URL:        https://github.com/apache/trafficcontrol/
+URL:        https://github.com/jruszo/trafficcontrol/
 Source:     %{_sourcedir}/apache-tomcat-%{version}.tar.gz
 Requires:   java-11-openjdk-headless
 

@@ -66,14 +66,14 @@ Enroller
 					"mode": "remote",
 					"port": 2343,
 					"cwd": "${workspaceRoot}/",
-					"remotePath": "/go/src/github.com/apache/trafficcontrol/",
+					"remotePath": "/go/src/github.com/jruszo/trafficcontrol/",
 				}
 			]
 		}
 
 * Use the debugging configuration you created to start debugging the Enroller. It should connect without first breaking at any line.
 
-For an example of usage, set a breakpoint at `the toSession.CreateDeliveryServiceV30() call in enrollDeliveryService() <https://github.com/apache/trafficcontrol/blob/RELEASE-5.1.1/infrastructure/cdn-in-a-box/enroller/enroller.go#L209>`_, then wait for the Enroller to process a file from ``/shared/enroller/deliveryservices/`` (only exists within the Docker container).
+For an example of usage, set a breakpoint at `the toSession.CreateDeliveryServiceV30() call in enrollDeliveryService() <https://github.com/jruszo/trafficcontrol/blob/RELEASE-5.1.1/infrastructure/cdn-in-a-box/enroller/enroller.go#L209>`_, then wait for the Enroller to process a file from ``/shared/enroller/deliveryservices/`` (only exists within the Docker container).
 
 t3c on Caches
 =============
@@ -126,7 +126,7 @@ t3c on Edge Cache
 					"mode": "remote",
 					"port": 2347,
 					"cwd": "${workspaceRoot}",
-					"remotePath": "/tmp/go/src/github.com/apache/trafficcontrol",
+					"remotePath": "/tmp/go/src/github.com/jruszo/trafficcontrol",
 				}
 			]
 		}
@@ -141,7 +141,7 @@ Wait for Traffic Monitor to start, which will indicate that the SSL keys have be
 
 The *API server listening* message is from ``dlv``, indicating it is ready to accept a connection from your IDE. Note that, unlike the other components, execution of ``t3c`` does not begin until your IDE connects to ``dlv``.
 
-For this example, set a breakpoint at `the assignment of "##OVERRIDDEN## " + str to newstr in torequest.processRemapOverrides() <https://github.com/apache/trafficcontrol/blob/dde7f69d49/cache-config/t3c-apply/torequest/torequest.go#L336>`_.
+For this example, set a breakpoint at `the assignment of "##OVERRIDDEN## " + str to newstr in torequest.processRemapOverrides() <https://github.com/jruszo/trafficcontrol/blob/dde7f69d49/cache-config/t3c-apply/torequest/torequest.go#L336>`_.
 
 Use the debugging configuration you created to connect to ``dlv`` and start debugging ``t3c``.
 
@@ -193,7 +193,7 @@ t3c on Mid 01 Cache
 					"mode": "remote",
 					"port": 2348,
 					"cwd": "${workspaceRoot}",
-					"remotePath": "/tmp/go/src/github.com/apache/trafficcontrol",
+					"remotePath": "/tmp/go/src/github.com/jruszo/trafficcontrol",
 				}
 			]
 		}
@@ -208,7 +208,7 @@ Wait for Traffic Monitor to start, which will indicate that the SSL keys have be
 
 The *API server listening* message is from ``dlv``, indicating it is ready to accept a connection from your IDE. Note that, unlike the other components, execution of ``t3c`` does not begin until your IDE connects to ``dlv``.
 
-For this example, set a breakpoint at `the assignment of "##OVERRIDDEN## " + str to newstr in torequest.processRemapOverrides() <https://github.com/apache/trafficcontrol/blob/dde7f69d49/cache-config/t3c-apply/torequest/torequest.go#L336>`_.
+For this example, set a breakpoint at `the assignment of "##OVERRIDDEN## " + str to newstr in torequest.processRemapOverrides() <https://github.com/jruszo/trafficcontrol/blob/dde7f69d49/cache-config/t3c-apply/torequest/torequest.go#L336>`_.
 
 Use the debugging configuration you created to connect to ``dlv`` and start debugging ``t3c``.
 
@@ -260,7 +260,7 @@ t3c on Mid 02 Cache
 					"mode": "remote",
 					"port": 2349,
 					"cwd": "${workspaceRoot}",
-					"remotePath": "/tmp/go/src/github.com/apache/trafficcontrol",
+					"remotePath": "/tmp/go/src/github.com/jruszo/trafficcontrol",
 				}
 			]
 		}
@@ -275,7 +275,7 @@ Wait for Traffic Monitor to start, which will indicate that the SSL keys have be
 
 The *API server listening* message is from ``dlv``, indicating it is ready to accept a connection from your IDE. Note that, unlike the other components, execution of ``t3c`` does not begin until your IDE connects to ``dlv``.
 
-For this example, set a breakpoint at `the assignment of "##OVERRIDDEN## " + str to newstr in torequest.processRemapOverrides() <https://github.com/apache/trafficcontrol/blob/dde7f69d49/cache-config/t3c-apply/torequest/torequest.go#L336>`_.
+For this example, set a breakpoint at `the assignment of "##OVERRIDDEN## " + str to newstr in torequest.processRemapOverrides() <https://github.com/jruszo/trafficcontrol/blob/dde7f69d49/cache-config/t3c-apply/torequest/torequest.go#L336>`_.
 
 Use the debugging configuration you created to connect to ``dlv`` and start debugging ``t3c``.
 
@@ -319,14 +319,14 @@ Traffic Monitor
 					"mode": "remote",
 					"port": 2344,
 					"cwd": "${workspaceRoot}",
-					"remotePath": "/tmp/go/src/github.com/apache/trafficcontrol",
+					"remotePath": "/tmp/go/src/github.com/jruszo/trafficcontrol",
 				}
 			]
 		}
 
 * Use the debugging configuration you created to start debugging Traffic Monitor. It should connect without first breaking at any line.
 
-For an example of usage, set a breakpoint at `the o.m.RLock() call in ThreadsafeEvents.Get() <https://github.com/apache/trafficcontrol/blob/RELEASE-5.1.1/traffic_monitor/health/event.go#L71>`_, then visit http://trafficmonitor.infra.ciab.test/publish/EventLog (see :ref:`Traffic Monitor APIs: /publish/EventLog <tm-publish-EventLog>`).
+For an example of usage, set a breakpoint at `the o.m.RLock() call in ThreadsafeEvents.Get() <https://github.com/jruszo/trafficcontrol/blob/RELEASE-5.1.1/traffic_monitor/health/event.go#L71>`_, then visit http://trafficmonitor.infra.ciab.test/publish/EventLog (see :ref:`Traffic Monitor APIs: /publish/EventLog <tm-publish-EventLog>`).
 
 Traffic Ops
 ===========
@@ -368,14 +368,14 @@ Traffic Ops
 					"mode": "remote",
 					"port": 2345,
 					"cwd": "${workspaceRoot}",
-					"remotePath": "/tmp/go/src/github.com/apache/trafficcontrol",
+					"remotePath": "/tmp/go/src/github.com/jruszo/trafficcontrol",
 				}
 			]
 		}
 
 * Use the debugging configuration you created to start debugging Traffic Ops. It should connect without first breaking at any line.
 
-For an example of usage, set a breakpoint at `the log.Debugln() call in TOProfile.Read() <https://github.com/apache/trafficcontrol/blob/RELEASE-5.1.1/traffic_ops/traffic_ops_golang/profile/profiles.go#L148>`_, then visit https://trafficportal.infra.ciab.test/api/4.0/profiles (after logging into :ref:`tp-overview`).
+For an example of usage, set a breakpoint at `the log.Debugln() call in TOProfile.Read() <https://github.com/jruszo/trafficcontrol/blob/RELEASE-5.1.1/traffic_ops/traffic_ops_golang/profile/profiles.go#L148>`_, then visit https://trafficportal.infra.ciab.test/api/4.0/profiles (after logging into :ref:`tp-overview`).
 
 Traffic Router
 ==============
@@ -516,14 +516,14 @@ Traffic Stats
 					"mode": "remote",
 					"port": 2346,
 					"cwd": "${workspaceRoot}",
-					"remotePath": "/tmp/go/src/github.com/apache/trafficcontrol",
+					"remotePath": "/tmp/go/src/github.com/jruszo/trafficcontrol",
 				}
 			]
 		}
 
 * Use the debugging configuration you created to start debugging Traffic Stats. It should connect without first breaking at any line.
 
-For an example of usage, set a breakpoint at `the http.Get() call in main.getURL() <https://github.com/apache/trafficcontrol/blob/RELEASE-5.1.1/traffic_stats/traffic_stats.go#L706>`_, then wait 10 seconds for the breakpoint to be hit.
+For an example of usage, set a breakpoint at `the http.Get() call in main.getURL() <https://github.com/jruszo/trafficcontrol/blob/RELEASE-5.1.1/traffic_stats/traffic_stats.go#L706>`_, then wait 10 seconds for the breakpoint to be hit.
 
 Troubleshooting
 ===============

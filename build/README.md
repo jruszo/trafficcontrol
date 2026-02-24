@@ -20,4 +20,4 @@
 
 # Build instructions
 
-See https://traffic-control-cdn.readthedocs.io/en/latest/development/building.html or [`/docs/source/development/building.rst`](https://github.com/apache/trafficcontrol/blob/master/docs/source/development/building.rst) for instructions for building Apache Traffic Control.
+See https://traffic-control-cdn.readthedocs.io/en/latest/development/building.html or [`/docs/source/development/building.rst`](https://github.com/jruszo/trafficcontrol/blob/master/docs/source/development/building.rst) for instructions for building Apache Traffic Control.

@@ -1,10 +1,10 @@
 {
   "name": "traffic_portal",
   "version": "8.1.0",
-  "homepage": "https://github.com/apache/trafficcontrol",
+  "homepage": "https://github.com/jruszo/trafficcontrol",
   "repository": {
     "type": "git",
-    "url": "https://github.com/apache/trafficcontrol.git"
+    "url": "https://github.com/jruszo/trafficcontrol.git"
   },
   "scripts": {
     "build": "grunt build",

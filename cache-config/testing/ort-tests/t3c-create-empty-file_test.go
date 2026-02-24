@@ -23,8 +23,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/apache/trafficcontrol/v8/cache-config/testing/ort-tests/tcdata"
-	"github.com/apache/trafficcontrol/v8/cache-config/testing/ort-tests/util"
+	"github.com/jruszo/trafficcontrol/v8/cache-config/testing/ort-tests/tcdata"
+	"github.com/jruszo/trafficcontrol/v8/cache-config/testing/ort-tests/util"
 )
 
 func TestT3cCreateEmptyFile(t *testing.T) {

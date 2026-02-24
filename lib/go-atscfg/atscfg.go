@@ -29,7 +29,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
 )
 
 // InvalidID is used as a placeholder value when determining the ID of a parent
@@ -113,7 +113,7 @@ type ProfileName string
 
 // TopologyName is used internally to represent a Topology Name.
 //
-// Deprecated: github.com/apache/trafficcontrol/lib/go-tc provides the
+// Deprecated: github.com/jruszo/trafficcontrol/lib/go-tc provides the
 // an identical type by the same name, but that is the type actually used
 // by the Go client and Traffic Ops. Therefore, new code should use that
 // type instead of this one.

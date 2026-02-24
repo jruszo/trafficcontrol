@@ -26,8 +26,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-rfc"
-	"github.com/apache/trafficcontrol/v8/lib/go-util"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-rfc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-util"
 
 	validation "github.com/go-ozzo/ozzo-validation"
 	"github.com/go-ozzo/ozzo-validation/is"
@@ -159,7 +159,7 @@ type User struct {
 	LocalPassword        *string    `json:"localPasswd,omitempty" db:"local_passwd"`
 	ConfirmLocalPassword *string    `json:"confirmLocalPasswd,omitempty" db:"confirm_local_passwd"`
 	// NOTE: RoleName db:"-" tag is required due to clashing with the DB query here:
-	// https://github.com/apache/trafficcontrol/blob/3b5dd406bf1a0bb456c062b0f6a465ec0617d8ef/traffic_ops/traffic_ops_golang/user/user.go#L197
+	// https://github.com/jruszo/trafficcontrol/blob/3b5dd406bf1a0bb456c062b0f6a465ec0617d8ef/traffic_ops/traffic_ops_golang/user/user.go#L197
 	// It's done that way in order to maintain "rolename" vs "roleName" JSON field capitalization for the different users APIs.
 	RoleName *string `json:"roleName,omitempty" db:"role_name"`
 	commonUserFields
@@ -558,7 +558,7 @@ type UserRegistrationRequestV40 struct {
 }
 
 // Validate implements the
-// github.com/apache/trafficcontrol/v8/traffic_ops/traffic_ops_golang/api.ParseValidator
+// github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/api.ParseValidator
 // interface.
 func (urr *UserRegistrationRequestV4) Validate(tx *sql.Tx) error {
 	var errs = []error{}
@@ -580,7 +580,7 @@ func (urr *UserRegistrationRequestV4) Validate(tx *sql.Tx) error {
 }
 
 // Validate implements the
-// github.com/apache/trafficcontrol/v8/traffic_ops/traffic_ops_golang/api.ParseValidator
+// github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/api.ParseValidator
 // interface.
 func (urr *UserRegistrationRequest) Validate(tx *sql.Tx) error {
 	var errs = []error{}

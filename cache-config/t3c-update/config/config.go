@@ -26,8 +26,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/apache/trafficcontrol/v8/cache-config/t3cutil"
-	"github.com/apache/trafficcontrol/v8/lib/go-log"
+	"github.com/jruszo/trafficcontrol/v8/cache-config/t3cutil"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-log"
 	"github.com/pborman/getopt/v2"
 )
 

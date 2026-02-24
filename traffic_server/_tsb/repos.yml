@@ -19,7 +19,7 @@ openssl:
     head: 1708e3e85b4a86bae26860aa5d2913fc8eff6086
     extra: []
 trafficcontrol:
-    src: https://github.com/apache/trafficcontrol
+    src: https://github.com/jruszo/trafficcontrol
     branch: master
     head: a766f880d3a8f1565867faa27b228eea8e30efed
     extra: []

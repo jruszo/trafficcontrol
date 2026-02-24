@@ -24,9 +24,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/apache/trafficcontrol/v8/test/fakeOrigin/endpoint"
-	"github.com/apache/trafficcontrol/v8/test/fakeOrigin/httpService"
-	"github.com/apache/trafficcontrol/v8/test/fakeOrigin/transcode"
+	"github.com/jruszo/trafficcontrol/v8/test/fakeOrigin/endpoint"
+	"github.com/jruszo/trafficcontrol/v8/test/fakeOrigin/httpService"
+	"github.com/jruszo/trafficcontrol/v8/test/fakeOrigin/transcode"
 )
 
 func printUsage() {

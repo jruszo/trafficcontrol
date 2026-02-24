@@ -39,7 +39,7 @@ PATH=$PATH:/usr/local/go/bin:; export PATH
 TERM=xterm; export TERM
 
 # setup some convienient links
-/bin/ln -s /root/go/src/github.com/apache/trafficcontrol /trafficcontrol
+/bin/ln -s /root/go/src/github.com/jruszo/trafficcontrol /trafficcontrol
 /bin/ln -s /trafficcontrol/cache-config/testing/ort-tests /ort-tests
 
 if [ -f /trafficcontrol/GO_VERSION ]; then

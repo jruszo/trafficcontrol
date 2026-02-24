@@ -25,7 +25,7 @@ services:
       args:
         - GO_VERSION=${GO_VERSION}
     volumes:
-      - ../..:/go/src/github.com/apache/trafficcontrol
+      - ../..:/go/src/github.com/jruszo/trafficcontrol
 
   unit:
     build:
@@ -35,5 +35,5 @@ services:
       args:
         - GO_VERSION=${GO_VERSION}
     volumes:
-      - ../..:/go/src/github.com/apache/trafficcontrol
+      - ../..:/go/src/github.com/jruszo/trafficcontrol
       - ./junit:/junit

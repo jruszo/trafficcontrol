@@ -21,8 +21,8 @@ package tmcheck
 
 import (
 	"fmt"
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
-	to "github.com/apache/trafficcontrol/v8/traffic_ops/v4-client"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
+	to "github.com/jruszo/trafficcontrol/v8/traffic_ops/v4-client"
 	"time"
 )
 

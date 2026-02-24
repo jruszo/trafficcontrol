@@ -23,7 +23,7 @@ Release:  %{build_number}
 License:  Apache License, Version 2.0
 Group:    Applications/Communications
 Source0:  trafficcontrol-health-client-%{version}.tgz
-URL:      https://github.com/apache/trafficcontrol/
+URL:      https://github.com/jruszo/trafficcontrol/
 Vendor:   Apache Software Foundation
 Packager: dev at trafficcontrol dot Apache dot org
 Requires: git 
@@ -41,7 +41,7 @@ set -o nounset
 cp ${TC_DIR}/LICENSE %{_builddir}
 
 hcdir="tc-health-client"
-hcpath="src/github.com/apache/trafficcontrol/${hcdir}/"
+hcpath="src/github.com/jruszo/trafficcontrol/${hcdir}/"
 was_active="unk"
 
 %pre

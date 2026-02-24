@@ -51,7 +51,7 @@ n/a
 
 ### ORT Impact
 
-- `varnishcfg` package will be developed to handle generating configuration files for Varnish, Hitch and `varnishncsa`. For detailed description of mapping configuration files from ATS to Varnish refer to [Varnish Support](https://github.com/apache/trafficcontrol/wiki/Varnish-Support) wiki.
+- `varnishcfg` package will be developed to handle generating configuration files for Varnish, Hitch and `varnishncsa`. For detailed description of mapping configuration files from ATS to Varnish refer to [Varnish Support](https://github.com/jruszo/trafficcontrol/wiki/Varnish-Support) wiki.
 - New options will be added to `t3c-generate` and `t3c-apply` including `--cache` to indicate which cache server the configuration files will be generated or applied to (e.g. `--cache=varnish` or `--cache=ats`). Flags will be rewritten to indicate which cache server they can be used with. `t3c` subcommands will decide based on `cache` option whether to use `go-atscfg` or `varnishcfg` for configuration files generation and also how to apply them for each case.
 - `go-atscfg` will be refactored to export some of its functionality to be reusable from `varnishcfg`. So, instead of rewriting the logic of which IPs are allowed for specific HTTP requests, it could be separated and exported in a function that both packages utilize.
 
@@ -110,7 +110,7 @@ n/a
 
 ## References
 
-- https://github.com/apache/trafficcontrol/wiki/Varnish-Support
+- https://github.com/jruszo/trafficcontrol/wiki/Varnish-Support
 - https://varnish-cache.org/docs/trunk/reference/
 - https://varnish-cache.org/vmods/
-- https://github.com/apache/trafficcontrol/wiki/Varnish-Support
+- https://github.com/jruszo/trafficcontrol/wiki/Varnish-Support

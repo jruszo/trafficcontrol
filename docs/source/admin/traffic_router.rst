@@ -903,7 +903,7 @@ Once this is done you should be able to verify that you are being correctly redi
 
 Router Load Testing
 ===================
-The Traffic Router load testing tool is located in the `Traffic Control repository under test/router <https://github.com/apache/trafficcontrol/tree/master/test/router>`_. It can be used to simulate a mix of HTTP and HTTPS traffic for a CDN by choosing the number of HTTP :term:`Delivery Services` and the number HTTPS :term:`Delivery Service` the test will exercise.
+The Traffic Router load testing tool is located in the `Traffic Control repository under test/router <https://github.com/jruszo/trafficcontrol/tree/master/test/router>`_. It can be used to simulate a mix of HTTP and HTTPS traffic for a CDN by choosing the number of HTTP :term:`Delivery Services` and the number HTTPS :term:`Delivery Service` the test will exercise.
 
 There are 2 parts to the load test:
 
@@ -912,7 +912,7 @@ There are 2 parts to the load test:
 
 Running the Load Tests
 ----------------------
-#. First, clone the `Traffic Control repository <https://github.com/apache/trafficcontrol>`_.
+#. First, clone the `Traffic Control repository <https://github.com/jruszo/trafficcontrol>`_.
 #. You will need to make sure you have a :abbr:`CA (Certificate Authority)` file on your machine
 #. The web server is a Go program, set your ``GOPATH`` environment variable appropriately (we suggest ``$HOME/go`` or ``$HOME/src``)
 #. Open a terminal emulator and navigate to the ``test/router/server`` directory inside of the cloned repository

@@ -27,7 +27,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
 )
 
 // HeaderRewritePrefix is a prefix on filenames of configuration files for the

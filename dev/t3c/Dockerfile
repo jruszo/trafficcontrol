@@ -17,13 +17,13 @@
 ARG ATS_VERSION
 ARG GO_VERSION
 FROM golang:${GO_VERSION}-alpine AS get-go
-FROM ghcr.io/apache/trafficcontrol/ci/trafficserver-alpine:${ATS_VERSION}
+FROM ghcr.io/jruszo/trafficcontrol/ci/trafficserver-alpine:${ATS_VERSION}
 COPY --from=get-go /usr/local/go /usr/local/go
 ENV PATH=/usr/local/go/bin:${PATH} \
 	GOPATH=/go
 ENV PATH=${GOPATH}/bin:${PATH}
 
-ENV TC="/go/src/github.com/apache/trafficcontrol" GOFLAGS="--buildvcs=false"
+ENV TC="/go/src/github.com/jruszo/trafficcontrol" GOFLAGS="--buildvcs=false"
 VOLUME $TC
 EXPOSE 80 8081
 

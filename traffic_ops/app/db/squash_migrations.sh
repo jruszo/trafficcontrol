@@ -14,7 +14,7 @@ trap 'echo "Error on line ${LINENO} of ${0}" >/dev/stderr; exit 1' ERR
 set -o errexit -o nounset -o pipefail
 cd "$(dirname "$0")"
 
-apache_remote="$(git remote -v | grep 'apache/trafficcontrol.*(fetch)$' | cut -f1 | head -n1)"
+apache_remote="$(git remote -v | grep 'jruszo/trafficcontrol.*(fetch)$' | cut -f1 | head -n1)"
 git fetch --tags --force "$apache_remote"
 last_release="$(git tag --list --sort=v:refname | grep -E '^RELEASE-[0-9]+[.][0-9]+[.][0-9]+$' | tail -n1)"
 migrations_to_squash="$(git ls-tree -r "$last_release" -- migrations | grep -o 'migrations/[0-9].*')"

@@ -37,7 +37,7 @@ How to Contribute
 We love pull requests! We simply don't have the time or resources to add every
 feature, fix every bug and support every platform. If you have improvements
 (enhancements or bug fixes) for Traffic Control, start by creating a
-[Github issue](https://github.com/apache/trafficcontrol/issues) or a
+[Github issue](https://github.com/jruszo/trafficcontrol/issues) or a
 [feature blueprint](blueprints/BLUEPRINT_TEMPLATE.md) and discussing it with us
 first on the
 [dev@trafficcontrol.apache.org](mailto:dev@trafficcontrol.apache.org) mailing
@@ -106,7 +106,7 @@ project are detailed in
 
 #### Create an issue or feature blueprint
 If you want to add a new feature, make a
-[GitHub issue](https://github.com/apache/trafficcontrol/issues) or
+[GitHub issue](https://github.com/jruszo/trafficcontrol/issues) or
 [feature blueprint](blueprints/BLUEPRINT_TEMPLATE.md) and discuss it with us
 first on the
 [dev@trafficcontrol.apache.org](mailto:dev@trafficcontrol.apache.org) mailing
@@ -114,7 +114,7 @@ list. We might already be working on it, or there might be an existing way to do
 it.
 
 If it's a bug fix, make a
-[GitHub issue](https://github.com/apache/trafficcontrol/issues) and optionally
+[GitHub issue](https://github.com/jruszo/trafficcontrol/issues) and optionally
 discuss it with us first on the
 [dev@trafficcontrol.apache.org](mailto:dev@trafficcontrol.apache.org) mailing
 list.

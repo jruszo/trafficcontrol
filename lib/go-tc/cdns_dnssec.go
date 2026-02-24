@@ -20,8 +20,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-tc/tovalidate"
-	"github.com/apache/trafficcontrol/v8/lib/go-util"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc/tovalidate"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-util"
 
 	validation "github.com/go-ozzo/ozzo-validation"
 )
@@ -107,7 +107,7 @@ type DNSSECKey struct {
 // A DNSSECKeyV11 represents a DNSSEC Key (Key-Signing or Zone-Signing) as it
 // appeared in Traffic Ops API version 1.1. This structure still exists because
 // it is used by modern structures, but in general should not be used on its
-// own, and github.com/apache/trafficcontrol/v8/lib/go-tc.DNSSECKey should usually
+// own, and github.com/jruszo/trafficcontrol/v8/lib/go-tc.DNSSECKey should usually
 // be used instead.
 type DNSSECKeyV11 struct {
 	InceptionDateUnix  int64                 `json:"inceptionDate"`
@@ -143,7 +143,7 @@ type DNSSECKeyDSRecordV11 struct {
 
 // CDNDNSSECGenerateReqDate is the date accepted by CDNDNSSECGenerateReq.
 // This will unmarshal a UNIX epoch integer, a RFC3339 string, the old format string used by Perl '2018-08-21+14:26:06', and the old format string sent by the Portal '2018-08-21 14:14:42'.
-// This exists to fix a critical bug, see https://github.com/apache/trafficcontrol/issues/2723 - it SHOULD NOT be used by any other endpoint.
+// This exists to fix a critical bug, see https://github.com/jruszo/trafficcontrol/issues/2723 - it SHOULD NOT be used by any other endpoint.
 type CDNDNSSECGenerateReqDate int64
 
 // UnmarshalJSON implements the encoding/json.Unmarshaler interface.
@@ -188,7 +188,7 @@ type CDNDNSSECGenerateReq struct {
 }
 
 // Validate implements the
-// github.com/apache/trafficcontrol/v8/traffic_ops/traffic_ops_golang/api.ParseValidator
+// github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/api.ParseValidator
 // interface.
 func (r CDNDNSSECGenerateReq) Validate(tx *sql.Tx) error {
 	validateErrs := validation.Errors{

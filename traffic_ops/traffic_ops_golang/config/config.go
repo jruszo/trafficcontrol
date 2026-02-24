@@ -31,9 +31,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-log"
-	"github.com/apache/trafficcontrol/v8/lib/go-rfc"
-	"github.com/apache/trafficcontrol/v8/lib/go-util"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-log"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-rfc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-util"
 )
 
 // Options is a structure used to hold the route configuration options that can be supplied for the backend routes.
@@ -142,7 +142,7 @@ type ConfigTrafficOpsGolang struct {
 
 	// CRConfigUseRequestHost is whether to use the client request host header in the CRConfig. If false, uses the tm.url parameter.
 	// This defaults to false. Traffic Ops used to always use the host header, setting this true will resume that legacy behavior.
-	// See https://github.com/apache/trafficcontrol/issues/2224
+	// See https://github.com/jruszo/trafficcontrol/issues/2224
 	// Deprecated: will be removed in the next major version.
 	CRConfigUseRequestHost bool `json:"crconfig_snapshot_use_client_request_host"`
 	// CRConfigEmulateOldPath is whether to emulate the legacy CRConfig request path when generating a new CRConfig. This primarily exists in the event a tool relies on the legacy path '/tools/write_crconfig'.
