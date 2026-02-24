@@ -25,9 +25,9 @@ import (
 	"errors"
 	"time"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-log"
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
-	"github.com/apache/trafficcontrol/v8/traffic_ops/traffic_ops_golang/monitoring"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-log"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/monitoring"
 )
 
 // Snapshot takes the CRConfig JSON-serializable object (which may be generated via crconfig.Make), and writes it to the snapshot table.

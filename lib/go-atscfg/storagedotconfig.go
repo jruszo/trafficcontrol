@@ -24,7 +24,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
 )
 
 // StorageFileName is the ConfigFile of Parameters which, if found on a server's

@@ -23,7 +23,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
 )
 
 // ContentTypeServerUnknownConfig is the MIME content type of the contents of

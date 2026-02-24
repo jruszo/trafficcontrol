@@ -23,7 +23,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
 )
 
 // DurationMap wraps a map[tc.CacheName]time.Duration in an object safe for a single writer and multiple readers.

@@ -22,7 +22,7 @@ Release:  %{build_number}
 Summary:  Traffic Portal v2
 Group:    Applications/Communications
 License:  Apache License, Version 2.0
-URL:      https://github.com/apache/trafficcontrol/
+URL:      https://github.com/jruszo/trafficcontrol/
 Source:   %{_sourcedir}/traffic-portal-%{traffic_control_version}.tgz
 AutoReqProv: no
 Requires: nodejs >= 2:20.0.0

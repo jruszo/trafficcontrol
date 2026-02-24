@@ -31,7 +31,7 @@ RUN apt-get update && \
         wget && \
     apt-get clean
 
-ARG DIR=github.com/apache/trafficcontrol
+ARG DIR=github.com/jruszo/trafficcontrol
 
 ADD cache-config/t3cutil /go/src/$DIR/cache-config/t3cutil
 ADD traffic_monitor /go/src/$DIR/traffic_monitor

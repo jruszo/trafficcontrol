@@ -19,7 +19,7 @@ under the License.
 
 # Profile Parameter Comparison / Management 
 
-https://github.com/apache/trafficcontrol/issues/2391
+https://github.com/jruszo/trafficcontrol/issues/2391
 
 ## Problem Description
 <!--
@@ -235,4 +235,4 @@ None
 <!--
 Include any references to external links here.
 -->
-https://github.com/apache/trafficcontrol/issues/2391
+https://github.com/jruszo/trafficcontrol/issues/2391

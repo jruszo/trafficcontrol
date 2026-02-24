@@ -23,7 +23,7 @@ PATH=$PATH:/usr/local/go/bin:; export PATH
 TERM=xterm; export TERM
 
 # set up some convienient links
-/bin/ln -s /root/go/src/github.com/apache/trafficcontrol /trafficcontrol
+/bin/ln -s /root/go/src/github.com/jruszo/trafficcontrol /trafficcontrol
 
 # install go
 if [[ -f /trafficcontrol/GO_VERSION ]]; then

@@ -22,7 +22,7 @@ package atscfg
 import (
 	"strconv"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
 )
 
 // VolumeFileName is the ConfigFile of Parameters which can influence the

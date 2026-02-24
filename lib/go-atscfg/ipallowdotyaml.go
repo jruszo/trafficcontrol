@@ -26,8 +26,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
-	"github.com/apache/trafficcontrol/v8/lib/go-util"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-util"
 )
 
 // IPAllowYamlFileName is the name of the configuration file that controls IP

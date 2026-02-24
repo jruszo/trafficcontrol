@@ -24,7 +24,7 @@ RUN openssl genrsa -passout pass:x -out server.pass.key 2048 && \
 
 FROM node:16-alpine AS trafficportal-dev
 
-ENV TC="/go/src/github.com/apache/trafficcontrol"
+ENV TC="/go/src/github.com/jruszo/trafficcontrol"
 VOLUME $TC
 EXPOSE 443
 ENV TP_SERVER_CONFIG_FILE="$TC/dev/traffic_portal/config.js"

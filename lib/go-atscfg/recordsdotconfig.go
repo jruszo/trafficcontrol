@@ -23,7 +23,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
 )
 
 // RecordsSeparator is the string used to separate Parameter Names from their

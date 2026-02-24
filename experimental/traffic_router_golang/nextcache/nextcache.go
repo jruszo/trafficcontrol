@@ -23,7 +23,7 @@ package nextcache
 import (
 	"sync/atomic"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
 )
 
 // New creates and returns a new NextCacher. The returned NextCacher is safe for use by multiple goroutines.

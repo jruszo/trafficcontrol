@@ -29,10 +29,10 @@
 		<asfext:pmc rdf:resource="https://attic.apache.org" />
 		<shortdesc>Apache Traffic Control allows you to build a large scale content delivery network using open source.</shortdesc>
 		<description>With Apache Traffic Control, operators can setup a Content Delivery Network to quickly and efficiently deliver content to their users. Traffic Control is a highly distributed, scalable and redundant solution meeting the needs of operators from small to large.</description>
-		<bug-database rdf:resource="https://github.com/apache/trafficcontrol/issues" />
+		<bug-database rdf:resource="https://github.com/jruszo/trafficcontrol/issues" />
 		<mailing-list rdf:resource="https://trafficcontrol.apache.org/mailing_lists/" />
 		<download-page rdf:resource="https://trafficcontrol.apache.org/releases/" />
-		<download-page rdf:resource="https://github.com/apache/trafficcontrol/releases" />
+		<download-page rdf:resource="https://github.com/jruszo/trafficcontrol/releases" />
 		<programming-language>Go</programming-language>
 		<category rdf:resource="https://projects.apache.org/category/content" />
 		<category rdf:resource="https://projects.apache.org/category/cloud" />
@@ -55,8 +55,8 @@
 		</release>
 		<repository>
 			<GitRepository>
-				<location rdf:resource="https://github.com/apache/trafficcontrol.git"/>
-				<browse rdf:resource="https://github.com/apache/trafficcontrol"/>
+				<location rdf:resource="https://github.com/jruszo/trafficcontrol.git"/>
+				<browse rdf:resource="https://github.com/jruszo/trafficcontrol"/>
 			</GitRepository>
 		</repository>
 		<maintainer>

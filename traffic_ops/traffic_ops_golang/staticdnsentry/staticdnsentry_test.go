@@ -25,9 +25,9 @@ import (
 	"strings"
 	"testing"
 
-	util "github.com/apache/trafficcontrol/v8/lib/go-util"
-	"github.com/apache/trafficcontrol/v8/traffic_ops/traffic_ops_golang/api"
-	"github.com/apache/trafficcontrol/v8/traffic_ops/traffic_ops_golang/test"
+	util "github.com/jruszo/trafficcontrol/v8/lib/go-util"
+	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/api"
+	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/test"
 	"github.com/jmoiron/sqlx"
 	"gopkg.in/DATA-DOG/go-sqlmock.v1"
 )

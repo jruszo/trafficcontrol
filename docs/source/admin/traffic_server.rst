@@ -21,7 +21,7 @@ Installing Traffic Server
 
 #. Build the Traffic Server RPM. The best way to do this is to follow the `Apache Traffic Server documentation <https://docs.trafficserver.apache.org/en/7.1.x/getting-started/index.en.html#installation>`_.
 
-#. Build the astats RPM using the appropriate version number - ours are built `here <https://github.com/apache/trafficcontrol/tree/master/traffic_server>`_
+#. Build the astats RPM using the appropriate version number - ours are built `here <https://github.com/jruszo/trafficcontrol/tree/master/traffic_server>`_
 
 	.. note:: The ``astats`` plugin is bundled as a part of Apache Traffic Server as of version 7.2.
 

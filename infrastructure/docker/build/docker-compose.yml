@@ -72,7 +72,7 @@ services:
       - ../../..:/trafficcontrol:z
 
   cache-config_build:
-    image: apache/trafficcontrol-cache-config_builder:master
+    image: jruszo/trafficcontrol-cache-config_builder:master
     build:
       dockerfile: infrastructure/docker/build/Dockerfile-cache-config
       context: ../../..
@@ -88,7 +88,7 @@ services:
       - ../../..:/trafficcontrol:z
 
   tc-health-client_build:
-    image: apache/trafficcontrol-tc-health-client_builder:master
+    image: jruszo/trafficcontrol-tc-health-client_builder:master
     build:
       dockerfile: infrastructure/docker/build/Dockerfile-tc-health-client
       context: ../../..

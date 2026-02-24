@@ -25,7 +25,7 @@ RUN openssl genrsa -passout pass:x -out server.pass.key 2048 && \
 
 FROM node:20-alpine AS tpv2-dev
 
-ENV TC="/go/src/github.com/apache/trafficcontrol"
+ENV TC="/go/src/github.com/jruszo/trafficcontrol"
 VOLUME $TC
 EXPOSE 443
 

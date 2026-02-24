@@ -28,10 +28,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-log"
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
-	"github.com/apache/trafficcontrol/v8/traffic_monitor/cache"
-	"github.com/apache/trafficcontrol/v8/traffic_monitor/srvhttp"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-log"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/traffic_monitor/cache"
+	"github.com/jruszo/trafficcontrol/v8/traffic_monitor/srvhttp"
 
 	jsoniter "github.com/json-iterator/go"
 )

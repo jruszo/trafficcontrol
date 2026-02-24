@@ -29,7 +29,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-llog"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-llog"
 )
 
 type HostPort struct {

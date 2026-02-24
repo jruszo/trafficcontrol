@@ -18,7 +18,7 @@ package v3
 import (
 	"testing"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
 )
 
 func TestMonitoring(t *testing.T) {

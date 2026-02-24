@@ -19,9 +19,9 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
-	"github.com/apache/trafficcontrol/v8/lib/go-util/assert"
-	"github.com/apache/trafficcontrol/v8/traffic_ops/testing/api/utils"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-util/assert"
+	"github.com/jruszo/trafficcontrol/v8/traffic_ops/testing/api/utils"
 )
 
 func TestFederationFederationResolvers(t *testing.T) {

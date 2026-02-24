@@ -19,7 +19,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/apache/trafficcontrol/v8/cache-config/t3cutil"
+	"github.com/jruszo/trafficcontrol/v8/cache-config/t3cutil"
 )
 
 func TestCheckReload(t *testing.T) {

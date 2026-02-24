@@ -24,8 +24,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/apache/trafficcontrol/v8/tc-health-client/config"
-	"github.com/apache/trafficcontrol/v8/tc-health-client/util"
+	"github.com/jruszo/trafficcontrol/v8/tc-health-client/config"
+	"github.com/jruszo/trafficcontrol/v8/tc-health-client/util"
 )
 
 const (

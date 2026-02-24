@@ -22,9 +22,9 @@ package plugin
 import (
 	"testing"
 
-	"github.com/apache/trafficcontrol/v8/cache-config/t3c-generate/config"
-	"github.com/apache/trafficcontrol/v8/cache-config/t3cutil"
-	"github.com/apache/trafficcontrol/v8/lib/go-atscfg"
+	"github.com/jruszo/trafficcontrol/v8/cache-config/t3c-generate/config"
+	"github.com/jruszo/trafficcontrol/v8/cache-config/t3cutil"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-atscfg"
 )
 
 func TestPlugin(t *testing.T) {

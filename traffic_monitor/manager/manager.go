@@ -28,16 +28,16 @@ import (
 
 	"golang.org/x/sys/unix"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-log"
-	"github.com/apache/trafficcontrol/v8/traffic_monitor/cache"
-	"github.com/apache/trafficcontrol/v8/traffic_monitor/config"
-	"github.com/apache/trafficcontrol/v8/traffic_monitor/handler"
-	"github.com/apache/trafficcontrol/v8/traffic_monitor/health"
-	"github.com/apache/trafficcontrol/v8/traffic_monitor/peer"
-	"github.com/apache/trafficcontrol/v8/traffic_monitor/poller"
-	"github.com/apache/trafficcontrol/v8/traffic_monitor/threadsafe"
-	"github.com/apache/trafficcontrol/v8/traffic_monitor/todata"
-	"github.com/apache/trafficcontrol/v8/traffic_monitor/towrap"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-log"
+	"github.com/jruszo/trafficcontrol/v8/traffic_monitor/cache"
+	"github.com/jruszo/trafficcontrol/v8/traffic_monitor/config"
+	"github.com/jruszo/trafficcontrol/v8/traffic_monitor/handler"
+	"github.com/jruszo/trafficcontrol/v8/traffic_monitor/health"
+	"github.com/jruszo/trafficcontrol/v8/traffic_monitor/peer"
+	"github.com/jruszo/trafficcontrol/v8/traffic_monitor/poller"
+	"github.com/jruszo/trafficcontrol/v8/traffic_monitor/threadsafe"
+	"github.com/jruszo/trafficcontrol/v8/traffic_monitor/todata"
+	"github.com/jruszo/trafficcontrol/v8/traffic_monitor/towrap"
 )
 
 // Start starts the poller and handler goroutines

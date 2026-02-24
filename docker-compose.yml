@@ -35,7 +35,7 @@ services:
         sysctls:
             - net.ipv4.ip_unprivileged_port_start=0
         volumes:
-            - .:/go/src/github.com/apache/trafficcontrol
+            - .:/go/src/github.com/jruszo/trafficcontrol
 
     db:
         image: postgres:${POSTGRES_VERSION}-alpine
@@ -61,7 +61,7 @@ services:
         sysctls:
             - net.ipv4.ip_unprivileged_port_start=0
         volumes:
-            - .:/go/src/github.com/apache/trafficcontrol
+            - .:/go/src/github.com/jruszo/trafficcontrol
             - ./.npm:/trafficportal/.npm
 
     tpv2:
@@ -78,7 +78,7 @@ services:
         sysctls:
             - net.ipv4.ip_unprivileged_port_start=0
         volumes:
-            - .:/go/src/github.com/apache/trafficcontrol
+            - .:/go/src/github.com/jruszo/trafficcontrol
             - ./.npm:/trafficportal/.npm
 
     trafficmonitor:
@@ -98,7 +98,7 @@ services:
         sysctls:
             - net.ipv4.ip_unprivileged_port_start=0
         volumes:
-            - .:/go/src/github.com/apache/trafficcontrol
+            - .:/go/src/github.com/jruszo/trafficcontrol
 
     influxdb:
         image: influxdb:1.8
@@ -126,7 +126,7 @@ services:
         sysctls:
             - net.ipv4.ip_unprivileged_port_start=0
         volumes:
-            - .:/go/src/github.com/apache/trafficcontrol
+            - .:/go/src/github.com/jruszo/trafficcontrol
 
     t3c:
         build:
@@ -146,7 +146,7 @@ services:
         sysctls:
             - net.ipv4.ip_unprivileged_port_start=0
         volumes:
-            - .:/go/src/github.com/apache/trafficcontrol
+            - .:/go/src/github.com/jruszo/trafficcontrol
 
     trafficrouter:
         build:
@@ -173,7 +173,7 @@ services:
         sysctls:
             - net.ipv4.ip_unprivileged_port_start=0
         volumes:
-            - .:/go/src/github.com/apache/trafficcontrol
+            - .:/go/src/github.com/jruszo/trafficcontrol
             - ./.m2:/home/trafficrouter/.m2
 networks:
     ciab:

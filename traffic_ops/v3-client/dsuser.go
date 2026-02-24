@@ -18,7 +18,7 @@ package client
 import (
 	"strconv"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
 )
 
 // SetUserDeliveryService associates the given delivery services with the given user.

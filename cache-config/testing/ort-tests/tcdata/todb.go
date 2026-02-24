@@ -19,8 +19,8 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-log"
-	"github.com/apache/trafficcontrol/v8/traffic_ops/traffic_ops_golang/auth"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-log"
+	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/auth"
 )
 
 var (

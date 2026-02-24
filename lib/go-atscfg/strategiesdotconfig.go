@@ -23,7 +23,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
 )
 
 // ContentTypeStrategiesDotYAML is the MIME type of the contents of a

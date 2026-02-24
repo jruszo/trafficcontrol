@@ -24,7 +24,7 @@ ENV PATH=/usr/local/go/bin:${PATH} \
     GOPATH=/go \
     CGO_ENABLED=0
 ENV PATH="${PATH}:${GOPATH}/bin"
-ARG TC_DIR=${GOPATH}/src/github.com/apache/trafficcontrol
+ARG TC_DIR=${GOPATH}/src/github.com/jruszo/trafficcontrol
 
 COPY ./lib/ ${TC_DIR}/lib/
 COPY ./traffic_ops/toclientlib/ ${TC_DIR}/traffic_ops/toclientlib/
@@ -46,7 +46,7 @@ RUN apk add --no-cache \
     ca-certificates
 
 WORKDIR /opt/load-test/app
-COPY --from=load-test-builder /go/src/github.com/apache/trafficcontrol/traffic_router/ultimate-test-harness .
+COPY --from=load-test-builder /go/src/github.com/jruszo/trafficcontrol/traffic_router/ultimate-test-harness .
 
 COPY ./infrastructure/cdn-in-a-box/traffic_ops/to-access.sh /
 COPY infrastructure/cdn-in-a-box/dns/set-dns.sh \

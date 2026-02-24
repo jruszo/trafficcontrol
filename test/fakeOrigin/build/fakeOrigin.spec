@@ -23,7 +23,7 @@ Summary: fakeOrigin CDN Origin
 Vendor:	Apache Software Foundation
 Group:    Applications/Communications
 License: Apache License, Version 2.0
-URL: https://github.com/apache/trafficcontrol
+URL: https://github.com/jruszo/trafficcontrol
 Source: %{_sourcedir}/%{name}-%{traffic_control_version}.tgz
 Requires: initscripts
 
@@ -37,14 +37,14 @@ A fake HTTP CDN Origin for testing
 cp "$TC_DIR/LICENSE" %{_builddir}
 
 # copy fakeOrigin binary
-godir=src/github.com/apache/trafficcontrol/test/%{name}
+godir=src/github.com/jruszo/trafficcontrol/test/%{name}
 ( mkdir -p "$godir" && \
 	cd "$godir" && \
 	cp -r "$TC_DIR"/test/%{name}/* .
 ) || { echo "Could not copy go program at $(pwd): $!"; exit 1; }
 
 %install
-cd src/github.com/apache/trafficcontrol/test/%{name}
+cd src/github.com/jruszo/trafficcontrol/test/%{name}
 rm -rf %{buildroot}/opt/%{name}
 mkdir -p %{buildroot}/opt/%{name}/example
 cp -p %{name} %{buildroot}/opt/%{name}

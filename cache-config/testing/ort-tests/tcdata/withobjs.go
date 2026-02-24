@@ -19,11 +19,11 @@ import (
 	"database/sql"
 	"testing"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-tc/totest"
-	"github.com/apache/trafficcontrol/v8/lib/go-util"
-	"github.com/apache/trafficcontrol/v8/lib/go-util/assert"
-	"github.com/apache/trafficcontrol/v8/traffic_ops/testing/api/utils"
-	toclient "github.com/apache/trafficcontrol/v8/traffic_ops/v5-client"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc/totest"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-util"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-util/assert"
+	"github.com/jruszo/trafficcontrol/v8/traffic_ops/testing/api/utils"
+	toclient "github.com/jruszo/trafficcontrol/v8/traffic_ops/v5-client"
 )
 
 type TCObj int

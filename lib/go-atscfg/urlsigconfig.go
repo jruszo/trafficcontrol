@@ -23,7 +23,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
 )
 
 // ContentTypeURLSig is the MIME type of the contents of a url_sig.config ATS

@@ -24,7 +24,7 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-util"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-util"
 )
 
 // ServerchecksResponse is a list of Serverchecks as a response.
@@ -145,7 +145,7 @@ type ServercheckRequestNullable struct {
 }
 
 // Validate implements the
-// github.com/apache/trafficcontrol/v8/traffic_ops/traffic_ops_golang/api.ParseValidate
+// github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/api.ParseValidate
 // interface.
 func (scp ServercheckRequestNullable) Validate(tx *sql.Tx) error {
 	errs := []string{}

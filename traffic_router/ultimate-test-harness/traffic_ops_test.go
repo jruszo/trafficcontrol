@@ -23,7 +23,7 @@ import (
 	"fmt"
 	"os"
 
-	client "github.com/apache/trafficcontrol/v8/traffic_ops/v4-client"
+	client "github.com/jruszo/trafficcontrol/v8/traffic_ops/v4-client"
 
 	"github.com/kelseyhightower/envconfig"
 )

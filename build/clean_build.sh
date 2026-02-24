@@ -47,7 +47,7 @@ fi;
 
 # set owner of dist dir -- cleans up existing dist permissions...
 export GOPATH=/tmp/go GOOS="${GOOS:-linux}";
-tc_dir=${GOPATH}/src/github.com/apache/trafficcontrol;
+tc_dir=${GOPATH}/src/github.com/jruszo/trafficcontrol;
 if which cygpath 2>/dev/null; then
 	GOPATH="$(cygpath -w "$GOPATH")" # cygwin compatibility
 fi

@@ -31,7 +31,7 @@ License:          Apache License, Version 2.0
 Group:            Base System/System Tools
 Prefix:           /opt/traffic_ops
 Source:           %{_sourcedir}/traffic_ops-%{version}.tgz
-URL:              https://github.com/apache/trafficcontrol/
+URL:              https://github.com/jruszo/trafficcontrol/
 Vendor:           Apache Software Foundation
 AutoReqProv:      no
 Requires:         cpanminus, expat-devel, libcurl, libpcap-devel, mkisofs, tar
@@ -66,42 +66,42 @@ cp "${TC_DIR}/LICENSE" %{_builddir}
 rm LICENSE
 
 # copy traffic_ops_golang binary
-godir=src/github.com/apache/trafficcontrol/traffic_ops/traffic_ops_golang
+godir=src/github.com/jruszo/trafficcontrol/traffic_ops/traffic_ops_golang
 ( mkdir -p "$godir" && \
 	cd "$godir" && \
 	cp "$TC_DIR"/traffic_ops/traffic_ops_golang/traffic_ops_golang .
 ) || { echo "Could not copy go program at $(pwd): $!"; exit 1; }
 
 # copy TO DB admin
-db_admin_dir=src/github.com/apache/trafficcontrol/traffic_ops/app/db
+db_admin_dir=src/github.com/jruszo/trafficcontrol/traffic_ops/app/db
 ( mkdir -p "$db_admin_dir" && \
 	cd "$db_admin_dir" && \
 	cp "$TC_DIR"/traffic_ops/app/db/admin .
 ) || { echo "Could not copy go db admin at $(pwd): $!"; exit 1; };
 
 # copy ToDnssecRefresh
-to_dnssec_refresh_dir=src/github.com/apache/trafficcontrol/traffic_ops/app/bin/checks/DnssecRefresh
+to_dnssec_refresh_dir=src/github.com/jruszo/trafficcontrol/traffic_ops/app/bin/checks/DnssecRefresh
 ( mkdir -p "$to_dnssec_refresh_dir" && \
 	cd "$to_dnssec_refresh_dir" && \
 	cp "$TC_DIR"/traffic_ops/app/bin/checks/DnssecRefresh/ToDnssecRefresh .
 ) || { echo "Could not copy ToDnssecRefresh at $(pwd): $!"; exit 1; };
 
 # copy TV DB reencrypt
-reencrypt_dir=src/github.com/apache/trafficcontrol/traffic_ops/app/db/reencrypt
+reencrypt_dir=src/github.com/jruszo/trafficcontrol/traffic_ops/app/db/reencrypt
 ( mkdir -p "$reencrypt_dir" && \
 	cd "$reencrypt_dir" && \
 	cp "$TC_DIR"/traffic_ops/app/db/reencrypt/reencrypt .
 ) || { echo "Could not copy go db reencrypt at $(pwd): $!"; exit 1; };
 
 # copy TV migrate
-tvm_dir=src/github.com/apache/trafficcontrol/traffic_ops/app/db/traffic_vault_migrate
+tvm_dir=src/github.com/jruszo/trafficcontrol/traffic_ops/app/db/traffic_vault_migrate
 ( mkdir -p "$tvm_dir" && \
 	cd "$tvm_dir" && \
 	cp "$TC_DIR"/traffic_ops/app/db/traffic_vault_migrate/traffic_vault_migrate .
 ) || { echo "Could not copy go db traffic_vault_migrate at $(pwd): $!"; exit 1; };
 
 # copy TO profile converter
-convert_dir=src/github.com/apache/trafficcontrol/traffic_ops/install/bin/convert_profile
+convert_dir=src/github.com/jruszo/trafficcontrol/traffic_ops/install/bin/convert_profile
 ( mkdir -p "$convert_dir" && \
 	cd "$convert_dir" && \
 	cp "$TC_DIR"/traffic_ops/install/bin/convert_profile/convert_profile .
@@ -130,28 +130,28 @@ if [ ! -d $RPM_BUILD_ROOT/%{PACKAGEDIR}/app/bin ]; then
 	%__mkdir -p $RPM_BUILD_ROOT/%{PACKAGEDIR}/app/bin
 fi
 
-src=src/github.com/apache/trafficcontrol/traffic_ops/traffic_ops_golang
+src=src/github.com/jruszo/trafficcontrol/traffic_ops/traffic_ops_golang
 %__cp -p  "$src"/traffic_ops_golang        "${RPM_BUILD_ROOT}"/opt/traffic_ops/app/bin/traffic_ops_golang
 
-db_admin_src=src/github.com/apache/trafficcontrol/traffic_ops/app/db
+db_admin_src=src/github.com/jruszo/trafficcontrol/traffic_ops/app/db
 %__cp -p  "$db_admin_src"/admin           "${RPM_BUILD_ROOT}"/opt/traffic_ops/app/db/admin
 %__rm $RPM_BUILD_ROOT/%{PACKAGEDIR}/app/db/*.go
 %__rm -r $RPM_BUILD_ROOT/%{PACKAGEDIR}/app/db/trafficvault/test
 
-to_dnssec_refresh_src=src/github.com/apache/trafficcontrol/traffic_ops/app/bin/checks/DnssecRefresh
+to_dnssec_refresh_src=src/github.com/jruszo/trafficcontrol/traffic_ops/app/bin/checks/DnssecRefresh
 %__cp -p  "$to_dnssec_refresh_src"/ToDnssecRefresh           "${RPM_BUILD_ROOT}"/opt/traffic_ops/app/bin/checks/DnssecRefresh/ToDnssecRefresh
 %__rm $RPM_BUILD_ROOT/%{PACKAGEDIR}/app/bin/checks/DnssecRefresh/*.go
 %__rm -r $RPM_BUILD_ROOT/%{PACKAGEDIR}/app/bin/checks/DnssecRefresh/config
 
-reencrypt_src=src/github.com/apache/trafficcontrol/traffic_ops/app/db/reencrypt
+reencrypt_src=src/github.com/jruszo/trafficcontrol/traffic_ops/app/db/reencrypt
 %__cp -p  "$reencrypt_src"/reencrypt           "${RPM_BUILD_ROOT}"/opt/traffic_ops/app/db/reencrypt/reencrypt
 %__rm $RPM_BUILD_ROOT/%{PACKAGEDIR}/app/db/reencrypt/*.go
 
-tv_migrate_src=src/github.com/apache/trafficcontrol/traffic_ops/app/db/traffic_vault_migrate
+tv_migrate_src=src/github.com/jruszo/trafficcontrol/traffic_ops/app/db/traffic_vault_migrate
 %__cp -p  "$tv_migrate_src"/traffic_vault_migrate           "${RPM_BUILD_ROOT}"/opt/traffic_ops/app/db/traffic_vault_migrate/traffic_vault_migrate
 %__rm $RPM_BUILD_ROOT/%{PACKAGEDIR}/app/db/traffic_vault_migrate/*.go
 
-convert_profile_src=src/github.com/apache/trafficcontrol/traffic_ops/install/bin/convert_profile
+convert_profile_src=src/github.com/jruszo/trafficcontrol/traffic_ops/install/bin/convert_profile
 %__cp -p  "$convert_profile_src"/convert_profile           "${RPM_BUILD_ROOT}"/opt/traffic_ops/install/bin/convert_profile
 %__rm $RPM_BUILD_ROOT/%{PACKAGEDIR}/install/bin/convert_profile/*.go
 

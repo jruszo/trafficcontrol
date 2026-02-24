@@ -18,8 +18,8 @@ package v4
 import (
 	"testing"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
-	client "github.com/apache/trafficcontrol/v8/traffic_ops/v4-client"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
+	client "github.com/jruszo/trafficcontrol/v8/traffic_ops/v4-client"
 )
 
 func TestMonitoring(t *testing.T) {

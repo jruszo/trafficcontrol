@@ -41,7 +41,7 @@ my $usage = "\n"
 
 my $git_remote_name = 'official';
 
-my $git_remote_url = 'git@github.com:apache/trafficcontrol.git';
+my $git_remote_url = 'git@github.com:jruszo/trafficcontrol.git';
 
 my $gpg_key;
 my $release_no;

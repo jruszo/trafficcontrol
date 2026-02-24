@@ -28,7 +28,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-util"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-util"
 )
 
 func TestStatus(t *testing.T) {

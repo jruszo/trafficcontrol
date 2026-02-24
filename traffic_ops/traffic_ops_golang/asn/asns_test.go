@@ -25,13 +25,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
-	"github.com/apache/trafficcontrol/v8/traffic_ops/traffic_ops_golang/api"
-	"github.com/apache/trafficcontrol/v8/traffic_ops/traffic_ops_golang/test"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/api"
+	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/test"
 	"github.com/jmoiron/sqlx"
 	sqlmock "gopkg.in/DATA-DOG/go-sqlmock.v1"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-util"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-util"
 )
 
 func getTestASNs() []tc.ASNNullable {

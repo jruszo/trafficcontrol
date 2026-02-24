@@ -24,10 +24,10 @@ import (
 	"encoding/base64"
 	"errors"
 
-	"github.com/apache/trafficcontrol/v8/cache-config/t3cutil"
-	"github.com/apache/trafficcontrol/v8/lib/go-atscfg"
-	"github.com/apache/trafficcontrol/v8/lib/go-log"
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/cache-config/t3cutil"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-atscfg"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-log"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
 )
 
 func GetSSLCertsAndKeyFiles(toData *t3cutil.ConfigData) ([]t3cutil.ATSConfigFile, error) {

@@ -28,13 +28,13 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/apache/trafficcontrol/v8/experimental/traffic_router_golang/cgsrch"
-	"github.com/apache/trafficcontrol/v8/experimental/traffic_router_golang/crconfig"
-	"github.com/apache/trafficcontrol/v8/experimental/traffic_router_golang/crconfigregex"
-	"github.com/apache/trafficcontrol/v8/experimental/traffic_router_golang/fetch"
-	"github.com/apache/trafficcontrol/v8/experimental/traffic_router_golang/nextcache"
+	"github.com/jruszo/trafficcontrol/v8/experimental/traffic_router_golang/cgsrch"
+	"github.com/jruszo/trafficcontrol/v8/experimental/traffic_router_golang/crconfig"
+	"github.com/jruszo/trafficcontrol/v8/experimental/traffic_router_golang/crconfigregex"
+	"github.com/jruszo/trafficcontrol/v8/experimental/traffic_router_golang/fetch"
+	"github.com/jruszo/trafficcontrol/v8/experimental/traffic_router_golang/nextcache"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
 )
 
 func valid(new *tc.CRConfig, old *tc.CRConfig) error {

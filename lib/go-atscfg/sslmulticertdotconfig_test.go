@@ -23,7 +23,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-util"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-util"
 )
 
 func TestMakeSSLMultiCertDotConfig(t *testing.T) {

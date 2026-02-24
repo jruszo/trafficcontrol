@@ -22,8 +22,8 @@ package datareq
 import (
 	"strconv"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
-	"github.com/apache/trafficcontrol/v8/traffic_monitor/peer"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/traffic_monitor/peer"
 )
 
 func srvAPICacheAvailableCount(localStates peer.CRStatesThreadsafe) []byte {

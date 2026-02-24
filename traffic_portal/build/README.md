@@ -21,7 +21,7 @@
 
 ### 1. Build Traffic Portal RPM w/ Docker
 
-* Build instructions: https://github.com/apache/trafficcontrol/blob/master/BUILD.md
+* Build instructions: https://github.com/jruszo/trafficcontrol/blob/master/BUILD.md
 
 ### 2. Install
 

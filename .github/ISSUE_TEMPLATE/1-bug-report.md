@@ -29,8 +29,8 @@ guidelines at https://apache.org/security regarding vulnerability disclosure.
 - For *SUPPORT QUESTIONS*, use the #traffic-control channel on the ASF slack (https://s.apache.org/tc-slack-request)
 or the Traffic Control Users mailing list (send an email to users-subscribe@trafficcontrol.apache.org to subscribe).
 - Before submitting, please **SEARCH GITHUB** for a similar issue or PR
-    * https://github.com/apache/trafficcontrol/issues
-    * https://github.com/apache/trafficcontrol/pulls
+    * https://github.com/jruszo/trafficcontrol/issues
+    * https://github.com/jruszo/trafficcontrol/pulls
 -->
 
 <!-- Do not submit security vulnerabilities or support requests here - see above -->

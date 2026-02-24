@@ -179,7 +179,7 @@ essentially choose how many caches they want their local TM to poll.
 
 - Cache Self-Monitoring: Make caches monitor themselves by using remap rules,
   essentially replacing TM's Cache Health Monitoring. The
-  [Proof-of-Concept](https://github.com/apache/trafficcontrol/pull/4529) has
+  [Proof-of-Concept](https://github.com/jruszo/trafficcontrol/pull/4529) has
   more details.
 
 ## Dependencies

@@ -27,9 +27,9 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-log"
-	"github.com/apache/trafficcontrol/v8/traffic_monitor/config"
-	"github.com/apache/trafficcontrol/v8/traffic_monitor/handler"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-log"
+	"github.com/jruszo/trafficcontrol/v8/traffic_monitor/config"
+	"github.com/jruszo/trafficcontrol/v8/traffic_monitor/handler"
 )
 
 type PeerPoller struct {

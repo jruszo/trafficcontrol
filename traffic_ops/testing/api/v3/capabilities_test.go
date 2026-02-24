@@ -25,8 +25,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-rfc"
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-rfc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
 )
 
 // These capabilities are defined during the setup process in todb.go.

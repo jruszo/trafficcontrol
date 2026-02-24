@@ -24,7 +24,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-util"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-util"
 
 	"gopkg.in/DATA-DOG/go-sqlmock.v1"
 )

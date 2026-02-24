@@ -23,7 +23,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
 )
 
 // LogsXMLFileName is the name of a logging configuration file used by ATS

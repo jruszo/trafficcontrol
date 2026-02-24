@@ -30,7 +30,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/apache/trafficcontrol/v8/cache-config/t3c-apply/config"
+	"github.com/jruszo/trafficcontrol/v8/cache-config/t3c-apply/config"
 )
 
 // EnsureConfigDirIsGitRepo ensures the ATS config directory is a git repo.

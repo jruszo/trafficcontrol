@@ -22,10 +22,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/apache/trafficcontrol/v8/cache-config/testing/ort-tests/config"
-	"github.com/apache/trafficcontrol/v8/cache-config/testing/ort-tests/tcdata"
-	"github.com/apache/trafficcontrol/v8/lib/go-log"
-	"github.com/apache/trafficcontrol/v8/lib/go-tc/totest"
+	"github.com/jruszo/trafficcontrol/v8/cache-config/testing/ort-tests/config"
+	"github.com/jruszo/trafficcontrol/v8/cache-config/testing/ort-tests/tcdata"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-log"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc/totest"
 )
 
 const cfgFmt = `Using Config values:

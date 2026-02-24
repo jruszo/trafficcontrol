@@ -9,7 +9,7 @@
 		 Host: your-traffic-ops
 	     BasePath: /api/1.3
 	     Version: 1.3
-	     License: Apache 2 https://github.com/apache/trafficcontrol/blob/master/LICENSE
+	     License: Apache 2 https://github.com/jruszo/trafficcontrol/blob/master/LICENSE
 	     Contact: Traffic Control Dev List<dev@trafficcontrol.apache.org> http://traffic-control-cdn.readthedocs.io/en/latest/index.html
 
 	     Consumes:

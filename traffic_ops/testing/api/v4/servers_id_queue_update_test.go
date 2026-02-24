@@ -18,13 +18,13 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
-	totest "github.com/apache/trafficcontrol/v8/lib/go-tc/totestv4"
-	"github.com/apache/trafficcontrol/v8/lib/go-util"
-	"github.com/apache/trafficcontrol/v8/lib/go-util/assert"
-	"github.com/apache/trafficcontrol/v8/traffic_ops/testing/api/utils"
-	"github.com/apache/trafficcontrol/v8/traffic_ops/toclientlib"
-	client "github.com/apache/trafficcontrol/v8/traffic_ops/v4-client"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
+	totest "github.com/jruszo/trafficcontrol/v8/lib/go-tc/totestv4"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-util"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-util/assert"
+	"github.com/jruszo/trafficcontrol/v8/traffic_ops/testing/api/utils"
+	"github.com/jruszo/trafficcontrol/v8/traffic_ops/toclientlib"
+	client "github.com/jruszo/trafficcontrol/v8/traffic_ops/v4-client"
 )
 
 func TestServersIDQueueUpdate(t *testing.T) {
@@ -49,8 +49,8 @@ func TestServersIDQueueUpdate(t *testing.T) {
 						validateUpdPendingSpecificServers(map[string]bool{"atlanta-edge-01": false})),
 				},
 				/* COMMENTED UNTIL ISSUE IS FIXED:
-					https://github.com/apache/trafficcontrol/issues/6691
-					https://github.com/apache/trafficcontrol/issues/6801
+					https://github.com/jruszo/trafficcontrol/issues/6691
+					https://github.com/jruszo/trafficcontrol/issues/6801
 				"NOT FOUND when NON-EXISTENT SERVER": {
 					EndpointID:    func() int { return 999999 },
 					ClientSession: TOSession,

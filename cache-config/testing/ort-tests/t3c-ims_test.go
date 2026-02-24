@@ -20,12 +20,12 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/apache/trafficcontrol/v8/cache-config/t3cutil"
-	"github.com/apache/trafficcontrol/v8/cache-config/t3cutil/toreq"
-	"github.com/apache/trafficcontrol/v8/cache-config/testing/ort-tests/tcdata"
-	testutil "github.com/apache/trafficcontrol/v8/cache-config/testing/ort-tests/util"
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
-	toclient "github.com/apache/trafficcontrol/v8/traffic_ops/v5-client"
+	"github.com/jruszo/trafficcontrol/v8/cache-config/t3cutil"
+	"github.com/jruszo/trafficcontrol/v8/cache-config/t3cutil/toreq"
+	"github.com/jruszo/trafficcontrol/v8/cache-config/testing/ort-tests/tcdata"
+	testutil "github.com/jruszo/trafficcontrol/v8/cache-config/testing/ort-tests/util"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
+	toclient "github.com/jruszo/trafficcontrol/v8/traffic_ops/v5-client"
 )
 
 func TestIMS(t *testing.T) {

@@ -44,7 +44,7 @@ user=trafficops
 uid="$(stat -c%u "$TC")"
 gid="$(stat -c%g "$TC")"
 if [[ "$(id -u)" != "$uid" ]]; then
-	# db/admin must be run as root (see apache/trafficcontrol#7202)
+	# db/admin must be run as root (see jruszo/trafficcontrol#7202)
 	if [[ $uid -ne 0 ]]; then
 		db_init
 		chown "${uid}:${gid}" traffic_ops/app/db/admin

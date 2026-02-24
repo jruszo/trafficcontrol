@@ -24,12 +24,12 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/apache/trafficcontrol/v8/cache-config/testing/ort-tests/tcdata"
-	testutil "github.com/apache/trafficcontrol/v8/cache-config/testing/ort-tests/util"
-	"github.com/apache/trafficcontrol/v8/lib/go-atscfg"
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
-	"github.com/apache/trafficcontrol/v8/lib/go-util"
-	toclient "github.com/apache/trafficcontrol/v8/traffic_ops/v5-client"
+	"github.com/jruszo/trafficcontrol/v8/cache-config/testing/ort-tests/tcdata"
+	testutil "github.com/jruszo/trafficcontrol/v8/cache-config/testing/ort-tests/util"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-atscfg"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-util"
+	toclient "github.com/jruszo/trafficcontrol/v8/traffic_ops/v5-client"
 )
 
 const childCacheHostName = DefaultCacheHostName

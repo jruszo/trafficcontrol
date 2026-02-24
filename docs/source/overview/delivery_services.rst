@@ -610,7 +610,7 @@ The protocol with which to serve content from this Delivery Service. This define
 3: HTTP TO HTTPS
 	When this Delivery Service is using HTTP :ref:`Content Routing <ds-types>` unsecured HTTP requests will be met with a response that indicates to the client that further requests must use HTTPS.
 
-	.. note:: If any other type of :ref:`Content Routing <ds-types>` is used, this functionality cannot be used. In those cases, a protocol setting of ``3``/"HTTP TO HTTPS" will result in the same behavior as ``1``/"HTTPS". This behavior is tracked by `GitHub Issue #3221 <https://github.com/apache/trafficcontrol/issues/3221>`_
+	.. note:: If any other type of :ref:`Content Routing <ds-types>` is used, this functionality cannot be used. In those cases, a protocol setting of ``3``/"HTTP TO HTTPS" will result in the same behavior as ``1``/"HTTPS". This behavior is tracked by `GitHub Issue #3221 <https://github.com/jruszo/trafficcontrol/issues/3221>`_
 
 
 .. warning:: The definitions of each integral, unique identifier are hidden in implementations in each :abbr:`ATC (Apache Traffic Control)` component. Different components will handle invalid values differently, and there's no actual enforcement that the stored integral, unique identifier actually be within the representable range.

@@ -20,7 +20,7 @@ package atscfg
  */
 
 import (
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
 )
 
 // AstatsSeparator is the string used by astats.config to separate

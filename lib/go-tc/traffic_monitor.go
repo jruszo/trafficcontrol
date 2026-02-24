@@ -740,7 +740,7 @@ func LegacyMonitorConfigValid(cfg *LegacyTrafficMonitorConfigMap) error {
 		return errors.New("MonitorConfig.TrafficMonitor empty")
 	}
 	// TODO uncomment this, when TO is fixed to include DeliveryServices.
-	// See https://github.com/apache/trafficcontrol/issues/3528
+	// See https://github.com/jruszo/trafficcontrol/issues/3528
 	// if len(cfg.DeliveryService) == 0 {
 	// 	return errors.New("MonitorConfig.DeliveryService empty")
 	// }
