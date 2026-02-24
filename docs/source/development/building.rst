@@ -101,7 +101,7 @@ Options
 
 .. option:: -p
 
-	Pull builder Docker images, do not build them (default).
+	Pull builder Docker images first. If pull fails, or a pulled image fails at runtime, ``pkg`` builds the image locally and retries (default).
 
 .. option:: -q
 
@@ -237,7 +237,7 @@ Building This Documentation
 ---------------------------
 See instructions for :ref:`building the documentation <docs-build>`.
 
-.. [#compose-optional] This is optional, but recommended. If a ``docker compose`` executable is not available the ``pkg`` script will automatically download and run it using a container. This is noticeably slower than running it natively.
+.. [#compose-optional] This is optional, but recommended. The ``pkg`` script can use either ``docker compose`` or ``docker-compose`` when available locally. If neither is available, ``pkg`` will automatically download and run Compose in a container, which is noticeably slower than running it natively.
 .. [#optional-project] This project is "optional", which means that it cannot be built unless :option:`-o` is given.
 .. [#default-project] This is a default project, which will be built if ``pkg`` is run with no ``projects`` argument
 .. [#mac-jdk] If you are on macOS, you additionally need to :ref:`dev-tr-mac-jdk`.

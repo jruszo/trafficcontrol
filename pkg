@@ -70,29 +70,49 @@ else
 	COMPOSECMD=()
 fi
 
-# Check to see if docker compose is already installed and use it directly, if possible.
+# Check to see if Compose is already installed and use it directly, if possible.
 if [ ${#COMPOSECMD[@]} -eq 0 ]; then
 	if docker compose >/dev/null 2>&1; then
 		COMPOSECMD=( docker compose )
 	fi
 fi
 
-# If it's unavailable, download the image and run docker compose inside a container.
-# This is considerably slower, but allows for building on hosts without docker-compose.
+# Fall back to the standalone binary when the plugin is unavailable.
+if [ ${#COMPOSECMD[@]} -eq 0 ]; then
+	if command -v docker-compose >/dev/null 2>&1; then
+		COMPOSECMD=( docker-compose )
+	fi
+fi
+
+# If Compose is unavailable, download the image and run docker compose inside a
+# container. This is considerably slower, but allows for building on hosts
+# without docker compose/docker-compose.
 if [ ${#COMPOSECMD[@]} -eq 0 ]; then
 	# Pin the version of docker-compose.
 	IMAGE="docker:latest"
 
-	# We need to either mount the docker socket or export the docker host into the container.
-	# This allows the container to manage "sibling" containers via docker.
+	# We need to either mount the docker socket or export the docker host into
+	# the container. This allows the container to manage "sibling" containers
+	# via docker.
 	if [ -z "$DOCKER_HOST" ]; then
-			DOCKER_HOST="/var/run/docker.sock"
+		DOCKER_HOST="/var/run/docker.sock"
 	fi
 
-	if [ -S "$DOCKER_HOST" ]; then
-			DOCKER_ADDR=(-v "$DOCKER_HOST:$DOCKER_HOST" -e DOCKER_HOST)
+	# Handle either raw socket paths ("/var/run/docker.sock") or URI values
+	# ("unix:///var/run/docker.sock").
+	if [[ "$DOCKER_HOST" == unix://* ]]; then
+		DOCKER_SOCKET="${DOCKER_HOST#unix://}"
+	elif [[ "$DOCKER_HOST" == /* ]]; then
+		DOCKER_SOCKET="$DOCKER_HOST"
+		DOCKER_HOST="unix://$DOCKER_SOCKET"
 	else
-			DOCKER_ADDR=(-e DOCKER_HOST -e DOCKER_TLS_VERIFY -e DOCKER_CERT_PATH)
+		DOCKER_SOCKET=""
+	fi
+
+	if [[ -n "$DOCKER_SOCKET" ]] && [ -S "$DOCKER_SOCKET" ]; then
+		DOCKER_ADDR=(-v "$DOCKER_SOCKET:$DOCKER_SOCKET" -e DOCKER_HOST)
+	else
+		DOCKER_ADDR=(-e DOCKER_HOST -e DOCKER_TLS_VERIFY -e DOCKER_CERT_PATH)
 	fi
 
 	# We mount the current directory (the base of the repository) into the same location
@@ -210,7 +230,7 @@ Usage: $SELF [options] [projects]
   -L           Don$(echo \')t write logs to files - respects output levels on stderr/stdout as set by -q/-v
   -l           List available projects.
   -o           Build from the optional list. Same as -f "$COMPOSE_FILE_OPT"
-  -p           Pull builder Docker images, do not build them (default)
+  -p           Pull builder images first; on pull or runtime failure, build locally (default)
   -q           Quiet mode. Supresses output. (default)
   -s           Simple output filenames - e.g. traffic_ops.rpm instead of traffic_ops-6.1.0-11637.ec9ff6a6.el8.x86_64.rpm
   -S           Skip building "source rpms"
@@ -274,12 +294,30 @@ while (( "$#" )); do
 		fi
 
 		# Build the project
+		pulled_image=0
 		if [[ $build_images -eq 1 ]]; then
 			"${COMPOSECMD[@]}" -f $COMPOSE_FILE build $1 || exit 1
 		else
-			"${COMPOSECMD[@]}" -f $COMPOSE_FILE pull $1 || exit 1
+			# Try pulling prebuilt images first for speed, then fall back to a local
+			# build if the image doesn't exist (e.g. forks or local-only branches).
+			if "${COMPOSECMD[@]}" -f $COMPOSE_FILE pull $1; then
+				pulled_image=1
+			else
+				echo "warning: failed to pull image for '$1'; building locally instead" >&2
+				"${COMPOSECMD[@]}" -f $COMPOSE_FILE build $1 || exit 1
+			fi
 		fi
-		"${COMPOSECMD[@]}" -f $COMPOSE_FILE run "${RUN_OPTIONS[@]}" --rm $1 || exit 1
+		# If a pulled image fails at runtime (e.g. architecture mismatch under
+		# emulation), rebuild locally and retry once.
+		if ! "${COMPOSECMD[@]}" -f $COMPOSE_FILE run "${RUN_OPTIONS[@]}" --rm $1; then
+			if [[ $build_images -eq 0 && $pulled_image -eq 1 ]]; then
+				echo "warning: pulled image for '$1' failed at runtime; rebuilding locally and retrying once" >&2
+				"${COMPOSECMD[@]}" -f $COMPOSE_FILE build $1 || exit 1
+				"${COMPOSECMD[@]}" -f $COMPOSE_FILE run "${RUN_OPTIONS[@]}" --rm $1 || exit 1
+			else
+				exit 1
+			fi
+		fi
 
 		# Check for a chained compose file for this particular project.
 		# A chained compose file will be named exactly the same as main docker compose, with .service added,
