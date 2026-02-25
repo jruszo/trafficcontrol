@@ -134,6 +134,7 @@ services:
             args:
                 - ATS_VERSION=${ATS_VERSION}
                 - GO_VERSION=${GO_VERSION}
+                - TRAFFICSERVER_ALPINE_IMAGE=${TRAFFICSERVER_ALPINE_IMAGE:-trafficserver-alpine-local}
         depends_on:
             - trafficops
         hostname: edge
