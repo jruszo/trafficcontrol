@@ -50,7 +50,7 @@ func TestKBPS(t *testing.T) {
 
 	const bytesPerKilobit = 125
 
-	expectedKbps := 10000
+	const expectedKbps = 10000
 
 	httpClient := http.Client{Timeout: time.Duration(Config.Default.Session.TimeoutInSecs) * time.Second}
 
