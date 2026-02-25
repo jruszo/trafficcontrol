@@ -18,21 +18,16 @@
 name: Documentation Build
 
 on:
+  workflow_dispatch:
   push:
+    branches: [ master ]
     paths:
       - docs/source/**
       - .github/workflows/docs.yml
       - traffic_control/clients/python/**.py
-  pull_request:
-    types: [opened, reopened, ready_for_review, synchronize]
-    paths:
-      - docs/source/**
-      - .github/workflows/docs.yml
-      - traffic_control/clients/python/**.py
-
 jobs:
   documentation:
-    if: github.event.pull_request.draft == false
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

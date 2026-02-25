@@ -18,20 +18,9 @@
 name: CodeQL - C++
 
 on:
+  workflow_dispatch:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
-    paths:
-      - .github/workflows/codeql.cpp.yml
-      - '**.c'
-      - '**.cc'
-      - '**.cpp'
-      - '**.cxx'
-      - '**.h'
-      - '**.hpp'
-    types: [ opened, reopened, ready_for_review, synchronize ]
-
 jobs:
   analyze:
     name: Analyze C++
