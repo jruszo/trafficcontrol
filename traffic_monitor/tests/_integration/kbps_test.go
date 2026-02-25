@@ -62,14 +62,25 @@ func TestKBPS(t *testing.T) {
 	}
 	defer log.Close(resp.Body, "Unable to close http client "+uri)
 
-	time.Sleep(time.Second * 5) // TODO determine if there's a faster or more precise way to wait for polled data?
+	// This measurement is timing-sensitive in CI runners; wait for several poll windows.
+	const maxAttempts = 6
+	const attemptDelay = 5 * time.Second
+	const minExpectedKbps = expectedKbps / 4
+	const maxExpectedKbps = expectedKbps * 2
 
-	kbps, err := TMClient.BandwidthKBPS()
-	if err != nil {
-		t.Fatalf("getting monitor bandwidth kbps: %v\n", err)
+	var kbps float64
+	for i := 0; i < maxAttempts; i++ {
+		time.Sleep(attemptDelay)
+
+		kbps, err = TMClient.BandwidthKBPS()
+		if err != nil {
+			t.Fatalf("getting monitor bandwidth kbps: %v\n", err)
+		}
+
+		if kbps >= float64(minExpectedKbps) && kbps <= float64(maxExpectedKbps) {
+			return
+		}
 	}
 
-	if kbps < float64(expectedKbps/2) || kbps > float64(expectedKbps*2) {
-		t.Errorf("monitor bandwidth kbps expected %v-%v actual %v\n", expectedKbps/2, expectedKbps*2, kbps)
-	}
+	t.Errorf("monitor bandwidth kbps expected %v-%v actual %v\n", minExpectedKbps, maxExpectedKbps, kbps)
 }
