@@ -124,7 +124,11 @@ load_data_from() {
               continue;
             fi
             delayfor "$f"
-            envsubst "$vars" <"$f"  > "$ENROLLER_DIR/$f"
+            target_file="$ENROLLER_DIR/$f"
+            tmp_target_file="${target_file}.tmp"
+            # Write atomically so enroller never reads partially-written JSON.
+            envsubst "$vars" <"$f" > "$tmp_target_file"
+            mv "$tmp_target_file" "$target_file"
             sync
         done
     done
