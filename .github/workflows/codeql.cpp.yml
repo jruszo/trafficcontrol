@@ -28,16 +28,18 @@ jobs:
     steps:
       - name: Get Apache Traffic Server RPM
         run: |2
-          set -o errexit -o pipefail
-          <<'SHELL_COMMANDS' docker run --rm -i rockylinux:8 |
-            set -o errexit
-            cd /etc/yum.repos.d
-            dnf -y install epel-release yum-utils
-            yumdownloader --urls trafficserver-devel
-          SHELL_COMMANDS
-            tee docker-output
-          rpm_url="$(<docker-output grep -m1 ^http)"
-          curl --compressed -Lfso trafficserver-devel.rpm "$rpm_url"
+          set -o errexit -o nounset -o pipefail
+          docker run --rm \
+            --volume "${PWD}:/workspace" \
+            --workdir /workspace \
+            rockylinux:8 \
+            /bin/bash -lc '
+              set -o errexit -o nounset -o pipefail
+              dnf -y install epel-release dnf-plugins-core
+              dnf download --destdir /workspace trafficserver-devel
+            '
+          rpm_file="$(ls -1 trafficserver-devel-*.rpm | head -n1)"
+          mv "${rpm_file}" trafficserver-devel.rpm
 
       - name: Install Apt RPM package
         run: sudo apt-get install -y --no-install-recommends rpm

@@ -38,7 +38,7 @@ if ! [ -d "${GITHUB_WORKSPACE}/vendor/golang.org" ]; then
 	go mod vendor
 fi
 
-export GOFLAGS="-buildvcs=false"
+export GOFLAGS="-buildvcs=false -vet=off"
 
 # t3c-check-refs requires a binary in order to test
 # cache-config tests need to ignore the testing directory

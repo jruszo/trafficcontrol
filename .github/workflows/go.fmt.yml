@@ -39,7 +39,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@master
     - name: Cache Alpine Docker image
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: ${{ github.workspace }}/docker-images
         key: docker-images/alpine@${{ env.ALPINE_VERSION }}.tar.gz

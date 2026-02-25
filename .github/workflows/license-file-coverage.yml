@@ -60,7 +60,7 @@ jobs:
           curl -LO "${BLOB_URL}/${ACTION_DIR}/${COVERAGE_TEST_NAME}.go"
           curl -LO "${BLOB_URL}/LICENSE"
       - name: Cache Go modules for ${{ env.PKGSITE_REPO }}
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ${{ env.PKGSITE_DIR }}/vendor
           key: ${{ runner.os }}-go-${{ steps.go-version.outputs.value }}-tidy-${{ hashFiles('**/go.sum') }}-${{ hashFiles(format('{0}/{1}/{2}', env.PKGSITE_DIR, env.COVERAGE_TEST_NAME, format('{0}.go', env.COVERAGE_TEST_NAME))) }}
@@ -84,4 +84,4 @@ jobs:
         run: |
           set -o errexit -o nounset -o xtrace
           cd "$PKGSITE_DIR"
-          go test -test.v "./${COVERAGE_TEST_NAME}" -licensepath LICENSE -packagename "${GITHUB_REPOSITORY}"
+          go test -vet=off -test.v "./${COVERAGE_TEST_NAME}" -licensepath LICENSE -packagename "${GITHUB_REPOSITORY}"

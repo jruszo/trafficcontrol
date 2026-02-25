@@ -101,7 +101,7 @@ jobs:
         id: repo-info
       - name: Check Cache
         id: ats-rpm-cache
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ${{ github.workspace }}/dist
           key: ${{ steps.repo-info.outputs.expected-rpm-name }}-${{ hashFiles('cache-config/testing/docker/trafficserver/**') }}

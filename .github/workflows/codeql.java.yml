@@ -47,10 +47,21 @@ jobs:
       with:
         languages: java
 
-    # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
-    # If this step fails, then you should remove it and run the build manually
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v2
+    - name: Set up Java 11
+      uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: "11"
+        cache: maven
+
+    - name: Build Java sources for CodeQL
+      working-directory: traffic_router
+      run: >-
+        mvn clean package -f pom.xml -B -V -e
+        -Dfindbugs.skip -Dcheckstyle.skip -Dpmd.skip=true
+        -Dspotbugs.skip -Denforcer.skip -Dmaven.javadoc.skip
+        -DskipTests -Dmaven.test.skip.exec -Dlicense.skip=true
+        -Drat.skip=true -Dspotless.check.skip=true
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
