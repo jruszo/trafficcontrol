@@ -18,7 +18,9 @@
 name: Check Go modules
 
 on:
+  workflow_dispatch:
   push:
+    branches: [ master ]
     paths:
       - .github/check-go-modules/**
       - .github/workflows/check-go-modules.yml
@@ -26,19 +28,9 @@ on:
       - go.sum
       - GO_VERSION
       - vendor/**
-  pull_request:
-    paths:
-      - .github/check-go-modules/**
-      - .github/workflows/check-go-modules.yml
-      - go.mod
-      - go.sum
-      - GO_VERSION
-      - vendor/**
-    types: [opened, reopened, ready_for_review, synchronize]
-
 jobs:
   check-go-modules:
-    if: github.event.pull_request.draft == false
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

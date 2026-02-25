@@ -22,7 +22,9 @@ env:
   NODE_VERSION: 20
 
 on:
+  workflow_dispatch:
   push:
+    branches: [ master ]
     paths:
       - experimental/traffic-portal/**
       - .github/workflows/tpv2.yml
@@ -31,20 +33,9 @@ on:
       - '!**_test.go'
       - traffic_ops/app/db/**
       - traffic_ops/traffic_ops_golang/**.go
-  pull_request:
-    paths:
-      - experimental/traffic-portal/**
-      - .github/workflows/tpv2.yml
-      - .github/actions/tpv2-integration-tests
-      - '!**_test.go'
-      - lib/go-tc/**
-      - traffic_ops/app/db/**
-      - traffic_ops/traffic_ops_golang/**.go
-    types: [opened, reopened, ready_for_review, synchronize]
-
 jobs:
   build:
-    if: github.event.pull_request.draft == false
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}
     runs-on: ubuntu-latest
 
     steps:
@@ -76,7 +67,7 @@ jobs:
           cd experimental/traffic-portal/
           npm run build:ssr
   lint:
-    if: github.event.pull_request.draft == false
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}
     runs-on: ubuntu-latest
 
     steps:
@@ -109,7 +100,7 @@ jobs:
           cd experimental/traffic-portal/
           npm run lint
   unit-tests:
-    if: github.event.pull_request.draft == false
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}
     runs-on: ubuntu-latest
 
     steps:
@@ -149,7 +140,7 @@ jobs:
           files: ${{ github.workspace }}/experimental/traffic-portal/coverage/traffic-portal/cobertura-coverage.xml
           flags: traffic_portal_v2,unit_tests
   end-to-end-tests:
-    if: github.event.pull_request.draft == false
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}
     runs-on: ubuntu-latest
     env:
       PGUSER: traffic_ops
@@ -273,7 +264,7 @@ jobs:
       - name: Save Alpine Docker image
         run: .github/actions/save-alpine-tar/entrypoint.sh save ${{ env.ALPINE_VERSION }}
   pkg-build:
-    if: github.event.pull_request.draft == false
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

@@ -18,23 +18,17 @@
 name: Go Vet
 
 on:
+  workflow_dispatch:
   push:
+    branches: [ master ]
     paths:
       - .github/actions/go-vet
       - .github/workflows/go.vet.yml
       - GO_VERSION
       - '**.go'
-  pull_request:
-    paths:
-      - .github/actions/go-vet
-      - .github/workflows/go.vet.yml
-      - GO_VERSION
-      - '**.go'
-    types: [opened, reopened, ready_for_review, synchronize]
-
 jobs:
   go-vet:
-    if: github.event.pull_request.draft == false
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}
     runs-on: ubuntu-latest
     steps:
     - name: Checkout

@@ -18,16 +18,9 @@
 name: CodeQL - Java
 
 on:
+  workflow_dispatch:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
-    paths:
-      - .github/workflows/codeql.java.yml
-      - "**.java"
-      - "**/pom.xml"
-    types: [opened, reopened, ready_for_review, synchronize]
-
 jobs:
   analyze:
     name: Analyze Java

@@ -22,7 +22,9 @@ env:
   ALPINE_VERSION: sha256:08d6ca16c60fe7490c03d10dc339d9fd8ea67c6466dea8d558526b1330a85930
 
 on:
+  workflow_dispatch:
   push:
+    branches: [ master ]
     paths:
       - .github/actions/todb-init/**
       - .github/actions/tvdb-init/**
@@ -37,27 +39,10 @@ on:
       - traffic_ops/traffic_ops_golang/**.go
       - vendor/**.go
       - vendor/modules.txt
-  pull_request:
-    paths:
-      - .github/actions/todb-init/**
-      - .github/actions/tvdb-init/**
-      - .github/actions/to-integration-tests/**
-      - .github/workflows/to.integration.tests.yml
-      - go.mod
-      - go.sum
-      - GO_VERSION
-      - infrastructure/cdn-in-a-box/optional/traffic_vault/**
-      - traffic_ops/*client/**.go
-      - traffic_ops/testing/api/**.go
-      - traffic_ops/traffic_ops_golang/**.go
-      - vendor/**.go
-      - vendor/modules.txt
-    types: [opened, reopened, ready_for_review, synchronize]
-
 jobs:
 
   APIv3Tests:
-    if: github.event.pull_request.draft == false
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}
     runs-on: ubuntu-latest
 
     services:
@@ -134,7 +119,7 @@ jobs:
         path: ${{ github.workspace }}/traffic_ops/traffic_ops_golang/traffic.ops.log
 
   APIv4Tests:
-    if: github.event.pull_request.draft == false
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}
     runs-on: ubuntu-latest
 
     services:
@@ -213,7 +198,7 @@ jobs:
       run: .github/actions/save-alpine-tar/entrypoint.sh save ${{ env.ALPINE_VERSION }}
 
   APIv5Tests:
-    if: github.event.pull_request.draft == false
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}
     runs-on: ubuntu-latest
 
     services:
