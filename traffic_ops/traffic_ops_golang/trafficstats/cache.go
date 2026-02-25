@@ -27,10 +27,10 @@ import (
 
 	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/dbhelpers"
 
+	influx "github.com/influxdata/influxdb/client/v2"
 	"github.com/jruszo/trafficcontrol/v8/lib/go-rfc"
 	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
 	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/api"
-	influx "github.com/influxdata/influxdb/client/v2"
 )
 
 var (

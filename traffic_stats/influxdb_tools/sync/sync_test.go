@@ -24,9 +24,9 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/jruszo/trafficcontrol/v8/lib/go-util/assert"
 	influx "github.com/influxdata/influxdb/client/v2"
 	"github.com/influxdata/influxdb/models"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-util/assert"
 )
 
 func TestGetDailyStats(t *testing.T) {

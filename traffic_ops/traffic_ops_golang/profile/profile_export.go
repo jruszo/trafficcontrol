@@ -24,8 +24,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
 	"github.com/jmoiron/sqlx"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
 
 	"github.com/jruszo/trafficcontrol/v8/lib/go-log"
 	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/api"

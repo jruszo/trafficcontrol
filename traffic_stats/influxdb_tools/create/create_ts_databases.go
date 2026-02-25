@@ -23,8 +23,8 @@ import (
 	"flag"
 	"fmt"
 
-	"github.com/jruszo/trafficcontrol/v8/traffic_stats/influxdb"
 	influx "github.com/influxdata/influxdb/client/v2"
+	"github.com/jruszo/trafficcontrol/v8/traffic_stats/influxdb"
 )
 
 const (

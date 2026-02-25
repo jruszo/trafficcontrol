@@ -20,8 +20,8 @@ package deliveryservicesregexes
  */
 
 import (
-	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
 	"github.com/jmoiron/sqlx"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
 	"gopkg.in/DATA-DOG/go-sqlmock.v1"
 	"testing"
 )

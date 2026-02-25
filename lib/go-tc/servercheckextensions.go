@@ -24,9 +24,9 @@ import (
 	"errors"
 	"regexp"
 
+	validation "github.com/go-ozzo/ozzo-validation"
 	"github.com/jruszo/trafficcontrol/v8/lib/go-tc/tovalidate"
 	"github.com/jruszo/trafficcontrol/v8/lib/go-util"
-	validation "github.com/go-ozzo/ozzo-validation"
 )
 
 // ServerCheckExtensionNullable represents a server check extension used by Traffic Ops.

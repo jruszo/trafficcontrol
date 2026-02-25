@@ -26,9 +26,9 @@ import (
 	"testing"
 	"time"
 
+	influx "github.com/influxdata/influxdb/client/v2"
 	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
 	"github.com/jruszo/trafficcontrol/v8/lib/go-util"
-	influx "github.com/influxdata/influxdb/client/v2"
 )
 
 func TestCalcCacheValuesWithInvalidValue(t *testing.T) {
