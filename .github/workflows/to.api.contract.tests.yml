@@ -34,6 +34,17 @@ on:
       - traffic_ops/**.go
       - '!**_test.go'
       - traffic_control/clients/python/**.py
+  pull_request:
+    branches: [ master ]
+    paths:
+      - .github/actions/todb-init/**
+      - .github/actions/to-api-contract-tests/**
+      - .github/workflows/to.api.contract.tests.yml
+      - traffic_ops/testing/api_contract/**
+      - lib/go-tc/**.go
+      - traffic_ops/**.go
+      - '!**_test.go'
+      - traffic_control/clients/python/**.py
 jobs:
 
   APIv4ContractTests:

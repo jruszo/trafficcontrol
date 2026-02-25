@@ -31,6 +31,14 @@ on:
       - GO_VERSION
       - traffic_monitor/**
       - lib/**
+  pull_request:
+    branches: [ master ]
+    paths:
+      - .github/actions/tm-integration-tests/**
+      - .github/workflows/tm.integration.tests.yml
+      - GO_VERSION
+      - traffic_monitor/**
+      - lib/**
 jobs:
   TM_Integration_tests:
     if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}

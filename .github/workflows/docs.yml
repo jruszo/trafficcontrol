@@ -26,6 +26,13 @@ on:
       - docs/requirements.txt
       - .github/workflows/docs.yml
       - traffic_control/clients/python/**.py
+  pull_request:
+    branches: [ master ]
+    paths:
+      - docs/source/**
+      - docs/requirements.txt
+      - .github/workflows/docs.yml
+      - traffic_control/clients/python/**.py
 jobs:
   documentation:
     if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}

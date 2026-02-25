@@ -30,6 +30,13 @@ on:
       - .github/actions/todb-tests/**
       - .github/workflows/traffic.ops.database.yml
       - traffic_ops_db/test/**
+  pull_request:
+    branches: [ master ]
+    paths:
+      - traffic_ops/app/db/**
+      - .github/actions/todb-tests/**
+      - .github/workflows/traffic.ops.database.yml
+      - traffic_ops_db/test/**
 jobs:
   tests:
     if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}

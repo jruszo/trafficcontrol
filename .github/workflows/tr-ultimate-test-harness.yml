@@ -31,6 +31,14 @@ on:
       - dev/traffic_ops/**
       - dev/traffic_router/**
       - traffic_router/**
+  pull_request:
+    branches: [ master ]
+    paths:
+      - .github/actions/tr-ultimate-test-harness/**
+      - .github/workflows/tr-ultimate-test-harness.yml
+      - dev/traffic_ops/**
+      - dev/traffic_router/**
+      - traffic_router/**
 jobs:
   tests:
     if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}

@@ -28,6 +28,12 @@ on:
       - .env
       - .github/containers/trafficserver-alpine/**
       - .github/workflows/container-trafficserver-alpine.yml
+  pull_request:
+    branches: [ master ]
+    paths:
+      - .env
+      - .github/containers/trafficserver-alpine/**
+      - .github/workflows/container-trafficserver-alpine.yml
 jobs:
   build:
     strategy:

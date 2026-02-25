@@ -25,6 +25,13 @@ on:
         description: Branch or tag to test (defaults to current branch)
         required: false
         default: ""
+  pull_request:
+    branches: [ master ]
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
 
 permissions:
   actions: write
@@ -36,11 +43,18 @@ jobs:
     steps:
       - name: Resolve target ref
         id: ref
+        env:
+          INPUT_REF: ${{ github.event.inputs.ref }}
+          PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
         run: |
           set -o errexit -o nounset -o pipefail
-          target_ref="${{ github.event.inputs.ref }}"
+          target_ref="${INPUT_REF:-}"
           if [ -z "${target_ref}" ]; then
-            target_ref="${GITHUB_REF_NAME}"
+            if [ "${GITHUB_EVENT_NAME}" = "pull_request" ] && [ -n "${PR_HEAD_REF:-}" ]; then
+              target_ref="${PR_HEAD_REF}"
+            else
+              target_ref="${GITHUB_REF_NAME}"
+            fi
           fi
           echo "target_ref=${target_ref}" >> "${GITHUB_OUTPUT}"
 

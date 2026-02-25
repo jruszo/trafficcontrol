@@ -33,6 +33,16 @@ on:
       - '!**_test.go'
       - traffic_ops/app/db/**
       - traffic_ops/traffic_ops_golang/**.go
+  pull_request:
+    branches: [ master ]
+    paths:
+      - experimental/traffic-portal/**
+      - .github/workflows/tpv2.yml
+      - .github/actions/tpv2-integration-tests
+      - lib/go-tc/**
+      - '!**_test.go'
+      - traffic_ops/app/db/**
+      - traffic_ops/traffic_ops_golang/**.go
 jobs:
   build:
     if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}

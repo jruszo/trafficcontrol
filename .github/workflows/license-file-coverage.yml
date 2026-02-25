@@ -33,6 +33,12 @@ on:
       - .github/workflows/license-file-coverage.yml
       - .github/actions/license-file-coverage
       - LICENSE
+  pull_request:
+    branches: [ master ]
+    paths:
+      - .github/workflows/license-file-coverage.yml
+      - .github/actions/license-file-coverage
+      - LICENSE
 jobs:
   check-coverage:
     if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}

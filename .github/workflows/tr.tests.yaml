@@ -35,6 +35,11 @@ on:
     paths:
       - .github/workflows/tr.tests.yaml
       - traffic_router/**
+  pull_request:
+    branches: [ master ]
+    paths:
+      - .github/workflows/tr.tests.yaml
+      - traffic_router/**
 jobs:
   tests:
     if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}

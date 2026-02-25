@@ -48,6 +48,30 @@ on:
       - traffic_ops/traffic_ops_golang/**.go
       - vendor/**.go
       - vendor/modules.txt
+  pull_request:
+    branches: [ master ]
+    paths:
+      - cache-config/**.go
+      - cache-config/testing/**
+      - .github/actions/build-ats-test-rpm/**
+      - .github/actions/cache-config-integration-tests/**
+      - .github/actions/repo-info/**
+      - .github/workflows/cache-config-tests.yml
+      - go.mod
+      - go.sum
+      - GO_VERSION
+      - lib/atscfg-go/**.go
+      - lib/go-atscfg/**.go
+      - '!**_test.go'
+      - 'cache-config/testing/**_test.go'
+      - 'traffic_ops/app/db/**'
+      - '!traffic_ops/app/db/**.md'
+      - traffic_ops/*client/**.go
+      - 'traffic_ops/install/**'
+      - traffic_ops/toclientlib/**.go
+      - traffic_ops/traffic_ops_golang/**.go
+      - vendor/**.go
+      - vendor/modules.txt
 jobs:
 
   traffic_ops:

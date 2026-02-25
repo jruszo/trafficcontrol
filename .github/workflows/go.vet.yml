@@ -26,6 +26,13 @@ on:
       - .github/workflows/go.vet.yml
       - GO_VERSION
       - '**.go'
+  pull_request:
+    branches: [ master ]
+    paths:
+      - .github/actions/go-vet
+      - .github/workflows/go.vet.yml
+      - GO_VERSION
+      - '**.go'
 jobs:
   go-vet:
     if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}

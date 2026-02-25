@@ -45,6 +45,27 @@ on:
       - .github/actions/build-ats-test-rpm/**
       - .github/actions/repo-info/**
       - .github/actions/health-client-integration-tests/**
+  pull_request:
+    branches: [ master ]
+    paths:
+      - .github/workflows/health-client-tests.yml
+      - go.mod
+      - go.sum
+      - GO_VERSION
+      - lib/go-atscfg/**.go
+      - traffic_ops/*client/**.go
+      - traffic_ops/toclientlib/**.go
+      - lib/atscfg-go/**.go
+      - traffic_ops/traffic_ops_golang/**.go
+      - tc-health-client/**.go
+      - tc-health-client/testing/**
+      - '!**_test.go'
+      - tc-health-client/**_test.go
+      - vendor/**.go
+      - vendor/modules.txt
+      - .github/actions/build-ats-test-rpm/**
+      - .github/actions/repo-info/**
+      - .github/actions/health-client-integration-tests/**
 jobs:
 
   traffic_ops:
