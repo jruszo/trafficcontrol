@@ -1,5 +1,5 @@
 <!--
-Thank you for contributing! Please be sure to read our contribution guidelines: https://github.com/apache/trafficcontrol/blob/master/CONTRIBUTING.md
+Thank you for contributing! Please be sure to read our contribution guidelines: https://github.com/jruszo/trafficcontrol/blob/master/CONTRIBUTING.md
 If this closes or relates to an existing issue, please reference it using one of the following:
 
 Closes: #ISSUE

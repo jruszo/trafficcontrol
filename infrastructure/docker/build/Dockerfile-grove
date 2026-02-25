@@ -61,7 +61,7 @@ RUN set -o nounset -o errexit; \
 ###
 
 ENV GOPATH=/go
-RUN mkdir -p /go/src/github.com/apache && ln -s /tmp/trafficcontrol /go/src/github.com/apache/trafficcontrol
+RUN mkdir -p /go/src/github.com/jruszo && ln -s /tmp/trafficcontrol /go/src/github.com/jruszo/trafficcontrol
 CMD /trafficcontrol/build/clean_build.sh grove
 
 # vi:syntax=Dockerfile

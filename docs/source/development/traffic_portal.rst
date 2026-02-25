@@ -52,7 +52,7 @@ Traffic Portal Project Tree Overview
 
 Installing The Traffic Portal Developer Environment
 ===================================================
-#. Clone the `Traffic Control Repository <https://github.com/apache/trafficcontrol>`_
+#. Clone the `Traffic Control Repository <https://github.com/jruszo/trafficcontrol>`_
 #. Navigate to the ``traffic_portal`` subdirectory of your cloned repository.
 #. Run ``npm install`` to install application dependencies into ``traffic_portal/node_modules``. Only needs to be done the first time unless ``traffic_portal/package.json`` changes.
 

@@ -36,6 +36,12 @@ endif
 CIAB_DIR_RELATIVE := $(dir $(MAKEFILE_LIST))
 CIAB_DIR_ABSOLUTE := $(shell cd $(CIAB_DIR_RELATIVE) && pwd)
 TC_DIR := $(CIAB_DIR_RELATIVE)../..
+DOCKER_COMPOSE := $(shell \
+	if docker compose version >/dev/null 2>&1; then \
+		echo "docker compose"; \
+	elif command -v docker-compose >/dev/null 2>&1; then \
+		echo "docker-compose"; \
+	fi)
 
 PKG_COMMAND := $(TC_DIR)/pkg
 PKG_FLAGS := -v -$(RHEL_VERSION)
@@ -219,7 +225,11 @@ $(TCH_RPM_ABSOLUTE): $(TCH_DIST_RPM)
 
 # Dist rpms
 $(ATS_DIST_RPM): $(ATS_SOURCE)
-	docker compose -f $(TC_DIR)/cache-config/testing/docker/docker-compose-ats-build.yml build --parallel trafficserver_build && docker compose -f $(TC_DIR)/cache-config/testing/docker/docker-compose-ats-build.yml run --rm trafficserver_build
+	@if [ -z "$(strip $(DOCKER_COMPOSE))" ]; then \
+		echo "Docker Compose was not found. Install Docker Compose plugin support ('docker compose') or the standalone binary ('docker-compose')."; \
+		exit 1; \
+	fi
+	$(DOCKER_COMPOSE) -f $(TC_DIR)/cache-config/testing/docker/docker-compose-ats-build.yml build --parallel trafficserver_build && $(DOCKER_COMPOSE) -f $(TC_DIR)/cache-config/testing/docker/docker-compose-ats-build.yml run --rm trafficserver_build
 
 $(TM_DIST_RPM): $(TM_SOURCE)
 	"$(PKG_COMMAND)" $(PKG_FLAGS) traffic_monitor$(BUILD_SUFFIX)

@@ -15,7 +15,7 @@ package plugin
 */
 
 import (
-	"github.com/apache/trafficcontrol/v8/cache-config/t3cutil"
+	"github.com/jruszo/trafficcontrol/v8/cache-config/t3cutil"
 )
 
 func init() {

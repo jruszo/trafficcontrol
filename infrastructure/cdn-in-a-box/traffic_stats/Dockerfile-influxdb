@@ -17,16 +17,17 @@
 
 FROM influxdb:1.7.3
 
-RUN echo "deb http://archive.debian.org/debian stretch main" > /etc/apt/sources.list
+RUN rm -f /etc/apt/sources.list.d/* && \
+    echo "deb [trusted=yes check-valid-until=no] http://archive.debian.org/debian stretch main" > /etc/apt/sources.list
 
-RUN apt-get update && \
-    apt-get install -y \
-		dnsutils \
-		gettext-base \
-		# server enrollment uses jq
-		jq \
-		netcat \
-		net-tools && \
+RUN apt-get -o Acquire::Check-Valid-Until=false -o Acquire::AllowInsecureRepositories=true update && \
+    apt-get install -y --allow-unauthenticated --no-install-recommends \
+			dnsutils \
+			gettext-base \
+			# server enrollment uses jq
+			jq \
+			netcat-openbsd \
+			net-tools && \
     rm -rf /var/lib/apt/lists/*
 
 ADD enroller/server_template.json \

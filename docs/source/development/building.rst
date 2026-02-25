@@ -24,7 +24,7 @@ The build steps for Traffic Control components are all pretty much the same, des
 
 Downloading Traffic Control
 ===========================
-If any local work on Traffic Monitor, Traffic Router Golang, Grove or Traffic Ops is to be done, it is **highly** recommended that `the Traffic Control repository <https://github.com/apache/trafficcontrol>`_ be downloaded inside the ``$GOPATH`` directory. Specifically, the best location is ``$GOPATH/src/github.com/apache/trafficcontrol``. Cloning the repository outside of this location will require either linking the actual directory to that point, or moving/copying it there.
+If any local work on Traffic Monitor, Traffic Router Golang, Grove or Traffic Ops is to be done, it is **highly** recommended that `the Traffic Control repository <https://github.com/jruszo/trafficcontrol>`_ be downloaded inside the ``$GOPATH`` directory. Specifically, the best location is ``$GOPATH/src/github.com/jruszo/trafficcontrol``. Cloning the repository outside of this location will require either linking the actual directory to that point, or moving/copying it there.
 
 .. seealso:: The Golang project's ``GOPATH`` `wiki page <https://github.com/golang/go/wiki/GOPATH>`_
 
@@ -32,7 +32,7 @@ If any local work on Traffic Monitor, Traffic Router Golang, Grove or Traffic Op
 
 Build Using ``pkg``
 ===================
-This is the easiest way to build all the components of Traffic Control; all requirements are automatically loaded into the image used to build each component.  The ``pkg`` command can be found at the root of the Traffic Control `repository <https://github.com/apache/trafficcontrol/blob/master/pkg>`_.
+This is the easiest way to build all the components of Traffic Control; all requirements are automatically loaded into the image used to build each component.  The ``pkg`` command can be found at the root of the Traffic Control `repository <https://github.com/jruszo/trafficcontrol/blob/master/pkg>`_.
 
 Requirements
 ------------
@@ -101,7 +101,7 @@ Options
 
 .. option:: -p
 
-	Pull builder Docker images, do not build them (default).
+	Pull builder Docker images first. If pull fails, or a pulled image fails at runtime, ``pkg`` builds the image locally and retries (default).
 
 .. option:: -q
 
@@ -237,7 +237,7 @@ Building This Documentation
 ---------------------------
 See instructions for :ref:`building the documentation <docs-build>`.
 
-.. [#compose-optional] This is optional, but recommended. If a ``docker compose`` executable is not available the ``pkg`` script will automatically download and run it using a container. This is noticeably slower than running it natively.
+.. [#compose-optional] This is optional, but recommended. The ``pkg`` script can use either ``docker compose`` or ``docker-compose`` when available locally. If neither is available, ``pkg`` will automatically download and run Compose in a container, which is noticeably slower than running it natively.
 .. [#optional-project] This project is "optional", which means that it cannot be built unless :option:`-o` is given.
 .. [#default-project] This is a default project, which will be built if ``pkg`` is run with no ``projects`` argument
 .. [#mac-jdk] If you are on macOS, you additionally need to :ref:`dev-tr-mac-jdk`.

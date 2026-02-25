@@ -15,7 +15,7 @@ package icache
 */
 
 import (
-	"github.com/apache/trafficcontrol/v8/grove/cacheobj"
+	"github.com/jruszo/trafficcontrol/v8/grove/cacheobj"
 )
 
 // TODO change to return errors

@@ -275,7 +275,7 @@ Installing The Developer Environment
 ====================================
 To install the Traffic Ops Developer environment:
 
-#. Clone the `Traffic Control repository <https://github.com/apache/trafficcontrol>`_ from GitHub. In most cases it is best to clone this directly into :file:`{GOPATH}/src/github.com/apache/trafficcontrol`, as otherwise the Go implementation will not function properly.
+#. Clone the `Traffic Control repository <https://github.com/jruszo/trafficcontrol>`_ from GitHub. In most cases it is best to clone this directly into :file:`{GOPATH}/src/github.com/jruszo/trafficcontrol`, as otherwise the Go implementation will not function properly.
 
 #. Install any required Go dependencies - the suggested method is using :manpage:`go-get(1)`.
 
@@ -298,7 +298,7 @@ To install the Traffic Ops Developer environment:
 
 app/db/traffic_vault_migrate
 ==============================
-The ``traffic_vault_migrate`` tool - located at :file:`traffic_ops/app/db/traffic_vault_migrate/traffic_vault_migrate.go` in the `Apache Traffic Control repository <https://github.com/apache/trafficcontrol>`_ -
+The ``traffic_vault_migrate`` tool - located at :file:`traffic_ops/app/db/traffic_vault_migrate/traffic_vault_migrate.go` in the `Apache Traffic Control repository <https://github.com/jruszo/trafficcontrol>`_ -
 is used to transfer TV keys between database servers. It interfaces directly with each backend so Traffic Ops/Vault being available is not a requirement.
 The tool assumes that the schema for each backend is already setup as according to the :ref:`admin setup <traffic_vault_admin>`.
 

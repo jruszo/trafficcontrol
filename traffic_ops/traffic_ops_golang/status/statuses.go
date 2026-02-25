@@ -25,11 +25,11 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
-	"github.com/apache/trafficcontrol/v8/lib/go-tc/tovalidate"
-	"github.com/apache/trafficcontrol/v8/lib/go-util"
-	"github.com/apache/trafficcontrol/v8/traffic_ops/traffic_ops_golang/api"
-	"github.com/apache/trafficcontrol/v8/traffic_ops/traffic_ops_golang/dbhelpers"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc/tovalidate"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-util"
+	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/api"
+	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/dbhelpers"
 
 	validation "github.com/go-ozzo/ozzo-validation"
 )

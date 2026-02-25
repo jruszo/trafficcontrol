@@ -27,15 +27,15 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/apache/trafficcontrol/v8/experimental/traffic_router_golang/availableservers"
-	"github.com/apache/trafficcontrol/v8/experimental/traffic_router_golang/cgsrch"
-	"github.com/apache/trafficcontrol/v8/experimental/traffic_router_golang/coveragezone"
-	"github.com/apache/trafficcontrol/v8/experimental/traffic_router_golang/crconfigregex"
-	"github.com/apache/trafficcontrol/v8/experimental/traffic_router_golang/nextcache"
+	"github.com/jruszo/trafficcontrol/v8/experimental/traffic_router_golang/availableservers"
+	"github.com/jruszo/trafficcontrol/v8/experimental/traffic_router_golang/cgsrch"
+	"github.com/jruszo/trafficcontrol/v8/experimental/traffic_router_golang/coveragezone"
+	"github.com/jruszo/trafficcontrol/v8/experimental/traffic_router_golang/crconfigregex"
+	"github.com/jruszo/trafficcontrol/v8/experimental/traffic_router_golang/nextcache"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-log"
-	"github.com/apache/trafficcontrol/v8/lib/go-rfc"
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-log"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-rfc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
 )
 
 // TODO config

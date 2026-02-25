@@ -14,12 +14,12 @@
 ARG GO_VERSION
 FROM golang:${GO_VERSION}-alpine AS trafficmonitor-dev
 
-ENV TC=/go/src/github.com/apache/trafficcontrol GOFLAGS="--buildvcs=false"
+ENV TC=/go/src/github.com/jruszo/trafficcontrol GOFLAGS="--buildvcs=false"
 VOLUME $TC
 EXPOSE 80 81
 
 RUN apk add --no-cache inotify-tools gcc libc-dev && \
-	go install github.com/go-delve/delve/cmd/dlv@latest && \
+	go install github.com/go-delve/delve/cmd/dlv@v1.26.0 && \
 	rm -rf $GOPATH/pkg/*
 RUN mkdir /lib64 && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2
 

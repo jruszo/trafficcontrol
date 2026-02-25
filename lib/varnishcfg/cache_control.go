@@ -23,8 +23,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-atscfg"
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-atscfg"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
 )
 
 func (v VCLBuilder) configureUncacheableDSes(vclFile *vclFile, profileDSes []atscfg.ProfileDS) []string {

@@ -26,7 +26,7 @@ from sphinx.locale import _
 from sphinx.domains import changeset
 
 
-REPO_URI: Final = "https://github.com/apache/trafficcontrol/"
+REPO_URI: Final = "https://github.com/jruszo/trafficcontrol/"
 
 class impl(nodes.Admonition, nodes.Element):
 	"""
@@ -275,7 +275,7 @@ def godoc_role(
 	return [refnode], []
 
 # -- GoDoc role (atc-relative) ----------------------------------------------
-ATC_GODOC_PREFIX: Final = "github.com/apache/trafficcontrol/"
+ATC_GODOC_PREFIX: Final = "github.com/jruszo/trafficcontrol/"
 ATC_GODOC_URI: Final = GODOC_URI + ATC_GODOC_PREFIX
 def atc_godoc_role(
 	unused_typ: None,
@@ -289,7 +289,7 @@ def atc_godoc_role(
 	"""
 	A role that can be used to link to the GoDoc documentation for a symbol from
 	the ATC project. This is equivalent to using the ``godoc`` role, but allows
-	one to omit "github.com/apache/trafficcontrol", which can be tedious and
+	one to omit "github.com/jruszo/trafficcontrol", which can be tedious and
 	consume a lot of space.
 
 	Example:
@@ -323,7 +323,7 @@ def to_godoc_role(
 	A role that can be used to link to the GoDoc documentation for a symbol from
 	within Traffic Ops's package. This is equivalent to using the ``godoc``
 	role, but allows one to omit
-	"github.com/apache/trafficcontrol/traffic_ops/traffic_ops_golang/", which
+	"github.com/jruszo/trafficcontrol/traffic_ops/traffic_ops_golang/", which
 	can be tedious and consume a lot of space.
 
 	Example:

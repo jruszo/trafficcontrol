@@ -20,11 +20,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
-	"github.com/apache/trafficcontrol/v8/lib/go-util"
-	"github.com/apache/trafficcontrol/v8/lib/go-util/assert"
-	"github.com/apache/trafficcontrol/v8/traffic_ops/traffic_ops_golang/deliveryservice"
-	client "github.com/apache/trafficcontrol/v8/traffic_ops/v5-client"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-util"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-util/assert"
+	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/deliveryservice"
+	client "github.com/jruszo/trafficcontrol/v8/traffic_ops/v5-client"
 )
 
 func TestDeliveryServicesKeys(t *testing.T) {

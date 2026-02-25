@@ -26,12 +26,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/apache/trafficcontrol/v8/traffic_ops/traffic_ops_golang/api"
-	"github.com/apache/trafficcontrol/v8/traffic_ops/traffic_ops_golang/auth"
-	"github.com/apache/trafficcontrol/v8/traffic_ops/traffic_ops_golang/config"
-	"github.com/apache/trafficcontrol/v8/traffic_ops/traffic_ops_golang/tocookie"
-	"github.com/apache/trafficcontrol/v8/traffic_ops/traffic_ops_golang/trafficvault"
-	"github.com/apache/trafficcontrol/v8/traffic_ops/traffic_ops_golang/trafficvault/backends/disabled"
+	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/api"
+	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/auth"
+	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/config"
+	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/tocookie"
+	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/trafficvault"
+	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/trafficvault/backends/disabled"
 
 	"github.com/jmoiron/sqlx"
 	sqlmock "gopkg.in/DATA-DOG/go-sqlmock.v1"

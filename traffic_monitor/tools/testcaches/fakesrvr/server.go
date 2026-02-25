@@ -30,8 +30,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-rfc"
-	"github.com/apache/trafficcontrol/v8/traffic_monitor/tools/testcaches/fakesrvrdata"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-rfc"
+	"github.com/jruszo/trafficcontrol/v8/traffic_monitor/tools/testcaches/fakesrvrdata"
 )
 
 // TODO config?

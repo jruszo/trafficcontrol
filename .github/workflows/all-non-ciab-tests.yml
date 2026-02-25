@@ -1,0 +1,74 @@
+---
+name: Run All Non-CIAB Tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Branch or tag to test (defaults to current branch)
+        required: false
+        default: ""
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  dispatch-test-workflows:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Resolve target ref
+        id: ref
+        run: |
+          set -o errexit -o nounset -o pipefail
+          target_ref="${{ github.event.inputs.ref }}"
+          if [ -z "${target_ref}" ]; then
+            target_ref="${GITHUB_REF_NAME}"
+          fi
+          echo "target_ref=${target_ref}" >> "${GITHUB_OUTPUT}"
+
+      - name: Trigger non-CIAB test workflows
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          TARGET_REF: ${{ steps.ref.outputs.target_ref }}
+        run: |
+          set -o errexit -o nounset -o pipefail
+
+          workflows=(
+            "cache-config-tests.yml"
+            "cache-config.unit.tests.yml"
+            "go.lib.unit.tests.yml"
+            "grove.unit.tests.yml"
+            "health-client-tests.yml"
+            "postinstall.tests.yml"
+            "tm.integration.tests.yml"
+            "tm.unit.tests.yml"
+            "to.api.contract.tests.yml"
+            "to.integration.tests.yml"
+            "to.unit.tests.yml"
+            "tp.integration.tests.yml"
+            "tpv2.yml"
+            "tr-ultimate-test-harness.yml"
+            "tr.tests.yaml"
+            "traffic-stats.unit.tests.yml"
+            "traffic.ops.database.yml"
+          )
+
+          for workflow in "${workflows[@]}"; do
+            echo "Dispatching ${workflow} on ${TARGET_REF}"
+            gh api \
+              --method POST \
+              -H "Accept: application/vnd.github+json" \
+              "/repos/${REPO}/actions/workflows/${workflow}/dispatches" \
+              -f ref="${TARGET_REF}"
+          done
+
+      - name: Print where to watch runs
+        env:
+          TARGET_REF: ${{ steps.ref.outputs.target_ref }}
+        run: |
+          set -o errexit -o nounset -o pipefail
+          echo "Triggered non-CIAB test workflows for ref: ${TARGET_REF}"
+          echo "Track runs at:"
+          echo "https://github.com/${GITHUB_REPOSITORY}/actions?query=branch%3A${TARGET_REF}+event%3Aworkflow_dispatch"

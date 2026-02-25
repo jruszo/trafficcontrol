@@ -28,10 +28,10 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-log"
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
-	"github.com/apache/trafficcontrol/v8/traffic_ops/traffic_ops_golang/dbhelpers"
-	"github.com/apache/trafficcontrol/v8/traffic_ops/traffic_ops_golang/topology"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-log"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/dbhelpers"
+	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/topology"
 
 	"github.com/lib/pq"
 )

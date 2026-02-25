@@ -18,7 +18,7 @@ package v3
 import (
 	"time"
 
-	"github.com/apache/trafficcontrol/v8/traffic_ops/v3-client"
+	"github.com/jruszo/trafficcontrol/v8/traffic_ops/v3-client"
 
 	_ "github.com/lib/pq"
 )

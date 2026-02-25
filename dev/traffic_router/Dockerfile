@@ -14,7 +14,7 @@
 FROM alpine:latest AS trafficrouter-dev
 ARG TOMCAT_VERSION
 
-ENV TC=/go/src/github.com/apache/trafficcontrol
+ENV TC=/go/src/github.com/jruszo/trafficcontrol
 VOLUME "$TC"
 ENV JPDA_OPTS="-agentlib:jdwp=transport=dt_socket,address=*:5005,server=y,suspend=n" \
 	JAVA_HOME=/usr/lib/jvm/java-11-openjdk M2_HOME=${TC}/trafficcontrol/.m2 \

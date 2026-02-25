@@ -321,7 +321,7 @@ After Riak has been configured to use Riak Search, permissions still need need t
 		:caption: Adding the GitHub-hosted Search Schema to Riak
 
 		# Obtain the configuration file - in this example by downloading it from GitHub
-		wget https://raw.githubusercontent.com/apache/trafficcontrol/master/traffic_ops/app/conf/misc/riak_search/sslkeys.xml
+		wget https://raw.githubusercontent.com/jruszo/trafficcontrol/master/traffic_ops/app/conf/misc/riak_search/sslkeys.xml
 
 		# Upload the schema to the Riak server using its API
 		# Note that the assumptions made here are that the "admin" user's password is "pass"

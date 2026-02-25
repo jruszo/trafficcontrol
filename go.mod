@@ -1,4 +1,4 @@
-module github.com/apache/trafficcontrol/v8
+module github.com/jruszo/trafficcontrol/v8
 
 // Licensed to the Apache Software Foundation (ASF) under one
 // or more contributor license agreements.  See the NOTICE file
@@ -17,7 +17,7 @@ module github.com/apache/trafficcontrol/v8
 // specific language governing permissions and limitations
 // under the License.
 
-go 1.23.0
+go 1.26.0
 
 require (
 	code.cloudfoundry.org/bytefmt v0.0.0-20211005130812-5bb3c17173e5

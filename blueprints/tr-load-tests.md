@@ -34,7 +34,7 @@ Important times to run performance tests:
 * When developing or maintaining a Traffic Router feature that could have an impact on any aspect of Traffic Router performance, including before, during, and after pull request review
 * When a commit that modifies Traffic Router is pushed to a GitHub branch, for all Apache Traffic Control branches
 
-A load test for Delivery Services exists in the project at [`/test/router`](https://github.com/apache/trafficcontrol/tree/RELEASE-6.0.1/test/router), but
+A load test for Delivery Services exists in the project at [`/test/router`](https://github.com/jruszo/trafficcontrol/tree/RELEASE-6.0.1/test/router), but
 - It has not been maintained over time, currently does not work
 - Only tests HTTP Delivery Services
 - Does not support testing Coverage Zone Maps
@@ -49,7 +49,7 @@ A load test for Delivery Services exists in the project at [`/test/router`](http
 -->
 The Traffic Router Ultimate Test Harness will include an end-to-end performance test suite verify that the features of Traffic Router meet expected performance thresholds, as well as additional end-to-end tests of other Traffic Router features.
 
-The TR Ultimate Test Harness may extend [`/test/router`](https://github.com/apache/trafficcontrol/tree/RELEASE-6.0.1/test/router) where possible, but it should not limit itself for that secondary goal.
+The TR Ultimate Test Harness may extend [`/test/router`](https://github.com/jruszo/trafficcontrol/tree/RELEASE-6.0.1/test/router) where possible, but it should not limit itself for that secondary goal.
 
 ### Traffic Portal Impact
 <!--
@@ -86,8 +86,8 @@ No Traffic Ops REST API impact is anticipated.
 
 If new endpoints are required, will corresponding client methods be added?
 -->
-Clients importing the `github.com/apache/trafficcontrol/v8/lib/go-tc` package will optionally be able to import a constant for `X-MM-Client-IP`, a request header Traffic Router to specify to Traffic Router the IP address to use to geolocate that client:
-https://github.com/apache/trafficcontrol/blob/1ed2964d16618aeebef142b01a538336a44d07dd/traffic_router/core/src/main/java/org/apache/traffic_control/traffic_router/core/request/HTTPRequest.java#L29
+Clients importing the `github.com/jruszo/trafficcontrol/v8/lib/go-tc` package will optionally be able to import a constant for `X-MM-Client-IP`, a request header Traffic Router to specify to Traffic Router the IP address to use to geolocate that client:
+https://github.com/jruszo/trafficcontrol/blob/1ed2964d16618aeebef142b01a538336a44d07dd/traffic_router/core/src/main/java/org/apache/traffic_control/traffic_router/core/request/HTTPRequest.java#L29
 
 Additionally, a struct used to unmarshall a Coverage Zone File could be placed in `lib/go-tc`.
 
@@ -307,7 +307,7 @@ How were the dependencies assessed and chosen?
 How will the new dependencies be managed?
 Are the dependencies required at build-time, run-time, or both?
 -->
-No additional dependencies are anticipated. If additional Go dependencies are required, those dependencies will be added to the Apache Traffic Control [`go.mod`](https://github.com/apache/trafficcontrol/blob/RELEASE-6.0.0/go.mod) file.
+No additional dependencies are anticipated. If additional Go dependencies are required, those dependencies will be added to the Apache Traffic Control [`go.mod`](https://github.com/jruszo/trafficcontrol/blob/RELEASE-6.0.0/go.mod) file.
 
 ## References
 <!--

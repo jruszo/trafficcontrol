@@ -22,7 +22,7 @@ package atscfg
 import (
 	"strings"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
 )
 
 // SNIDotYAMLFileName is an unused constant that probably defines either the

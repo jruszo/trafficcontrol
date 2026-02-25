@@ -22,8 +22,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
-	"github.com/apache/trafficcontrol/v8/traffic_ops/toclientlib"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/traffic_ops/toclientlib"
 )
 
 // UpdateServerStatus updates the Status of the server identified by

@@ -12,7 +12,7 @@
 # limitations under the License.
 #
 FROM alpine:3.13
-ARG DIR=github.com/apache/trafficcontrol
+ARG DIR=github.com/jruszo/trafficcontrol
 
 VOLUME ["/junit"]
 

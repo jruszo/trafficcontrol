@@ -4,11 +4,11 @@
   "description": "Node dependencies used for running traffic-portal",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/apache/trafficcontrol.git"
+		"url": "https://github.com/jruszo/trafficcontrol.git"
 	},
 	"bugs": {
 		"email": "dev@trafficcontrol.apache.org",
-		"url": "https://github.com/apache/trafficcontrol/issues"
+		"url": "https://github.com/jruszo/trafficcontrol/issues"
 	},
 	"author": {
 		"email": "dev@trafficcontrol.apache.org",

@@ -25,12 +25,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/apache/trafficcontrol/v8/grove/cachedata"
-	"github.com/apache/trafficcontrol/v8/grove/cacheobj"
-	"github.com/apache/trafficcontrol/v8/grove/config"
-	"github.com/apache/trafficcontrol/v8/grove/remapdata"
-	"github.com/apache/trafficcontrol/v8/grove/stat"
-	"github.com/apache/trafficcontrol/v8/grove/web"
+	"github.com/jruszo/trafficcontrol/v8/grove/cachedata"
+	"github.com/jruszo/trafficcontrol/v8/grove/cacheobj"
+	"github.com/jruszo/trafficcontrol/v8/grove/config"
+	"github.com/jruszo/trafficcontrol/v8/grove/remapdata"
+	"github.com/jruszo/trafficcontrol/v8/grove/stat"
+	"github.com/jruszo/trafficcontrol/v8/grove/web"
 )
 
 func AddPlugin(priority uint64, funcs Funcs) {

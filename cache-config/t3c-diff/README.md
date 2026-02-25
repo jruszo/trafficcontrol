@@ -99,4 +99,4 @@ The t3c application is maintained by Apache Traffic Control project. For help, b
 
 https://trafficcontrol.apache.org/
 
-https://github.com/apache/trafficcontrol
+https://github.com/jruszo/trafficcontrol

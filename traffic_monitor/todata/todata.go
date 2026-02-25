@@ -25,9 +25,9 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-log"
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
-	"github.com/apache/trafficcontrol/v8/traffic_monitor/towrap"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-log"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/traffic_monitor/towrap"
 
 	jsoniter "github.com/json-iterator/go"
 )
@@ -157,16 +157,16 @@ func (d TODataThreadsafe) Update(to towrap.TrafficOpsSessionThreadsafe, cdn stri
 		return fmt.Errorf("unmarshalling CRconfig: %v", err)
 	}
 
-	// TODO: remove the fallback behavior on the CRConfig in ATC 8.0 (https://github.com/apache/trafficcontrol/issues/6627)
+	// TODO: remove the fallback behavior on the CRConfig in ATC 8.0 (https://github.com/jruszo/trafficcontrol/issues/6627)
 	newTOData.DeliveryServiceServers, newTOData.ServerDeliveryServices = getDeliveryServiceServers(crConfig, mc)
 
-	// TODO: remove the fallback behavior on the CRConfig in ATC 8.0 (https://github.com/apache/trafficcontrol/issues/6627)
+	// TODO: remove the fallback behavior on the CRConfig in ATC 8.0 (https://github.com/jruszo/trafficcontrol/issues/6627)
 	newTOData.DeliveryServiceTypes, err = getDeliveryServiceTypes(crConfig, mc)
 	if err != nil {
 		return fmt.Errorf("getting delivery service types from Traffic Ops: %v", err)
 	}
 
-	// TODO: remove the fallback behavior on the CRConfig in ATC 8.0 (https://github.com/apache/trafficcontrol/issues/6627)
+	// TODO: remove the fallback behavior on the CRConfig in ATC 8.0 (https://github.com/jruszo/trafficcontrol/issues/6627)
 	newTOData.DeliveryServiceRegexes, err = getDeliveryServiceRegexes(crConfig, mc)
 	if err != nil {
 		return fmt.Errorf("getting delivery service regexes from Traffic Ops: %v", err)

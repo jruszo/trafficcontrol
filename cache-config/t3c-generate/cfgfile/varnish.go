@@ -23,9 +23,9 @@ import (
 	"errors"
 	"path/filepath"
 
-	"github.com/apache/trafficcontrol/v8/cache-config/t3c-generate/config"
-	"github.com/apache/trafficcontrol/v8/cache-config/t3cutil"
-	"github.com/apache/trafficcontrol/v8/lib/varnishcfg"
+	"github.com/jruszo/trafficcontrol/v8/cache-config/t3c-generate/config"
+	"github.com/jruszo/trafficcontrol/v8/cache-config/t3cutil"
+	"github.com/jruszo/trafficcontrol/v8/lib/varnishcfg"
 )
 
 // GetVarnishConfigs returns varnish configuration files

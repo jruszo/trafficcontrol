@@ -24,8 +24,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
-	"github.com/apache/trafficcontrol/v8/lib/go-util"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-util"
 )
 
 func TestGenericHeaderComment(t *testing.T) {

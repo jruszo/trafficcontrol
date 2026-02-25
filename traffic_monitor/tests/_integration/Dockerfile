@@ -34,10 +34,10 @@ RUN dnf install -y initscripts epel-release jq git
 
 COPY traffic_monitor/tests/_integration/ /tm/
 
-RUN mkdir -p ${GOPATH}/src/github.com/apache/trafficcontrol
-COPY . ${GOPATH}/src/github.com/apache/trafficcontrol
+RUN mkdir -p ${GOPATH}/src/github.com/jruszo/trafficcontrol
+COPY . ${GOPATH}/src/github.com/jruszo/trafficcontrol
 
-WORKDIR ${GOPATH}/src/github.com/apache/trafficcontrol/traffic_monitor/tests/_integration/
+WORKDIR ${GOPATH}/src/github.com/jruszo/trafficcontrol/traffic_monitor/tests/_integration/
 RUN go mod vendor && \
     go test -c -o /traffic_monitor_integration_test
 

@@ -25,7 +25,7 @@ A collection of useful pre-commit hooks can be found in the `pre-commit-hooks` d
 
 #### Installing pre-commit hooks
 
-In the `$GOPATH/src/github.com/apache/trafficcontrol/` directory, create a symbolic link from the `pre-commit` executable in this directory to the `.git/hooks/` directory:
+In the `$GOPATH/src/github.com/jruszo/trafficcontrol/` directory, create a symbolic link from the `pre-commit` executable in this directory to the `.git/hooks/` directory:
 
 ```shell
 ln -s ../../misc/git/pre-commit .git/hooks/

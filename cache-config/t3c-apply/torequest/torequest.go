@@ -31,10 +31,10 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/apache/trafficcontrol/v8/cache-config/t3c-apply/config"
-	"github.com/apache/trafficcontrol/v8/cache-config/t3c-apply/util"
-	"github.com/apache/trafficcontrol/v8/cache-config/t3cutil"
-	"github.com/apache/trafficcontrol/v8/lib/go-log"
+	"github.com/jruszo/trafficcontrol/v8/cache-config/t3c-apply/config"
+	"github.com/jruszo/trafficcontrol/v8/cache-config/t3c-apply/util"
+	"github.com/jruszo/trafficcontrol/v8/cache-config/t3cutil"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-log"
 )
 
 type UpdateStatus int

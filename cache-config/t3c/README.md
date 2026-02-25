@@ -50,7 +50,7 @@ The `t3c` app generates and applies cache configuration for Apache Traffic Contr
 
 This includes requesting Traffic Ops, generating configuration files for caching proxies such as Apache Traffic Server, verifying Traffic Ops data is valid and produces valid config files, creating a git repo for backups and history, determining whether config changes require a reload or restart of the caching proxy service, performing that restart, and more.
 
-The latest version and documentation can be found at https://github.com/apache/trafficcontrol/cache-config.
+The latest version and documentation can be found at https://github.com/jruszo/trafficcontrol/cache-config.
 
 # OPTIONS
 
@@ -104,4 +104,4 @@ The t3c application is maintained by Apache Traffic Control project. For help, b
 
 https://trafficcontrol.apache.org/
 
-https://github.com/apache/trafficcontrol
+https://github.com/jruszo/trafficcontrol

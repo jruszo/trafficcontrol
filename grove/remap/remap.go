@@ -25,14 +25,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/apache/trafficcontrol/v8/grove/chash"
-	"github.com/apache/trafficcontrol/v8/grove/icache"
-	"github.com/apache/trafficcontrol/v8/grove/plugin"
-	"github.com/apache/trafficcontrol/v8/grove/remapdata"
-	"github.com/apache/trafficcontrol/v8/grove/web"
+	"github.com/jruszo/trafficcontrol/v8/grove/chash"
+	"github.com/jruszo/trafficcontrol/v8/grove/icache"
+	"github.com/jruszo/trafficcontrol/v8/grove/plugin"
+	"github.com/jruszo/trafficcontrol/v8/grove/remapdata"
+	"github.com/jruszo/trafficcontrol/v8/grove/web"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-log"
-	"github.com/apache/trafficcontrol/v8/lib/go-rfc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-log"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-rfc"
 )
 
 type HTTPRequestRemapper interface {

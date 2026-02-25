@@ -22,7 +22,9 @@ env:
   ALPINE_VERSION: sha256:08d6ca16c60fe7490c03d10dc339d9fd8ea67c6466dea8d558526b1330a85930
 
 on:
+  workflow_dispatch:
   push:
+    branches: [ master ]
     paths:
       - .github/actions/go-test/**
       - .github/workflows/cache-config.unit.tests.yml
@@ -33,22 +35,9 @@ on:
       - '!**_test.go'
       - 'cache-config/**_test.go'
       - vendor/modules.txt
-  pull_request:
-    paths:
-      - .github/actions/go-test/**
-      - .github/workflows/cache-config.unit.tests.yml
-      - go.mod
-      - go.sum
-      - GO_VERSION
-      - '**.go'
-      - '!**_test.go'
-      - 'cache-config/**_test.go'
-      - vendor/modules.txt
-    types: [opened, reopened, ready_for_review, synchronize]
-
 jobs:
   t3c_unit_tests:
-    if: github.event.pull_request.draft == false
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}
     runs-on: ubuntu-latest
 
     steps:

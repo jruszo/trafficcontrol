@@ -102,7 +102,7 @@ Unlike most API endpoints, this will return a JSON response body containing both
 	"limit": 2
 	}
 
-.. [1] While no roles are required, this endpoint *does* respect tenancy permissions (pending `GitHub Issue #2978 <https://github.com/apache/trafficcontrol/issues/2978>`_\ ).
+.. [1] While no roles are required, this endpoint *does* respect tenancy permissions (pending `GitHub Issue #2978 <https://github.com/jruszo/trafficcontrol/issues/2978>`_\ ).
 
 ``POST``
 ========

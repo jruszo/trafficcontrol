@@ -212,6 +212,6 @@ Back to `routes.go`, you need to add your handler to the `Routes` function. For 
 
 The only thing we haven't talked about are those `wrap` functions. They each take a `RegexHandlerFunc` and return a `RegexHandlerFunc`, which lets them 'wrap' your handler. You almost certainly need both of them; if you're not sure, ask on the mailing list or Slack. You'll notice the `wrapAuth` function also takes config parameters, as well as a `PrivLevel`. You should create a constant in your handler file of the form `EndpointPrivLevel` and pass that. If your endpoint modifies data, use `PrivLevelOperations`, otherwise `PrivLevelReadOnly`.
 
-That's it! Test your endpoint, read [Contributing.md](https://github.com/apache/trafficcontrol/blob/master/CONTRIBUTING.md) if you haven't, and submit a pull request!
+That's it! Test your endpoint, read [Contributing.md](https://github.com/jruszo/trafficcontrol/blob/master/CONTRIBUTING.md) if you haven't, and submit a pull request!
 
 If you have any trouble, or suggestions for this guide, hit us up on the [mailing list](mailto:dev@trafficcontrol.apache.org) or [Slack](https://goo.gl/Suzakj).

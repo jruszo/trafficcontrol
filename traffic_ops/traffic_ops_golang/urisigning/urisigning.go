@@ -29,16 +29,16 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-rfc"
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
-	"github.com/apache/trafficcontrol/v8/traffic_ops/traffic_ops_golang/api"
-	"github.com/apache/trafficcontrol/v8/traffic_ops/traffic_ops_golang/dbhelpers"
-	"github.com/apache/trafficcontrol/v8/traffic_ops/traffic_ops_golang/tenant"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-rfc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/api"
+	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/dbhelpers"
+	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/tenant"
 	"github.com/lestrrat-go/jwx/jwk"
 )
 
 // backcompat: an "empty" uri signing key needs to have explicit null's
-// see https://github.com/apache/trafficcontrol/pull/6380/files/a3adfe95f2f86b6187c9dda559d9dba397c689fb#r758857475
+// see https://github.com/jruszo/trafficcontrol/pull/6380/files/a3adfe95f2f86b6187c9dda559d9dba397c689fb#r758857475
 var emptyURISigningKey struct {
 	RenewalKid *string   `json:"renewal_kid"`
 	Keys       []jwk.Key `json:"keys"`

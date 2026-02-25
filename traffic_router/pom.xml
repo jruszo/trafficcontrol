@@ -44,7 +44,7 @@
 		<java.version>11</java.version>
 		<!-- TOMCAT_VERSION must be set in your environment to a release, like 9.0.90. This should
 			 be the same TOMCAT_VERSION value that .env has:
-			 https://github.com/apache/trafficcontrol/blob/master/.env
+			 https://github.com/jruszo/trafficcontrol/blob/master/.env
 		-->
 		<tomcat.version>${env.TOMCAT_VERSION}</tomcat.version>
 	</properties>

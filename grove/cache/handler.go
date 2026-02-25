@@ -22,16 +22,16 @@ import (
 	"time"
 	"unsafe"
 
-	"github.com/apache/trafficcontrol/v8/grove/cachedata"
-	"github.com/apache/trafficcontrol/v8/grove/plugin"
+	"github.com/jruszo/trafficcontrol/v8/grove/cachedata"
+	"github.com/jruszo/trafficcontrol/v8/grove/plugin"
 
-	"github.com/apache/trafficcontrol/v8/grove/remap"
-	"github.com/apache/trafficcontrol/v8/grove/stat"
-	"github.com/apache/trafficcontrol/v8/grove/thread"
-	"github.com/apache/trafficcontrol/v8/grove/web"
+	"github.com/jruszo/trafficcontrol/v8/grove/remap"
+	"github.com/jruszo/trafficcontrol/v8/grove/stat"
+	"github.com/jruszo/trafficcontrol/v8/grove/thread"
+	"github.com/jruszo/trafficcontrol/v8/grove/web"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-log"
-	"github.com/apache/trafficcontrol/v8/lib/go-rfc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-log"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-rfc"
 )
 
 type HandlerPointer struct {

@@ -28,8 +28,8 @@ import (
 	"net/http/cookiejar"
 	"net/url"
 
-	"github.com/apache/trafficcontrol/v8/test/router/data"
-	"github.com/apache/trafficcontrol/v8/test/router/load"
+	"github.com/jruszo/trafficcontrol/v8/test/router/data"
+	"github.com/jruszo/trafficcontrol/v8/test/router/load"
 )
 
 var done chan struct{}

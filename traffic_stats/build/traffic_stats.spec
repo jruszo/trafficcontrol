@@ -23,7 +23,7 @@ Summary:  Tool to pull data from traffic monitor and store in Influxdb
 Vendor:   Apache Software Foundation
 Group:    Applications/Communications
 License:  Apache License, Version 2.0
-URL:      https://github.com/apache/trafficcontrol
+URL:      https://github.com/jruszo/trafficcontrol
 Source:   %{_sourcedir}/traffic_stats-%{traffic_control_version}.tgz
 
 %description
@@ -37,21 +37,21 @@ Installs traffic_stats which performs the follwing functions:
 
 %build
 # copy traffic_stats client
-godir=src/github.com/apache/trafficcontrol/traffic_stats
+godir=src/github.com/jruszo/trafficcontrol/traffic_stats
 ( mkdir -p "$godir" && \
 	cd "$godir" && \
 	cp -LR "$TC_DIR"/traffic_stats/* .
 ) || { echo "Could not copy go program at $(pwd): $!"; exit 1; }
 
 # copy influxdb_tools
-godir=src/github.com/apache/trafficcontrol/traffic_stats/influxdb_tools
+godir=src/github.com/jruszo/trafficcontrol/traffic_stats/influxdb_tools
 ( mkdir -p "$godir" && \
 	cd "$godir" && \
 	cp -R "$TC_DIR"/traffic_stats/influxdb_tools/* .
 ) || { echo "Could not copy go program at $(pwd): $!"; exit 1; }
 
 # copy trafficcontrol-scenes
-scenesdir=src/github.com/apache/trafficcontrol/traffic_stats/trafficcontrol-scenes
+scenesdir=src/github.com/jruszo/trafficcontrol/traffic_stats/trafficcontrol-scenes
 ( mkdir -p "$scenesdir" && \
 	cd "$scenesdir" && \
 	cp -R "$TC_DIR"/traffic_stats/trafficcontrol-scenes/* .
@@ -71,7 +71,7 @@ mkdir -p "${RPM_BUILD_ROOT}"/etc/init.d
 mkdir -p "${RPM_BUILD_ROOT}"/etc/logrotate.d
 mkdir -p "${RPM_BUILD_ROOT}"/var/lib/grafana/plugins/trafficcontrol-scenes-app
 
-src=src/github.com/apache/trafficcontrol/traffic_stats
+src=src/github.com/jruszo/trafficcontrol/traffic_stats
 cp -p "$src"/traffic_stats         "${RPM_BUILD_ROOT}"/opt/traffic_stats/bin/traffic_stats
 cp "$src"/traffic_stats.cfg        "${RPM_BUILD_ROOT}"/opt/traffic_stats/conf/traffic_stats.cfg
 cp "$src"/traffic_stats_seelog.xml "${RPM_BUILD_ROOT}"/opt/traffic_stats/conf/traffic_stats_seelog.xml

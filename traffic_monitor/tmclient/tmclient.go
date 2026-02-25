@@ -29,12 +29,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-log"
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
-	"github.com/apache/trafficcontrol/v8/traffic_monitor/datareq"
-	"github.com/apache/trafficcontrol/v8/traffic_monitor/dsdata"
-	"github.com/apache/trafficcontrol/v8/traffic_monitor/handler"
-	"github.com/apache/trafficcontrol/v8/traffic_monitor/towrap"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-log"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/traffic_monitor/datareq"
+	"github.com/jruszo/trafficcontrol/v8/traffic_monitor/dsdata"
+	"github.com/jruszo/trafficcontrol/v8/traffic_monitor/handler"
+	"github.com/jruszo/trafficcontrol/v8/traffic_monitor/towrap"
 )
 
 type TMClient struct {

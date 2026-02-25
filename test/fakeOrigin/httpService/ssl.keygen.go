@@ -23,7 +23,7 @@ import (
 	"errors"
 	"os"
 
-	"github.com/apache/trafficcontrol/v8/test/fakeOrigin/transcode"
+	"github.com/jruszo/trafficcontrol/v8/test/fakeOrigin/transcode"
 )
 
 func assertSSLCerts(crtPath, keyPath string) error {

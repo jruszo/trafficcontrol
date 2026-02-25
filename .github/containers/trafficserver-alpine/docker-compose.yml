@@ -40,5 +40,5 @@ services:
         platforms:
           - linux/amd64
           - linux/arm64
-    # for example, ghcr.io/apache/trafficcontrol/ci/trafficserver-alpine:9.1.2
-    image: ${CONTAINER:-ghcr.io/${GITHUB_REPOSITORY:-apache/trafficcontrol}/ci/trafficserver-alpine}:${ATS_VERSION}
+    # for example, ghcr.io/jruszo/trafficcontrol/ci/trafficserver-alpine:9.1.2
+    image: ${CONTAINER:-ghcr.io/${GITHUB_REPOSITORY:-jruszo/trafficcontrol}/ci/trafficserver-alpine}:${ATS_VERSION}

@@ -26,7 +26,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-log"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-log"
 )
 
 // A lookup table, bool will always be true

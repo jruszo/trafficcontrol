@@ -23,7 +23,7 @@ import (
 	"encoding/json"
 	"sort"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
 )
 
 // PackagesFileName is an unused constant of unknown purpose.

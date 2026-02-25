@@ -72,7 +72,7 @@ services:
       - yumserver
       - to_server
     volumes:
-      - ../../..:/root/go/src/github.com/apache/trafficcontrol
+      - ../../..:/root/go/src/github.com/jruszo/trafficcontrol
       - ./yumserver:/yumserver
 
   yumserver:

@@ -16,7 +16,7 @@
 
 # This yaml file describes getting all the generic core roles using https://github.com/metacloud/gilt
 
-  - git: git@github.com:apache/trafficcontrol.git
+  - git: git@github.com:jruszo/trafficcontrol.git
     version: master
     files:
       - src: infrastructure/ansible/roles/ats

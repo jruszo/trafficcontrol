@@ -287,7 +287,7 @@ Command for running the tests with debugging enabled:
 
 Debugging Unit Tests in Docker
 ------------------------------
-In order to run the unit tests in a controlled, well-defined environment, you may prefer to run them from within Docker. A Docker environment for running the Traffic Router unit tests exists in the repository at `/traffic_router/tests <https://github.com/apache/trafficcontrol/tree/master/traffic_router/tests>`_, and it supports debugging. In order to enable debugging, set ``DEBUG_ENABLE`` to ``'true'`` in `docker-compose.yml <https://github.com/apache/trafficcontrol/blob/master/traffic_router/tests/docker-compose.yml>`_. As mentioned in :ref:`dev-debugging-unit-tests`,
+In order to run the unit tests in a controlled, well-defined environment, you may prefer to run them from within Docker. A Docker environment for running the Traffic Router unit tests exists in the repository at `/traffic_router/tests <https://github.com/jruszo/trafficcontrol/tree/master/traffic_router/tests>`_, and it supports debugging. In order to enable debugging, set ``DEBUG_ENABLE`` to ``'true'`` in `docker-compose.yml <https://github.com/jruszo/trafficcontrol/blob/master/traffic_router/tests/docker-compose.yml>`_. As mentioned in :ref:`dev-debugging-unit-tests`,
 - Have your IDE act as the debugging server. In Intellij, this debug mode is called *Listen to remote JVM*.
 - Enable *auto-restart* in your IDE's debugging configuration for the Traffic Router unit tests so your IDE doesn't stop listening for connections after the first test ends
 - Set the port to 8000 (debugging port is specified in the Dockerfile)

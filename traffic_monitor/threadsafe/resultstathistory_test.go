@@ -26,10 +26,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
-	"github.com/apache/trafficcontrol/v8/traffic_monitor/cache"
-	"github.com/apache/trafficcontrol/v8/traffic_monitor/srvhttp"
-	"github.com/apache/trafficcontrol/v8/traffic_ops/traffic_ops_golang/test"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/traffic_monitor/cache"
+	"github.com/jruszo/trafficcontrol/v8/traffic_monitor/srvhttp"
+	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/test"
 
 	jsoniter "github.com/json-iterator/go"
 )

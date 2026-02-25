@@ -288,23 +288,23 @@ For ORT/T3C there are already unit tests that will need to be updated to account
 
 Update:
 ```
-github.com/apache/trafficcontrol/lib/go-atscfg/regexrevalidatedotconfig_test.go
+github.com/jruszo/trafficcontrol/lib/go-atscfg/regexrevalidatedotconfig_test.go
 ```
 
 There are no unit tests for invalidation jobs in `traffic_ops_golang`. This provides an opportunity to create unit tests to validate current and new functionality.
 
 Add:
 ```
-github.com/apache/trafficcontrol/traffic_ops/traffic_ops_golang/invalidationjobs/invalidationjobs.go
+github.com/jruszo/trafficcontrol/traffic_ops/traffic_ops_golang/invalidationjobs/invalidationjobs.go
 ```
 
 ##### Integration/E2E Tests:
 There are already existing integration tests for the various APIs (v1-v4) for Traffic Ops. Each will need to have this optional functionality tested as well.
 ```
-github.com/apache/trafficcontrol/traffic_ops/testing/api/v1/jobs_test.go
-github.com/apache/trafficcontrol/traffic_ops/testing/api/v2/jobs_test.go
-github.com/apache/trafficcontrol/traffic_ops/testing/api/v3/jobs_test.go
-github.com/apache/trafficcontrol/traffic_ops/testing/api/v4/jobs_test.go
+github.com/jruszo/trafficcontrol/traffic_ops/testing/api/v1/jobs_test.go
+github.com/jruszo/trafficcontrol/traffic_ops/testing/api/v2/jobs_test.go
+github.com/jruszo/trafficcontrol/traffic_ops/testing/api/v3/jobs_test.go
+github.com/jruszo/trafficcontrol/traffic_ops/testing/api/v4/jobs_test.go
 ```
 
 ### Performance Impact

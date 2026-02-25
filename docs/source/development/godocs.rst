@@ -24,7 +24,7 @@ As mentioned in :ref:`docs-guide`, you can use the ``:godoc:`` role, the ``:atc-
 
 Keeping pkg.go.dev from hiding the Apache Traffic Control Godocs
 ================================================================
-If less than 75% of ATC's :atc-file:`LICENSE` file contains OSS licenses according to `pkg.go.dev <https://pkg.go.dev/>`_ license detection system pkg.go.dev will hide all of ATC's Godocs for that particular ATC version, saying "Documentation not displayed due to license restrictions.". Example: https://pkg.go.dev/github.com/apache/trafficcontrol@v5.1.0+incompatible/lib/go-tc
+If less than 75% of ATC's :atc-file:`LICENSE` file contains OSS licenses according to `pkg.go.dev <https://pkg.go.dev/>`_ license detection system pkg.go.dev will hide all of ATC's Godocs for that particular ATC version, saying "Documentation not displayed due to license restrictions.". Example: https://pkg.go.dev/github.com/jruszo/trafficcontrol@v5.1.0+incompatible/lib/go-tc
 
 When listing a dependency in the LICENSE file as part of `bundling a new dependency <https://infra.apache.org/licensing-howto.html#permissive-deps>`_, make sure that the license "pointer" adheres to this format:
 

@@ -19,11 +19,11 @@ import (
 	"net/mail"
 	"testing"
 
-	"github.com/apache/trafficcontrol/v8/lib/go-rfc"
-	"github.com/apache/trafficcontrol/v8/lib/go-tc"
-	"github.com/apache/trafficcontrol/v8/lib/go-util/assert"
-	"github.com/apache/trafficcontrol/v8/traffic_ops/testing/api/utils"
-	"github.com/apache/trafficcontrol/v8/traffic_ops/toclientlib"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-rfc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
+	"github.com/jruszo/trafficcontrol/v8/lib/go-util/assert"
+	"github.com/jruszo/trafficcontrol/v8/traffic_ops/testing/api/utils"
+	"github.com/jruszo/trafficcontrol/v8/traffic_ops/toclientlib"
 )
 
 func TestUsersRegister(t *testing.T) {
