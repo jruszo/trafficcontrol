@@ -80,10 +80,10 @@ COPY traffic_server/plugins/astats_over_http/astats_over_http.c traffic_server/p
 
 RUN set -o errexit -o nounset -o xtrace; \
     dpkg -i --force-depends /trafficserver.deb; \
-    if [[ -e /trafficserver-devel.deb ]]; then \
+    if [ -e /trafficserver-devel.deb ]; then \
         dpkg -i --force-depends /trafficserver-devel.deb; \
     fi; \
-    PATH+=:/opt/trafficserver/bin; \
+    PATH="${PATH}:/opt/trafficserver/bin"; \
     tsxs -v -c astats_over_http.c -o astats_over_http.so && \
     tsxs -v -o astats_over_http.so -i && \
     apt-get purge -y autoconf automake g++ libc6-dev libssl-dev libtool && \
@@ -94,7 +94,7 @@ RUN set -o errexit -o nounset -o xtrace; \
 RUN set -o errexit -o nounset -o pipefail -o xtrace && \
     # The ssl directory needs to exist or the first sslkey file will be skipped on badass
     etc_trafficserver="/etc/trafficserver"; \
-    if [[ ! -e "${etc_trafficserver}/ssl" ]]; then \
+    if [ ! -e "${etc_trafficserver}/ssl" ]; then \
         echo 'Creating ssl directory...'; \
         mkdir "${etc_trafficserver}/ssl"; \
     fi; \
