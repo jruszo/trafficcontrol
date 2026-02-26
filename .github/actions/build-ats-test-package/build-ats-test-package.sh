@@ -21,28 +21,19 @@ trap 'echo "Error on line ${LINENO} of ${0}"; exit 1' ERR
 
 workspace="${GITHUB_WORKSPACE:-$(pwd)}"
 dist_dir="${workspace}/dist"
+mkdir -p "${dist_dir}"
+cd "${dist_dir}"
 
-if [[ ! -d "${dist_dir}" ]]; then
-	echo "dist directory ${dist_dir} does not exist"
-	exit 1
+sudo apt-get update
+
+apt-get download trafficserver
+if apt-cache show trafficserver-dev >/dev/null 2>&1; then
+	apt-get download trafficserver-dev
 fi
 
 shopt -s nullglob
-rpm_files=("${dist_dir}"/*.rpm)
-if (( ${#rpm_files[@]} == 0 )); then
-	echo "No RPM artifacts found in ${dist_dir}; nothing to convert."
-	exit 0
+deb_files=( trafficserver*.deb )
+if (( ${#deb_files[@]} == 0 )); then
+	echo "No trafficserver Debian packages were downloaded" >&2
+	exit 1
 fi
-
-sudo apt-get update
-sudo apt-get install -y --no-install-recommends alien fakeroot
-
-pushd "${dist_dir}" >/dev/null
-for rpm_file in *.rpm; do
-	if [[ "${rpm_file}" == *.src.rpm ]]; then
-		continue
-	fi
-	fakeroot alien --to-deb --keep-version "${rpm_file}"
-done
-rm -f -- *.rpm
-popd >/dev/null

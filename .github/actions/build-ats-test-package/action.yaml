@@ -20,4 +20,5 @@ description: 'Builds an ATS package used for cache config integration tests.'
 runs:
   using: 'composite'
   steps:
-    - uses: ./.github/actions/build-ats-test-rpm
+    - run: ${{ github.action_path }}/build-ats-test-package.sh
+      shell: bash

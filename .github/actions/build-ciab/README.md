@@ -19,7 +19,7 @@
 
 # build-ciab JavaScript action
 
-This action builds the CDN-in-a-Box images. It assumes the RPMs are already built and exist in artifacts in the `dist/` directory.
+This action builds the CDN-in-a-Box images. It assumes the Debian packages are already built and exist in artifacts in the `dist/` directory.
 
 ## Inputs
 None

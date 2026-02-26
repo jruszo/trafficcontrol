@@ -86,7 +86,7 @@ for p in ${projects}; do
 	fi
 
 	echo "-----  Building $p ..."
-	if $bldscript; then
+	if bash "$bldscript"; then
 		goodproj="${goodproj} ${p}"
 	else
 		echo "${p} failed: ${bldscript}"
@@ -99,7 +99,7 @@ if [ "$(echo "${goodproj}" | wc -w)" -ne 0 ]; then
 	for p in ${goodproj}; do
 		echo "   $p"
 	done
-	echo "See $(pwd)/dist for newly built rpms."
+	echo "See $(pwd)/dist for newly built packages."
 fi
 
 if [ "$(echo "${badproj}" | wc -w)" -ne 0 ]; then

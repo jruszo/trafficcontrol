@@ -260,7 +260,7 @@ buildRpm() {
 		arch="$(rpm --eval %_arch)"
 		rpm="${pre}.${arch}.rpm"
 		local srpm="${pre}.src.rpm"
-		echo "Building the rpm."
+		echo "Building package artifact."
 		{ set +o nounset
 		set -- # Clear arguments for reuse
 		if [ "$DEBUG_BUILD" = true ]; then
@@ -289,13 +289,13 @@ buildRpm() {
 			"$@";
 		code=$?
 		if [[ "$code" -ne 0 ]]; then
-			echo "RPM BUILD FAILED: $code" >&2;
+			echo "Package build failed: $code" >&2;
 			return $code;
 		fi
 
 		echo
 		echo "========================================================================================"
-		echo "RPM BUILD FOR $package SUCCEEDED, See $DIST/$rpm for the newly built rpm."
+		echo "Package build for $package succeeded, see $DIST/$rpm."
 		echo "========================================================================================"
 		echo
 

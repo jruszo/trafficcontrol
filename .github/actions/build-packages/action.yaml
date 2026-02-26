@@ -20,4 +20,5 @@ description: 'Builds packages for a single ATC component'
 runs:
   using: 'composite'
   steps:
-    - uses: ./.github/actions/build-rpms
+    - run: ${{ github.action_path }}/build-packages.sh
+      shell: bash

@@ -120,7 +120,7 @@ buildRpmTomcat () {
 	echo "Building the rpm for Tomcat."
 
 	cd "$TR_DIR"/tomcat-rpm || { echo "Could not cd to $TR_DIR/tomcat-rpm: $?"; return 1; }
-				./build_rpm.sh
+				bash ./build_rpm.sh
 }
 
 # ---------------------------------------
