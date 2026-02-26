@@ -40,6 +40,7 @@ RUN printf '%s\n' 'deb [trusted=yes] http://yumserver ./' > /etc/apt/sources.lis
 
 RUN sed -i 's/HOME\/bin/HOME\/bin:\/usr\/local\/go\/bin:/g' /root/.bashrc &&\
 	echo "GOPATH=/root/go; export GOPATH" >> /root/.bashrc &&\
+	mkdir -p /etc/ssh &&\
 	echo "StrictHostKeyChecking no" >> /etc/ssh/ssh_config &&\
 	mkdir -p /root/go
 

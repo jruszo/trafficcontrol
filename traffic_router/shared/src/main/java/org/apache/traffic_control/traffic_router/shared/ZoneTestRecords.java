@@ -41,7 +41,7 @@ import static java.util.Base64.getMimeDecoder;
 
 @SuppressWarnings("PMD.ClassNamingConventions")
 public class ZoneTestRecords {
-	public static List<Record> records;
+	public static List<org.xbill.DNS.Record> records;
 
 	public static Date start;
 	public static Date expiration;
@@ -73,7 +73,7 @@ public class ZoneTestRecords {
 		return new KeyPair(publicKeyCopy, privateKeyCopy);
 	}
 
-	public static List<Record> generateZoneRecords(final boolean makeNewKeyPairs) throws IOException, GeneralSecurityException {
+	public static List<org.xbill.DNS.Record> generateZoneRecords(final boolean makeNewKeyPairs) throws IOException, GeneralSecurityException {
 		start = new Date(System.currentTimeMillis() - (24 * 3600 * 1000));
 		expiration = new Date(System.currentTimeMillis() + (7 * 24 * 3600 * 1000));
 

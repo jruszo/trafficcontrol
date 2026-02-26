@@ -20,11 +20,48 @@ set -e
 
 download_go() {
   go_version="$(cat "${GITHUB_WORKSPACE}/GO_VERSION")"
-  wget -O go.tar.gz "https://dl.google.com/go/go${go_version}.linux-amd64.tar.gz"
-  tar -C /usr/local -xzf go.tar.gz
-  rm go.tar.gz
-  export PATH="${PATH}:${GOROOT}/bin"
-  go version
+  go_root="/usr/local/go"
+
+  install_go_tarball() {
+    version="$1"
+    url="https://dl.google.com/go/go${version}.linux-amd64.tar.gz"
+    if ! wget -q -O go.tar.gz "${url}"; then
+      rm -f go.tar.gz
+      return 1
+    fi
+    rm -rf "${go_root}"
+    tar -C /usr/local -xzf go.tar.gz
+    rm -f go.tar.gz
+    export PATH="${go_root}/bin:${PATH}"
+    return 0
+  }
+
+  if install_go_tarball "${go_version}"; then
+    go version
+    return
+  fi
+
+  case "${go_version}" in
+    1.26.*)
+      bootstrap="$(wget -qO- https://go.dev/VERSION?m=text | sed -n '1s/^go//p')"
+      install_go_tarball "${bootstrap}"
+      tmpdir="$(mktemp -d)"
+			(
+				cd "${tmpdir}"
+				GO111MODULE=on go install golang.org/dl/gotip@latest
+			)
+			rm -rf "${tmpdir}"
+			gotip_bin="$(go env GOPATH)/bin/gotip"
+      "${gotip_bin}" download
+      ln -sf "${HOME}/sdk/gotip/bin/gotip" /usr/local/bin/go
+      export PATH="/usr/local/bin:$(go env GOPATH)/bin:${HOME}/sdk/gotip/bin:${PATH}"
+      go version
+      ;;
+    *)
+      echo "Unable to install requested Go version ${go_version}" >&2
+      exit 1
+      ;;
+  esac
 }
 download_go
 

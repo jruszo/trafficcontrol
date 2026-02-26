@@ -49,7 +49,7 @@ jobs:
         run: |
           go_version="$(curl -L "${BLOB_URL}/GO_VERSION")" &&
           echo "value=${go_version}" >> $GITHUB_OUTPUT
-      - uses: actions/setup-go@v2
+      - uses: ./.github/actions/setup-go
         with:
           go-version: ${{ steps.go-version.outputs.value }} # The Go version to download (if necessary) and use.
       - name: Checkout

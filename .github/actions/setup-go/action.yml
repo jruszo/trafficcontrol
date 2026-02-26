@@ -1,0 +1,69 @@
+name: setup-go
+description: Install Go from an explicit version with a gotip fallback for unreleased 1.26.x.
+inputs:
+  go-version:
+    description: Requested Go version (for example, 1.26.0).
+    required: true
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: |
+        set -euo pipefail
+
+        requested="${{ inputs.go-version }}"
+        go_root="${HOME}/.local/go"
+
+        install_go_tarball() {
+          local version="$1"
+          local url="https://dl.google.com/go/go${version}.linux-amd64.tar.gz"
+          local archive
+          archive="$(mktemp)"
+          if ! curl -fsSL "${url}" -o "${archive}"; then
+            rm -f "${archive}"
+            return 1
+          fi
+          rm -rf "${go_root}"
+          mkdir -p "$(dirname "${go_root}")"
+          tar -C "$(dirname "${go_root}")" -xzf "${archive}"
+          rm -f "${archive}"
+          export PATH="${go_root}/bin:${PATH}"
+          return 0
+        }
+
+        if install_go_tarball "${requested}"; then
+          echo "${go_root}/bin" >> "${GITHUB_PATH}"
+          go version
+          exit 0
+        fi
+
+        case "${requested}" in
+          1.26.*)
+            echo "Requested Go ${requested} is not available yet, installing gotip fallback."
+            bootstrap="$(curl -fsSL https://go.dev/VERSION?m=text | sed -n '1s/^go//p')"
+            install_go_tarball "${bootstrap}"
+
+            tmpdir="$(mktemp -d)"
+            (
+              cd "${tmpdir}"
+              GO111MODULE=on go install golang.org/dl/gotip@latest
+            )
+            rm -rf "${tmpdir}"
+            gotip_bin="$(go env GOPATH)/bin/gotip"
+            "${gotip_bin}" download
+
+            mkdir -p "${HOME}/.local/bin"
+            ln -sf "${HOME}/sdk/gotip/bin/gotip" "${HOME}/.local/bin/go"
+
+            echo "${go_root}/bin" >> "${GITHUB_PATH}"
+            echo "${HOME}/.local/bin" >> "${GITHUB_PATH}"
+            echo "$(go env GOPATH)/bin" >> "${GITHUB_PATH}"
+            echo "${HOME}/sdk/gotip/bin" >> "${GITHUB_PATH}"
+
+            "${HOME}/.local/bin/go" version
+            ;;
+          *)
+            echo "Unable to install requested Go version ${requested}" >&2
+            exit 1
+            ;;
+        esac

@@ -106,7 +106,7 @@ jobs:
       run: echo "value=$(cat GO_VERSION)" >> $GITHUB_OUTPUT
       id: go-version
     - name: Install Go
-      uses: actions/setup-go@v2
+      uses: ./.github/actions/setup-go
       with:
         go-version: ${{ steps.go-version.outputs.value }}
     - name: Run API v3 tests
@@ -183,7 +183,7 @@ jobs:
       run: echo "value=$(cat GO_VERSION)" >> $GITHUB_OUTPUT
       id: go-version
     - name: Install Go
-      uses: actions/setup-go@v2
+      uses: ./.github/actions/setup-go
       with:
         go-version: ${{ steps.go-version.outputs.value }}
     - name: Run API v4 tests
@@ -262,7 +262,7 @@ jobs:
       run: echo "value=$(cat GO_VERSION)" >> $GITHUB_OUTPUT
       id: go-version
     - name: Install Go
-      uses: actions/setup-go@v2
+      uses: ./.github/actions/setup-go
       with:
         go-version: ${{ steps.go-version.outputs.value }}
     - name: Run API v5 tests
