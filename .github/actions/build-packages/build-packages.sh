@@ -221,6 +221,7 @@ build_tc_health_client_deb() {
 	ensure_cmd pandoc pandoc
 
 	local hc_dir="${TC_DIR}/tc-health-client"
+	local logrotate_src="${hc_dir}/build/tc-health-client.logrotate"
 	(
 		cd "${hc_dir}"
 		go mod vendor -v
@@ -228,6 +229,13 @@ build_tc_health_client_deb() {
 		go build -v -ldflags "-s -w -X main.BuildTimestamp=$(date +'%Y-%m-%dT%H:%M:%S') -X main.Version=${TC_VERSION}-${BUILD_NUMBER}"
 		pandoc --standalone --to man README.md -o tc-health-client.1
 	)
+	if [[ ! -f "${logrotate_src}" ]]; then
+		logrotate_src="${hc_dir}/tc-health-client.logrotate"
+	fi
+	if [[ ! -f "${logrotate_src}" ]]; then
+		echo "Missing tc-health-client logrotate file" >&2
+		exit 1
+	fi
 
 	local stage
 	stage="$(mktemp -d)"
@@ -237,7 +245,7 @@ build_tc_health_client_deb() {
 	install -m 0755 "${hc_dir}/tc-health-client" "${root}/usr/bin/tc-health-client"
 	gzip -c -9 "${hc_dir}/tc-health-client.1" > "${root}/usr/share/man/man1/tc-health-client.1.gz"
 	install -m 0644 "${hc_dir}/tc-health-client.json" "${root}/etc/trafficcontrol/tc-health-client.sample.json"
-	install -m 0644 "${hc_dir}/tc-health-client.logrotate" "${root}/etc/logrotate.d/tc-health-client.logrotate"
+	install -m 0644 "${logrotate_src}" "${root}/etc/logrotate.d/tc-health-client.logrotate"
 	install -m 0644 "${hc_dir}/tc-health-client.service" "${root}/usr/lib/systemd/system/tc-health-client.service"
 
 	create_deb 'trafficcontrol-health-client' "${DEFAULT_DEB_VERSION}" "${DEB_ARCH}" 'Traffic Control health client' '' "${root}"
@@ -492,6 +500,7 @@ build_tomcat_deb() {
 		echo 'TOMCAT_VERSION missing in .env' >&2
 		exit 1
 	fi
+	export TOMCAT_VERSION
 
 	local work
 	work="$(mktemp -d)"
@@ -523,7 +532,7 @@ build_traffic_router_deb() {
 	local tr_dir="${TC_DIR}/traffic_router"
 	(
 		cd "${tr_dir}"
-		mvn -B -Dmaven.test.skip=true clean package
+		mvn -B -Dmaven.test.skip=true -pl shared,connector,configuration,geolocation,core -am clean package
 		(
 			cd core
 			mvn -B -Dmaven.test.skip=true dependency:copy-dependencies -DincludeScope=runtime -DoutputDirectory=target/dependency
