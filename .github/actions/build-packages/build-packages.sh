@@ -48,6 +48,10 @@ install_npm_tool_if_missing sass sass
 
 # Build component artifacts and convert them to DEB packages for CIAB consumption.
 export NO_SOURCE=1
+export PACKAGE_OS_VERSION="${PACKAGE_OS_VERSION:-8}"
+export GOPATH="${GOPATH:-/tmp/go}"
+mkdir -p "${GOPATH}/"{bin,pkg,src}
+export PATH="${GOPATH}/bin:${PATH}"
 bash ./build/build.sh "${build_target}"
 
 dist_dir="${GITHUB_WORKSPACE:-$(pwd)}/dist"
