@@ -24,7 +24,12 @@ ARG BASE_IMAGE=ubuntu \
     ubuntu_version=24.04
 FROM ${BASE_IMAGE}:${ubuntu_version}
 
-RUN bash -o pipefail -c 'curl -sLf https://deb.nodesource.com/setup_16.x | bash -'
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+      ca-certificates \
+      curl && \
+    rm -rf /var/lib/apt/lists/* && \
+    bash -o pipefail -c 'curl -sLf https://deb.nodesource.com/setup_16.x | bash -'
 
 # Override TRAFFIC_PORTAL_DEB arg to use a different one using --build-arg TRAFFIC_PORTAL_DEB=...  Can be local file or http://...
 ARG TRAFFIC_PORTAL_DEB=traffic_portal/traffic_portal.deb
