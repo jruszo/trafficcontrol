@@ -33,7 +33,18 @@ esac
 
 sudo apt-get update
 sudo apt-get install -y --no-install-recommends alien fakeroot pandoc rpm rsync
-sudo npm install --global grunt-cli sass
+
+install_npm_tool_if_missing() {
+	local binary="$1"
+	local package="$2"
+	if command -v "${binary}" >/dev/null 2>&1; then
+		return
+	fi
+	sudo npm install --global --force "${package}"
+}
+
+install_npm_tool_if_missing grunt grunt-cli
+install_npm_tool_if_missing sass sass
 
 # Build component artifacts and convert them to DEB packages for CIAB consumption.
 export NO_SOURCE=1
