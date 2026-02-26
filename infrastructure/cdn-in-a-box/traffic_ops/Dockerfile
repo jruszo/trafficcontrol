@@ -20,73 +20,49 @@
 # Based on Ubuntu 24.04
 ############################################################
 
-    # Change BASE_IMAGE to centos when RHEL_VERSION=7
 ARG BASE_IMAGE=ubuntu \
-    RHEL_VERSION=24.04
-FROM ${BASE_IMAGE}:${RHEL_VERSION} as trafficops-dependencies
-ARG RHEL_VERSION=24.04
-# Makes RHEL_VERSION available in later layers without needing to specify it again
-ENV RHEL_VERSION="$RHEL_VERSION"
+    ubuntu_version=24.04
+FROM ${BASE_IMAGE}:${ubuntu_version} as trafficops-dependencies
 
 VOLUME /traffic_ops_data
 
-RUN if [[ "${RHEL_VERSION%%.*}" -eq 7 ]]; then \
-		yum -y install dnf || exit 1; \
-	fi
-
 RUN set -o nounset -o errexit -o xtrace && \
-	mkdir -p /etc/cron.d; \
-	if [[ "${RHEL_VERSION%%.*}" -eq 7 ]]; then \
-		use_repo=''; \
-		enable_repo=''; \
-	else \
-		use_repo='--repo=pgdg13'; \
-		enable_repo='--enablerepo=powertools'; \
-	fi; \
-	dnf -y install epel-release libicu; \
-	dnf -y install "https://download.postgresql.org/pub/repos/yum/reporpms/EL-${RHEL_VERSION%%.*}-$(rpm --eval %_arch)/pgdg-redhat-repo-latest.noarch.rpm"; \
-	dnf -y $use_repo -- install postgresql13; \
-	if [[ -n "$enable_repo" ]]; then \
-		dnf -y remove pgdg-redhat-repo; \
-	fi; \
-	dnf -y $enable_repo install \
-		bind-utils           \
-		# find is required by to-access.sh
-		findutils            \
-		gettext              \
-		# ip commands is used in set-to-ips-from-dns.sh
-		iproute              \
-		isomd5sum            \
-		jq                   \
-		net-tools            \
-		nmap-ncat            \
-		openssl              \
-		procps-ng            \
-		# rsync is used to copy certs in "Shared SSL certificate generation" step
-		rsync                \
-
-		# Traffic Ops dependencies (Not all needed for CDN in a Box, but all
-		# required by the Traffic Ops RPM)
-		cpanminus            \
-		expat-devel          \
-		libcap               \
-		libcurl-devel        \
-		libidn-devel         \
-		libpcap-devel        \
-		mkisofs              \
-		openssl-devel        \
-		perl-core            \
-		perl-Crypt-ScryptKDF \
-		perl-DBD-Pg          \
-		perl-DBI             \
-		perl-Digest-SHA1     \
-		perl-JSON            \
-		perl-libwww-perl     \
-		perl-TermReadKey     \
-		perl-Test-CPAN-Meta  \
-		perl-WWW-Curl        \
-		python3; \
-	dnf clean all
+	mkdir -p /etc/cron.d && \
+	apt-get update && \
+	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+		ca-certificates \
+		cpanminus \
+		curl \
+		dnsutils \
+		findutils \
+		genisoimage \
+		gettext \
+		iproute2 \
+		jq \
+		libcap2 \
+		libcurl4-openssl-dev \
+		libdbd-pg-perl \
+		libdbi-perl \
+		libdigest-sha-perl \
+		libexpat1-dev \
+		libicu-dev \
+		libidn2-dev \
+		libjson-perl \
+		libpcap-dev \
+		libssl-dev \
+		libterm-readkey-perl \
+		libwww-curl-perl \
+		libwww-perl \
+		ncat \
+		net-tools \
+		openssl \
+		perl \
+		postgresql-client \
+		procps \
+		python3 \
+		dpkg \
+		rsync && \
+	rm -rf /var/lib/apt/lists/*
 
 FROM trafficops-dependencies AS trafficops
 
@@ -96,13 +72,13 @@ WORKDIR /opt/traffic_ops/app
 
 ADD infrastructure/cdn-in-a-box/traffic_ops_data /traffic_ops_data
 
-# Override TRAFFIC_OPS_RPM arg to use a different one using --build-arg TRAFFIC_OPS_RPM=...  Can be local file or http://...
+# Override TRAFFIC_OPS_DEB arg to use a different one using --build-arg TRAFFIC_OPS_DEB=...  Can be local file or http://...
 #
-ARG TRAFFIC_OPS_RPM=infrastructure/cdn-in-a-box/traffic_ops/traffic_ops.rpm
+ARG TRAFFIC_OPS_DEB=infrastructure/cdn-in-a-box/traffic_ops/traffic_ops.deb
 
-COPY $TRAFFIC_OPS_RPM /traffic_ops.rpm
-RUN rpm -Uvh /traffic_ops.rpm && \
-	rm /traffic_ops.rpm
+COPY $TRAFFIC_OPS_DEB /traffic_ops.deb
+RUN dpkg -i --force-depends /traffic_ops.deb && \
+	rm /traffic_ops.deb
 
 COPY .github/actions/to-integration-tests/intermediate.crt.pem \
 	.github/actions/to-integration-tests/intermediate.key.pem \
@@ -131,7 +107,9 @@ HEALTHCHECK --interval=10s --timeout=1s \
 
 FROM trafficops-dependencies as get-delve
 
-RUN dnf -y install golang && \
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends golang-go && \
+    rm -rf /var/lib/apt/lists/* && \
     go install github.com/go-delve/delve/cmd/dlv@v1.26.0
 
 FROM trafficops AS trafficops-debug

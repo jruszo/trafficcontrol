@@ -18,7 +18,7 @@
 FROM grafana/grafana:10.2.3-ubuntu
 
 USER root
-ARG TRAFFIC_TS_RPM=traffic_stats/traffic_stats.rpm
+ARG TRAFFIC_TS_DEB=traffic_stats/traffic_stats.deb
 
 RUN apt-get update && \
     apt-get install -y dnsutils net-tools gettext-base p7zip-full netcat && \
@@ -29,16 +29,18 @@ ADD enroller/server_template.json \
     optional/grafana/run-grafana.sh \
     optional/grafana/datasources.yml.template \
     optional/grafana/app.yaml.template \
-    $TRAFFIC_TS_RPM \
+    $TRAFFIC_TS_DEB \
     /
 
 RUN cd ~ \
-    && 7z x /traffic_stats.rpm \
-    && 7z e traffic_stats-*.cpio module.js plugin.json module.js.map -r \
+    && mkdir -p /tmp/traffic_stats_pkg \
+    && dpkg-deb -x /traffic_stats.deb /tmp/traffic_stats_pkg \
+    && plugin_dir="$(dirname "$(find /tmp/traffic_stats_pkg -type f -name plugin.json -print -quit)")" \
+    && cp "${plugin_dir}/plugin.json" "${plugin_dir}/module.js" "${plugin_dir}/module.js.map" . \
     && mkdir -p /var/lib/grafana/plugins/trafficcontrol-scenes-app/ \
     && mv plugin.json module.js.map module.js /var/lib/grafana/plugins/trafficcontrol-scenes-app/ \
-    && rm /traffic_stats.rpm \
-    && rm ~/traffic_stats-*.cpio
+    && rm /traffic_stats.deb \
+    && rm -rf /tmp/traffic_stats_pkg
 
 COPY dns/set-dns.sh \
      dns/insert-self-into-dns.sh \

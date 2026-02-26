@@ -21,87 +21,84 @@
 # Based on Ubuntu 24.04
 ############################################################
 
-    # Change BASE_IMAGE to centos when RHEL_VERSION=7
 ARG BASE_IMAGE=ubuntu \
-    RHEL_VERSION=24.04
-FROM ${BASE_IMAGE}:${RHEL_VERSION} AS common-traffic-server-dependencies
-ARG RHEL_VERSION=24.04
-# Makes RHEL_VERSION available at runtime
-ENV RHEL_VERSION="$RHEL_VERSION"
+    ubuntu_version=24.04
+FROM ${BASE_IMAGE}:${ubuntu_version} AS common-traffic-server-dependencies
 
-# The /traffic_ops_data volume is included to set the ATS RPM version in the MID profile.
+# The /traffic_ops_data volume is included to set the ATS DEB version in the MID profile.
 VOLUME /traffic_ops_data
-
-RUN if [[ "${RHEL_VERSION%%.*}" -eq 7 ]]; then \
-        yum -y install dnf || exit 1; \
-    fi
 
 EXPOSE 80
 
-RUN dnf -y install epel-release && \
-    if [[ "${RHEL_VERSION%%.*}" -lt 8 ]]; then \
-        additional_packages='perl(URI)' || \
-        exit 1; \
-    else \
-        # cjose is required by the ATS TSB RPM
-        additional_packages='cjose' || \
-        exit 1; \
-    fi && \
-    dnf -y install              \
-        brotli                  \
-        # find is required by to-access.sh
-        findutils               \
-        GeoIP                   \
-        git                     \
-        groff-base              \
-        hwloc                   \
-        # jansson is required by the ATS TSB RPM
-        jansson                 \
-        kyotocabinet-libs       \
-        libmaxminddb            \
-        libtool-ltdl            \
-        libunwind               \
-        libuuid                 \
-        # luajit is required by the ATS TSB RPM
-        luajit                  \
-        lzo                     \
-        make                    \
-        numactl-libs            \
-        openssl                 \
-        procps-ng               \
-        perl                    \
-        tcl                     \
-        xz                      \
-        $additional_packages
-
-RUN dnf install -y bind-utils kyotocabinet-libs initscripts iproute net-tools nmap-ncat gettext autoconf automake libtool gcc-c++ cronie glibc-devel openssl-devel && \
-    dnf install -y jq logrotate && \
-    dnf clean all
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        autoconf \
+        automake \
+        brotli \
+        ca-certificates \
+        cron \
+        curl \
+        dnsutils \
+        findutils \
+        g++ \
+        geoip-bin \
+        gettext \
+        git \
+        groff-base \
+        hwloc \
+        iproute2 \
+        jq \
+        libc6-dev \
+        libcjose0 \
+        libjansson4 \
+        libkyotocabinet16v5 \
+        libltdl7 \
+        liblzo2-2 \
+        libmaxminddb0 \
+        libnuma1 \
+        libssl-dev \
+        libtool \
+        libunwind8 \
+        logrotate \
+        luajit \
+        make \
+        ncat \
+        net-tools \
+        openssl \
+        perl \
+        procps \
+        dpkg \
+        tcl \
+        uuid-runtime \
+        xz-utils && \
+    rm -rf /var/lib/apt/lists/*
 
 FROM common-traffic-server-dependencies AS common-cache-config-layers
 
-COPY infrastructure/cdn-in-a-box/cache/trafficserver.rpm /trafficserver.rpm
+COPY infrastructure/cdn-in-a-box/cache/trafficserver.deb /trafficserver.deb
 COPY traffic_server/plugins/astats_over_http/astats_over_http.c traffic_server/plugins/astats_over_http/Makefile.am /
 
 RUN set -o errexit -o nounset -o xtrace; \
-    rpm -Uvh /trafficserver.rpm; \
-    if [[ -e /trafficserver-devel.rpm ]]; then \
-        rpm -Uvh /trafficserver-devel.rpm; \
+    dpkg -i --force-depends /trafficserver.deb; \
+    if [[ -e /trafficserver-devel.deb ]]; then \
+        dpkg -i --force-depends /trafficserver-devel.deb; \
     fi; \
     PATH+=:/opt/trafficserver/bin; \
     tsxs -v -c astats_over_http.c -o astats_over_http.so && \
     tsxs -v -o astats_over_http.so -i && \
-    dnf remove -y gcc-c++ glibc-devel autoconf automake libtool && \
+    apt-get purge -y autoconf automake g++ libc6-dev libssl-dev libtool && \
+    apt-get autoremove -y && \
+    rm -rf /var/lib/apt/lists/* && \
     rm -f /astats_over_http.c /Makefile.am
 
 RUN set -o errexit -o nounset -o pipefail -o xtrace && \
     # The ssl directory needs to exist or the first sslkey file will be skipped on badass
-    etc_trafficserver="$(rpm -qpl trafficserver.rpm | grep '/etc/trafficserver$')"; \
+    etc_trafficserver="/etc/trafficserver"; \
     if [[ ! -e "${etc_trafficserver}/ssl" ]]; then \
         echo 'Creating ssl directory...'; \
         mkdir "${etc_trafficserver}/ssl"; \
     fi; \
-    # trafficserver needs different ownership than the trafficserver RPM sets
+    # trafficserver needs different ownership than the trafficserver DEB sets
     chown -R ats:ats "$etc_trafficserver"
 
 WORKDIR /opt
@@ -117,23 +114,25 @@ COPY infrastructure/cdn-in-a-box/dns/set-dns.sh \
 # Copy systemctl.sh to /usr/bin specifically because t3c runs /bin/systemctl by absolute path
 COPY infrastructure/cdn-in-a-box/cache/systemctl.sh /usr/bin/systemctl
 
-ARG ORT_RPM=infrastructure/cdn-in-a-box/cache/trafficcontrol-cache-config.rpm
-COPY $ORT_RPM /
-RUN rpm -Uvh /$(basename $ORT_RPM) &&\
-    rm /$(basename $ORT_RPM)
+ARG ORT_DEB=infrastructure/cdn-in-a-box/cache/trafficcontrol-cache-config.deb
+COPY $ORT_DEB /
+RUN dpkg -i --force-depends /$(basename $ORT_DEB) &&\
+    rm /$(basename $ORT_DEB)
 CMD /run.sh
 
-ARG TCH_RPM=infrastructure/cdn-in-a-box/health/trafficcontrol-health-client.rpm 
-COPY $TCH_RPM /
-RUN rpm -Uvh /$(basename $TCH_RPM) &&\
-    rm /$(basename $TCH_RPM)
+ARG TCH_DEB=infrastructure/cdn-in-a-box/health/trafficcontrol-health-client.deb
+COPY $TCH_DEB /
+RUN dpkg -i --force-depends /$(basename $TCH_DEB) &&\
+    rm /$(basename $TCH_DEB)
 
 ADD infrastructure/cdn-in-a-box/health/tc-health-client.service /usr/lib/systemd/system
 COPY infrastructure/cdn-in-a-box/health/tc-health-client.json  /etc/trafficcontrol/tc-health-client.json
 COPY infrastructure/cdn-in-a-box/health/to-creds /etc/to-creds
 
 FROM common-traffic-server-dependencies AS get-delve
-RUN dnf -y install golang && \
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends golang-go && \
+    rm -rf /var/lib/apt/lists/* && \
     go install github.com/go-delve/delve/cmd/dlv@v1.26.0
 
 FROM common-cache-config-layers AS mid

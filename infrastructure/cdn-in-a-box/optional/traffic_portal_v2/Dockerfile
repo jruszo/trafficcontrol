@@ -20,41 +20,37 @@
 # Based on Ubuntu 24.04
 ############################################################
 
-    # Change BASE_IMAGE to centos when RHEL_VERSION=7
 ARG BASE_IMAGE=ubuntu \
-    RHEL_VERSION=24.04
-FROM ${BASE_IMAGE}:${RHEL_VERSION}
-ARG RHEL_VERSION=24.04
-
-RUN if [[ "${RHEL_VERSION%%.*}" -eq 7 ]]; then \
-        yum -y install dnf || exit 1; \
-    fi
+    ubuntu_version=24.04
+FROM ${BASE_IMAGE}:${ubuntu_version}
 
 RUN set -o pipefail && \
-    curl -sLf https://rpm.nodesource.com/setup_20.x | bash
+    curl -sLf https://deb.nodesource.com/setup_20.x | bash -
 
-# Override TRAFFIC_PORTAL_RPM arg to use a different one using --build-arg TRAFFIC_PORTAL_RPM=...  Can be local file or http://...
-ARG TRAFFIC_PORTAL_RPM=optional/traffic_portal_v2/traffic_portal_v2.rpm
+# Override TRAFFIC_PORTAL_DEB arg to use a different one using --build-arg TRAFFIC_PORTAL_DEB=...  Can be local file or http://...
+ARG TRAFFIC_PORTAL_DEB=optional/traffic_portal_v2/traffic_portal_v2.deb
 
 ARG TO_HOST=$TO_HOST
 
-# Install and delete the TRAFFIC_PORTAL_RPM when finished
-RUN dnf install -y epel-release && \
-    dnf install -y \
-      jq \
-      nodejs \
-      openssl \
-      procps-ng \
-      # find is required by to-access.sh
+# Install and delete the TRAFFIC_PORTAL_DEB when finished
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+      ca-certificates \
+      curl \
+      dnsutils \
       findutils \
       gettext \
-      bind-utils \
-      net-tools && \
-    dnf clean all
+      jq \
+      net-tools \
+      nodejs \
+      openssl \
+      procps \
+      dpkg && \
+    rm -rf /var/lib/apt/lists/*
 
-ADD $TRAFFIC_PORTAL_RPM /
-RUN rpm -Uvh /$(basename $TRAFFIC_PORTAL_RPM) && \
-    rm /$(basename $TRAFFIC_PORTAL_RPM)
+ADD $TRAFFIC_PORTAL_DEB /
+RUN dpkg -i --force-depends /$(basename $TRAFFIC_PORTAL_DEB) && \
+    rm /$(basename $TRAFFIC_PORTAL_DEB)
 
 ADD enroller/server_template.json \
     optional/traffic_portal_v2/run.sh \

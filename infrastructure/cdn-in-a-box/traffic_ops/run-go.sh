@@ -106,11 +106,10 @@ chmod -R a+rw "$X509_CA_PERSIST_DIR";
 # Write config files
 . /config.sh;
 
-pg_isready=$(rpm -ql postgresql13 | grep bin/pg_isready);
+pg_isready="$(command -v pg_isready || true)";
 if [[ ! -x $pg_isready ]]; then
-	echo "Can't find pg_ready in postgresql13" >&2;
+	echo "Can't find pg_isready in PATH" >&2;
 	echo "PATH: $PATH" >&2;
-	find / -name "*postgresql*";
 	exit 1;
 fi
 

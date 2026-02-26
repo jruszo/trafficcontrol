@@ -15,55 +15,35 @@
 # specific language governing permissions and limitations
 # under the License.
 
-    # Change BASE_IMAGE to centos when RHEL_VERSION=7
 ARG BASE_IMAGE=ubuntu \
-    RHEL_VERSION=24.04
-FROM ${BASE_IMAGE}:${RHEL_VERSION} as os-dependencies
-ARG RHEL_VERSION=24.04
-
-RUN if [[ "${RHEL_VERSION%%.*}" -eq 7 ]]; then \
-        yum -y install dnf || exit 1; \
-    fi
-
-RUN if [[ "${RHEL_VERSION%%.*}" -eq 7 ]]; then \
-        utils_package=yum-utils; \
-    else \
-        utils_package=dnf-utils; \
-    fi && \
-    dnf install -y \
-        bind-utils \
-        # chromium and jq are in EPEL
-        epel-release \
-        # find is required by to-access.sh
+    ubuntu_version=24.04
+FROM ${BASE_IMAGE}:${ubuntu_version} as os-dependencies
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        ca-certificates \
+        curl \
+        dnsutils \
         findutils \
-        wget \
-        GConf2 \
         git \
-        #Xvfb is required by cypress
-        xorg-x11-server-Xvfb \
-        java-1.8.0-openjdk \
+        jq \
+        libgconf-2-4 \
         net-tools \
-        $utils_package && \
-    set -o pipefail && \
-    dnf -y install jq && \
-    dnf -y clean all
-
-RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm && \
-    dnf install -y ./google-chrome-stable_current_x86_64.rpm && \
-    rm google-chrome-stable_current_x86_64.rpm
+        openjdk-17-jre-headless \
+        wget \
+        xvfb && \
+    wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        ./google-chrome-stable_current_amd64.deb && \
+    rm -f google-chrome-stable_current_amd64.deb && \
+    rm -rf /var/lib/apt/lists/*
 
 FROM os-dependencies AS node-dependencies
 # Download and install node
 RUN set -o pipefail; \
-    curl -sLf https://rpm.nodesource.com/setup_20.x | bash
-RUN dnf -y install nodejs || ( \
-        # rpm --rebuilddb after installing the nodejs is necessary on docker 20.10.8,
-        # build 3967b7d as of 2023-01-19, though that was not always the case for that
-        # docker version
-        rpm --rebuilddb && \
-        echo 'RPM DB rebuilt' && \
-        dnf -y install nodejs \
-    )
+    curl -sLf https://deb.nodesource.com/setup_20.x | bash -
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends nodejs && \
+    rm -rf /var/lib/apt/lists/*
 
 
 FROM node-dependencies

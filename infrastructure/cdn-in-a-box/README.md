@@ -31,19 +31,19 @@ The containers run on Docker and require Docker plus Docker Compose to build and
 run. Compose may be available as either the Docker CLI plugin
 (`docker compose`) or a standalone binary (`docker-compose`).
 
-Each container (except the origin) requires an `.rpm` file to install the Traffic Control
-component for which it is responsible. You can download these `*.rpm` files from an archive
+Each container (except the origin) requires an `.deb` file to install the Traffic Control
+component for which it is responsible. You can download these `*.deb` files from an archive
 (e.g. under "Releases"), use the provided [Makefile](./Makefile) to generate them (simply
 type `make` while in the `cdn-in-a-box` directory) or create them yourself by using the
 [`pkg`](../../pkg) script at the root of the repository. If you choose the latter, copy
-the `*.rpm`s without any version/architecture information to their respective component
+the `*.deb`s without any version/architecture information to their respective component
 directories, such that their filenames are as follows:
 
-* `edge/trafficcontrol-cache-config.rpm`
-* `mid/trafficcontrol-cache-config.rpm`
-* `traffic_monitor/traffic_monitor.rpm`
-* `traffic_ops/traffic_ops.rpm`
-* `traffic_portal/traffic_portal.rpm`
+* `edge/trafficcontrol-cache-config.deb`
+* `mid/trafficcontrol-cache-config.deb`
+* `traffic_monitor/traffic_monitor.deb`
+* `traffic_ops/traffic_ops.deb`
+* `traffic_portal/traffic_portal.deb`
 
 Finally, run the test CDN using the command:
 
@@ -210,7 +210,7 @@ Re/installed docker from the command line to use `--user=[your username]` flag. 
 Build and run of it:
 In the trafficcontrol/infrastructure/cdn-in-a-box directory run the following:
 
-- `make build-builders` ~~> this will create all the rpms and copy each rpms into its own folder in the cdn-in-a-box project. This will also create the dist folder under trafficcontrol folder structure even if you deleted yours.
+- `make build-builders` ~~> this will create all the debs and copy each debs into its own folder in the cdn-in-a-box project. This will also create the dist folder under trafficcontrol folder structure even if you deleted yours.
 
 - `docker compose up` ~~> this will create docker images, and if rebuild is needed, run `docker compose up --build`.
 

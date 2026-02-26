@@ -19,47 +19,54 @@
 # Based on Ubuntu 24.04
 ############################################################
 
-    # Change BASE_IMAGE to centos when RHEL_VERSION=7
 ARG BASE_IMAGE=ubuntu \
-    RHEL_VERSION=24.04
-FROM ${BASE_IMAGE}:${RHEL_VERSION}
-ARG RHEL_VERSION=24.04
-
-RUN if [[ "${RHEL_VERSION%%.*}" -eq 7 ]]; then \
-        yum -y install dnf || exit 1; \
-    fi
+    ubuntu_version=24.04
+FROM ${BASE_IMAGE}:${ubuntu_version}
 
 MAINTAINER dev@trafficcontrol.apache.org
 
-# Default values for TOMCAT RPM and RPM -- override with `docker build --build-arg JDK=...'
-ARG TRAFFIC_ROUTER_RPM=traffic_router/traffic_router.rpm
-ARG TOMCAT_RPM=traffic_router/tomcat.rpm
+# Default values for package args.
+ARG TRAFFIC_ROUTER_DEB=traffic_router/traffic_router.deb
+ARG TOMCAT_DEB=traffic_router/tomcat.deb
 
-RUN dnf -y install epel-release && \
-    dnf -y install \
-        jq \
-        # find is required by to-access.sh
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        autoconf \
+        automake \
+        ca-certificates \
+        curl \
+        default-jdk-headless \
+        dnsutils \
         findutils \
+        g++ \
+        gcc \
+        gettext \
         git \
-        rpm-build \
+        jq \
+        iproute2 \
+        libapr1 \
+        libapr1-dev \
+        libssl-dev \
+        libtcnative-1 \
+        make \
         net-tools \
-        iproute \
-        nc \
-        procps-ng \
+        netcat-openbsd \
+        openssl \
+        perl \
+        procps \
+        dpkg \
         wget \
         tar \
         unzip \
+        which && \
+    rm -rf /var/lib/apt/lists/* && \
+    JAVA_HOME="$(dirname "$(dirname "$(readlink -f "$(command -v javac)")")")" && \
+    ln -sfv "${JAVA_HOME}" /opt/java
 
-        perl-JSON perl-WWW-Curl which make autoconf automake gcc gcc-c++ apr apr-devel \
-        openssl openssl-devel bind-utils net-tools perl-JSON-PP gettext \
-        java-11-openjdk-headless tzdata-java java-11-openjdk-devel tomcat-native && \
-    dnf -y clean all && \
-    ln -sfv $(realpath /usr/lib/jvm/java-11) /opt/java
+ADD $TRAFFIC_ROUTER_DEB /traffic_router.deb
+ADD $TOMCAT_DEB /tomcat.deb
 
-ADD $TRAFFIC_ROUTER_RPM /traffic_router.rpm
-ADD $TOMCAT_RPM /tomcat.rpm
-
-RUN rpm -Uvh /traffic_router.rpm /tomcat.rpm && \
+RUN dpkg -i --force-depends /traffic_router.deb /tomcat.deb && \
     find /usr/lib* -name libtc\* -exec ln -sfv {} /opt/tomcat/lib \;
 
 ADD enroller/server_template.json \

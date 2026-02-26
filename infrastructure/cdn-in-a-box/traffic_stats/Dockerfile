@@ -16,39 +16,35 @@
 # under the License.
 ############################################################
 # Dockerfile to build Traffic Stats container images
-# Based on CentOS
+# Based on Ubuntu 24.04
 ############################################################
 
-    # Change BASE_IMAGE to centos when RHEL_VERSION=7
 ARG BASE_IMAGE=ubuntu \
-    RHEL_VERSION=24.04
-FROM ${BASE_IMAGE}:${RHEL_VERSION} AS trafficstats-dependencies
-ARG RHEL_VERSION=24.04
+    ubuntu_version=24.04
+FROM ${BASE_IMAGE}:${ubuntu_version} AS trafficstats-dependencies
 
-RUN if [[ "${RHEL_VERSION%%.*}" -eq 7 ]]; then \
-        yum -y install dnf || exit 1; \
-    fi
-
-RUN dnf install -y epel-release && \
-    dnf install -y \
-        jq \
-        nmap-ncat \
-        net-tools \
-        # find is required by to-access.sh
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        ca-certificates \
+        curl \
+        dnsutils \
         findutils \
         gettext \
-        bind-utils \
+        jq \
+        net-tools \
+        ncat \
         openssl \
-        procps-ng && \
-    dnf clean all
+        procps \
+        dpkg && \
+    rm -rf /var/lib/apt/lists/*
 
 FROM trafficstats-dependencies AS trafficstats
 
-# Default values for RPM -- override with `docker build --build-arg RPM=...'
-ARG TRAFFIC_TS_RPM=traffic_stats/traffic_stats.rpm
-ADD $TRAFFIC_TS_RPM /
-RUN rpm -Uvh /$(basename $TRAFFIC_TS_RPM) && \
-    rm /$(basename $TRAFFIC_TS_RPM)
+# Default values for package -- override with `docker build --build-arg TRAFFIC_TS_DEB=...'
+ARG TRAFFIC_TS_DEB=traffic_stats/traffic_stats.deb
+ADD $TRAFFIC_TS_DEB /
+RUN dpkg -i --force-depends /$(basename $TRAFFIC_TS_DEB) && \
+    rm /$(basename $TRAFFIC_TS_DEB)
 
 ADD enroller/server_template.json \
     traffic_ops/to-access.sh \
@@ -63,7 +59,9 @@ ENTRYPOINT /run.sh
 
 FROM trafficstats-dependencies AS get-delve
 
-RUN dnf -y install golang && \
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends golang-go && \
+    rm -rf /var/lib/apt/lists/* && \
     go install github.com/go-delve/delve/cmd/dlv@v1.26.0
 
 FROM trafficstats AS trafficstats-debug

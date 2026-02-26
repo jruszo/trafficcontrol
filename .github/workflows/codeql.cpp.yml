@@ -28,29 +28,18 @@ jobs:
     name: Analyze C++
     runs-on: ubuntu-latest
     steps:
-      - name: Get Apache Traffic Server RPM
-        run: |2
-          set -o errexit -o nounset -o pipefail
-          docker run --rm \
-            --volume "${PWD}:/workspace" \
-            --workdir /workspace \
-            rockylinux:8 \
-            /bin/bash -lc '
-              set -o errexit -o nounset -o pipefail
-              dnf -y install epel-release dnf-plugins-core
-              dnf download --destdir /workspace trafficserver-devel
-            '
-          rpm_file="$(ls -1 trafficserver-devel-*.rpm | head -n1)"
-          mv "${rpm_file}" trafficserver-devel.rpm
-
-      - name: Install Apt RPM package
-        run: sudo apt-get install -y --no-install-recommends rpm
-
-      - name: Install Traffic Server RPM
-        run: sudo rpm -Uvh --nodeps trafficserver-devel.rpm
-
       - name: Checkout repository
         uses: actions/checkout@v2
+
+      - name: Install Apache Traffic Server Development Tools
+        run: |
+          set -o errexit -o nounset -o pipefail
+          sudo apt-get update
+          if apt-cache show trafficserver-dev >/dev/null 2>&1; then
+            sudo apt-get install -y --no-install-recommends trafficserver-dev
+          else
+            sudo apt-get install -y --no-install-recommends trafficserver
+          fi
 
       # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL

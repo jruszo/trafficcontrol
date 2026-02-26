@@ -40,7 +40,7 @@ fi
 
 case "$COMMAND" in
 	enable)
-		service_file="$(rpm -ql trafficserver | grep '\.service$')"
+		service_file="$(dpkg-query -L trafficserver | grep '\.service$')"
 		echo "Created symlink /etc/systemd/system/sockets.target.wants/$(basename "$service_file") → ${service_file}."
 		exit
 		;;

@@ -15,27 +15,32 @@
 # specific language governing permissions and limitations
 # under the License.
 
-    # Change BASE_IMAGE to centos when RHEL_VERSION=7
 ARG BASE_IMAGE=ubuntu \
-    RHEL_VERSION=24.04
-FROM ${BASE_IMAGE}:${RHEL_VERSION}
-ARG RHEL_VERSION=24.04
-
-RUN if [[ "${RHEL_VERSION%%.*}" -eq 7 ]]; then \
-        yum -y install dnf || exit 1; \
-    fi
+    ubuntu_version=24.04
+FROM ${BASE_IMAGE}:${ubuntu_version}
 
 ARG VNC_BUILD_USER
 ENV VNC_USER=$VNC_BUILD_USER
 
-RUN dnf -y install "https://download1.rpmfusion.org/free/el/rpmfusion-free-release-${RHEL_VERSION%%.*}.noarch.rpm" epel-release && \
-    dnf -y install xterm firefox git tigervnc-server sudo bind-utils net-tools which passwd which \
-                   fluxbox 'google-noto*' terminus-fonts tigervnc vlc wget openssl curl nc && \
-    dnf -y clean all && rm -rf /var/cache/dnf
-
-RUN if [[ "${RHEL_VERSION%%.*}" -ge 8 ]]; then \
-        curl -Lo /usr/bin/vncserver https://git.centos.org/rpms/tigervnc/raw/9e6ab1bc80/f/SOURCES/vncserver; \
-    fi
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        ca-certificates \
+        curl \
+        dnsutils \
+        fluxbox \
+        net-tools \
+        netcat-openbsd \
+        openssl \
+        passwd \
+        sudo \
+        tigervnc-common \
+        tigervnc-standalone-server \
+        vlc \
+        wget \
+        xfonts-terminus \
+        xterm \
+        fonts-noto-core && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN useradd -m $VNC_USER && \
     echo "$VNC_USER ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
@@ -46,7 +51,7 @@ WORKDIR /home/$VNC_USER
 RUN rm -rf /home/$VNC_USER/.vnc && \
     mkdir /home/$VNC_USER/.vnc && \
     mkdir /home/$VNC_USER/.fluxbox && \
-    fluxbox-generate_menu -k -g -B -su -t xterm -b firefox && \
+    fluxbox-generate_menu -k -g -B -su -t xterm -b xterm && \
     sed 's/{xterm}/{xterm -bg black -fg white +sb}/g' -i /home/$VNC_USER/.fluxbox/menu && \
     dd if=/dev/urandom of=/dev/stdout count=12 bs=1 | vncpasswd -f > /home/$VNC_USER/.vnc/passwd && \
     chmod 600 /home/$VNC_USER/.vnc/passwd

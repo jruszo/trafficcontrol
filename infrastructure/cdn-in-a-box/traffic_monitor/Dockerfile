@@ -16,41 +16,36 @@
 # under the License.
 ############################################################
 # Dockerfile to build Traffic Monitor container images
-# Based on CentOS
+# Based on Ubuntu 24.04
 ############################################################
 
-    # Change BASE_IMAGE to centos when RHEL_VERSION=7
 ARG BASE_IMAGE=ubuntu \
-    RHEL_VERSION=24.04
-FROM ${BASE_IMAGE}:${RHEL_VERSION} as trafficmonitor-dependencies
-ARG RHEL_VERSION=24.04
+    ubuntu_version=24.04
+FROM ${BASE_IMAGE}:${ubuntu_version} as trafficmonitor-dependencies
 
-RUN if [[ "${RHEL_VERSION%%.*}" -eq 7 ]]; then \
-        yum -y install dnf || exit 1; \
-    fi
-
-RUN dnf install -y epel-release && \
-    dnf install -y \
-        jq \
-        nmap-ncat \
-        iproute \
-        net-tools \
-        # find is required by to-access.sh
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        ca-certificates \
+        curl \
+        dnsutils \
         findutils \
         gettext \
-        bind-utils \
+        iproute2 \
+        jq \
+        net-tools \
+        ncat \
         openssl \
-        procps-ng \
-        initscripts && \
-    dnf clean all
+        procps \
+        dpkg && \
+    rm -rf /var/lib/apt/lists/*
 
 FROM trafficmonitor-dependencies AS trafficmonitor
 
-# Default values for RPM -- override with `docker build --build-arg RPM=...'
-ARG RPM=traffic_monitor/traffic_monitor.rpm
-ADD $RPM /
-RUN rpm -Uvh  /$(basename $RPM) && \
-    rm /$(basename $RPM)
+# Default values for package -- override with `docker build --build-arg TRAFFIC_MONITOR_DEB=...'
+ARG TRAFFIC_MONITOR_DEB=traffic_monitor/traffic_monitor.deb
+ADD $TRAFFIC_MONITOR_DEB /
+RUN dpkg -i --force-depends /$(basename $TRAFFIC_MONITOR_DEB) && \
+    rm /$(basename $TRAFFIC_MONITOR_DEB)
 
 RUN mkdir -p /opt/traffic_monitor/conf
 ADD traffic_monitor/traffic_monitor.cfg /opt/traffic_monitor/conf/traffic_monitor.cfg.template
@@ -71,7 +66,9 @@ HEALTHCHECK --interval=10s --timeout=1s \
 
 FROM trafficmonitor-dependencies as get-delve
 
-RUN dnf -y install golang && \
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends golang-go && \
+    rm -rf /var/lib/apt/lists/* && \
     go install github.com/go-delve/delve/cmd/dlv@v1.26.0
 
 FROM trafficmonitor as trafficmonitor-debug

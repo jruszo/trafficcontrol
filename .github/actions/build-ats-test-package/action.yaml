@@ -14,30 +14,10 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
----
 
-services:
-
-  trafficportalv2:
-    build:
-      context: .
-      dockerfile: optional/traffic_portal_v2/Dockerfile
-      args:
-        # Base image defaults to ubuntu:24.04
-        BASE_IMAGE: ${BASE_IMAGE:-ubuntu}
-        ubuntu_version: ${ubuntu_version:-24.04}
-        TRAFFIC_PORTAL_DEB: optional/traffic_portal_v2/traffic_portal_v2.deb
-    depends_on:
-      - enroller
-    domainname: infra.ciab.test
-    env_file:
-      - variables.env
-    hostname: trafficportalv2
-    image: trafficportalv2
-    volumes:
-      - shared:/shared
-
-volumes:
-  shared:
-    external: false
-  junit:
+name: 'build-ats-test-package'
+description: 'Builds an ATS package used for cache config integration tests.'
+runs:
+  using: 'composite'
+  steps:
+    - uses: ./.github/actions/build-ats-test-rpm

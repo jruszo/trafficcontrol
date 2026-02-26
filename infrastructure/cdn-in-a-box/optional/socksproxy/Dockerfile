@@ -19,19 +19,24 @@
 # Dockerfile to build optional CiaB Socks Proxy
 # Based on Ubuntu 24.04
 ############################################################
-    # Change BASE_IMAGE to centos when RHEL_VERSION=7
 ARG BASE_IMAGE=ubuntu \
-    RHEL_VERSION=24.04
-FROM ${BASE_IMAGE}:${RHEL_VERSION}
-ARG RHEL_VERSION=24.04
-
-RUN if [[ "${RHEL_VERSION%%.*}" -eq 7 ]]; then \
-        yum -y install dnf || exit 1; \
-    fi
+    ubuntu_version=24.04
+FROM ${BASE_IMAGE}:${ubuntu_version}
 
 ARG DANTES_SRC=https://www.inet.no/dante/files/dante-1.4.3.tar.gz
 
-RUN dnf install -y net-tools bind-utils iproute wget curl automake autoconf gcc make && \
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        autoconf \
+        automake \
+        ca-certificates \
+        curl \
+        dnsutils \
+        gcc \
+        iproute2 \
+        make \
+        net-tools \
+        wget && \
     curl -Ls -o /tmp/dante.tar.gz $DANTES_SRC && \
     tar -C /usr/src -zxvpf /tmp/dante.tar.gz && \
     cd /usr/src/dante* && \
@@ -40,9 +45,9 @@ RUN dnf install -y net-tools bind-utils iproute wget curl automake autoconf gcc 
     make install && \
     groupadd -g 8062 sockd  && \
     useradd -m -u 8062 -g sockd sockd && \
-    dnf remove -y automake autoconf gcc make && \
-    dnf clean all && \
-    rm -rf /tmp/*  
+    apt-get purge -y autoconf automake gcc make && \
+    apt-get autoremove -y && \
+    rm -rf /var/lib/apt/lists/* /tmp/*
 
 COPY optional/socksproxy/sockd.conf /etc
 COPY optional/socksproxy/run.sh /

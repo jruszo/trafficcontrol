@@ -15,9 +15,9 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-# To use this compose you should first build Traffic Ops and then copy the RPM to :
+# To use this compose you should first build Traffic Ops and then copy the DEB to :
 #
-# trafficcontrol/infrastructure/cdn-in-a-box/traffic_ops/traffic_ops.rpm
+# trafficcontrol/infrastructure/cdn-in-a-box/traffic_ops/traffic_ops.deb
 #
 #      cd trafficcontrol/infrastructure/cdn-in-a-box
 #
@@ -61,10 +61,10 @@ services:
       context: ../../
       dockerfile: infrastructure/cdn-in-a-box/traffic_ops/Dockerfile
       args:
-        # Change BASE_IMAGE to centos when RHEL_VERSION=7
+        # Base image defaults to ubuntu:24.04
         BASE_IMAGE: ${BASE_IMAGE:-ubuntu}
-        RHEL_VERSION: ${RHEL_VERSION:-24.04}
-        TRAFFIC_OPS_RPM: infrastructure/cdn-in-a-box/traffic_ops/traffic_ops.rpm
+        ubuntu_version: ${ubuntu_version:-24.04}
+        TRAFFIC_OPS_DEB: infrastructure/cdn-in-a-box/traffic_ops/traffic_ops.deb
     depends_on:
       - db
       - enroller
@@ -89,10 +89,10 @@ services:
       context: .
       dockerfile: traffic_portal/Dockerfile
       args:
-        # Change BASE_IMAGE to centos when RHEL_VERSION=7
+        # Base image defaults to ubuntu:24.04
         BASE_IMAGE: ${BASE_IMAGE:-ubuntu}
-        RHEL_VERSION: ${RHEL_VERSION:-24.04}
-        TRAFFIC_PORTAL_RPM: traffic_portal/traffic_portal.rpm
+        ubuntu_version: ${ubuntu_version:-24.04}
+        TRAFFIC_PORTAL_DEB: traffic_portal/traffic_portal.deb
     depends_on:
       - enroller
     domainname: infra.ciab.test
@@ -109,10 +109,10 @@ services:
       context: .
       dockerfile: traffic_monitor/Dockerfile
       args:
-        # Change BASE_IMAGE to centos when RHEL_VERSION=7
+        # Base image defaults to ubuntu:24.04
         BASE_IMAGE: ${BASE_IMAGE:-ubuntu}
-        RHEL_VERSION: ${RHEL_VERSION:-24.04}
-        TRAFFIC_MONITOR_RPM: traffic_monitor/traffic_monitor.rpm
+        ubuntu_version: ${ubuntu_version:-24.04}
+        TRAFFIC_MONITOR_DEB: traffic_monitor/traffic_monitor.deb
     depends_on:
       - enroller
     volumes:
@@ -129,10 +129,10 @@ services:
       context: .
       dockerfile: health/Dockerfile
       args:
-        # Change BASE_IMAGE to centos when RHEL_VERSION=7
+        # Base image defaults to ubuntu:24.04
         BASE_IMAGE: ${BASE_IMAGE:-ubuntu}
-        RHEL_VERSION: ${RHEL_VERSION:-24.04}
-        TCH_RPM: health/trafficcontrol-health-client.rpm
+        ubuntu_version: ${ubuntu_version:-24.04}
+        TCH_DEB: health/trafficcontrol-health-client.deb
     depends_on:
       - enroller
     volumes:
@@ -149,11 +149,11 @@ services:
       context: .
       dockerfile: traffic_router/Dockerfile
       args:
-        # Change BASE_IMAGE to centos when RHEL_VERSION=7
+        # Base image defaults to ubuntu:24.04
         BASE_IMAGE: ${BASE_IMAGE:-ubuntu}
-        RHEL_VERSION: ${RHEL_VERSION:-24.04}
-        TRAFFIC_ROUTER_RPM: traffic_router/traffic_router.rpm
-        TOMCAT_RPM: traffic_router/tomcat.rpm
+        ubuntu_version: ${ubuntu_version:-24.04}
+        TRAFFIC_ROUTER_DEB: traffic_router/traffic_router.deb
+        TOMCAT_DEB: traffic_router/tomcat.deb
     depends_on:
       - enroller
     domainname: infra.ciab.test
@@ -169,10 +169,10 @@ services:
       context: .
       dockerfile: traffic_stats/Dockerfile
       args:
-        # Change BASE_IMAGE to centos when RHEL_VERSION=7
+        # Base image defaults to ubuntu:24.04
         BASE_IMAGE: ${BASE_IMAGE:-ubuntu}
-        RHEL_VERSION: ${RHEL_VERSION:-24.04}
-        TRAFFIC_TS_RPM: traffic_stats/traffic_stats.rpm
+        ubuntu_version: ${ubuntu_version:-24.04}
+        TRAFFIC_TS_DEB: traffic_stats/traffic_stats.deb
     image: trafficstats
     depends_on:
       - enroller
@@ -204,10 +204,10 @@ services:
       dockerfile: infrastructure/cdn-in-a-box/cache/Dockerfile
       target: edge
       args:
-        # Change BASE_IMAGE to centos when RHEL_VERSION=7
+        # Base image defaults to ubuntu:24.04
         BASE_IMAGE: ${BASE_IMAGE:-ubuntu}
-        RHEL_VERSION: ${RHEL_VERSION:-24.04}
-        ORT_RPM: infrastructure/cdn-in-a-box/cache/trafficcontrol-cache-config.rpm
+        ubuntu_version: ${ubuntu_version:-24.04}
+        ORT_DEB: infrastructure/cdn-in-a-box/cache/trafficcontrol-cache-config.deb
     domainname: infra.ciab.test
     depends_on:
       - tchealthclient
@@ -217,7 +217,7 @@ services:
       - variables.env
     hostname: edge
     volumes:
-      # The /traffic_ops_data volume is included to set the ATS RPM version in the MID profile.
+      # The /traffic_ops_data volume is included to set the ATS DEB version in the MID profile.
       - traffic_ops_data:/traffic_ops_data
       - shared:/shared
 
@@ -228,10 +228,10 @@ services:
       dockerfile: infrastructure/cdn-in-a-box/cache/Dockerfile
       target: mid
       args:
-        # Change BASE_IMAGE to centos when RHEL_VERSION=7
+        # Base image defaults to ubuntu:24.04
         BASE_IMAGE: ${BASE_IMAGE:-ubuntu}
-        RHEL_VERSION: ${RHEL_VERSION:-24.04}
-        ORT_RPM: infrastructure/cdn-in-a-box/cache/trafficcontrol-cache-config.rpm
+        ubuntu_version: ${ubuntu_version:-24.04}
+        ORT_DEB: infrastructure/cdn-in-a-box/cache/trafficcontrol-cache-config.deb
     domainname: infra.ciab.test
     depends_on:
       - tchealthclient
@@ -241,7 +241,7 @@ services:
       - variables.env
     hostname: mid-01
     volumes:
-      # The /traffic_ops_data volume is included to set the ATS RPM version in the MID profile.
+      # The /traffic_ops_data volume is included to set the ATS DEB version in the MID profile.
       - traffic_ops_data:/traffic_ops_data
       - shared:/shared
 
@@ -252,10 +252,10 @@ services:
       dockerfile: infrastructure/cdn-in-a-box/cache/Dockerfile
       target: mid
       args:
-        # Change BASE_IMAGE to centos when RHEL_VERSION=7
+        # Base image defaults to ubuntu:24.04
         BASE_IMAGE: ${BASE_IMAGE:-ubuntu}
-        RHEL_VERSION: ${RHEL_VERSION:-24.04}
-        ORT_RPM: infrastructure/cdn-in-a-box/cache/trafficcontrol-cache-config.rpm
+        ubuntu_version: ${ubuntu_version:-24.04}
+        ORT_DEB: infrastructure/cdn-in-a-box/cache/trafficcontrol-cache-config.deb
     domainname: infra.ciab.test
     depends_on:
       - tchealthclient
@@ -265,7 +265,7 @@ services:
       - variables.env
     hostname: mid-02
     volumes:
-      # The /traffic_ops_data volume is included to set the ATS RPM version in the MID profile.
+      # The /traffic_ops_data volume is included to set the ATS DEB version in the MID profile.
       - traffic_ops_data:/traffic_ops_data
       - shared:/shared
 

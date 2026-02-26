@@ -16,7 +16,7 @@
 # under the License.
 
 ARG BASE_IMAGE=ubuntu \
-    RHEL_VERSION=24.04 \
+    ubuntu_version=24.04 \
     GO_VERSION=1.26.0
 
 FROM golang:${GO_VERSION}-alpine AS vstats-builder
@@ -25,22 +25,33 @@ COPY infrastructure/cdn-in-a-box/varnish/vstats.go /
 
 RUN go build -o /vstats /vstats.go
 
-FROM ${BASE_IMAGE}:${RHEL_VERSION} AS common-varnish-cache-config-layers
-ARG RHEL_VERSION=24.04
-# Makes RHEL_VERSION available at runtime
-ENV RHEL_VERSION="$RHEL_VERSION"
+FROM ${BASE_IMAGE}:${ubuntu_version} AS common-varnish-cache-config-layers
 
-RUN dnf module disable varnish -y && yum install -y epel-release
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        ca-certificates \
+        curl \
+        dnsutils \
+        findutils \
+        gettext \
+        git \
+        iproute2 \
+        jq \
+        libkyotocabinet16v5 \
+        logrotate \
+        ncat \
+        net-tools \
+        openssl \
+        perl \
+        dpkg && \
+    rm -rf /var/lib/apt/lists/*
 
-RUN curl -s https://packagecloud.io/install/repositories/varnishcache/varnish73/script.rpm.sh | bash
-
-RUN yum install varnish-7.3.0 -y
-
-RUN yum install -y hitch-1.5.2
-
-RUN dnf install -y bind-utils kyotocabinet-libs initscripts iproute net-tools nmap-ncat gettext autoconf automake libtool gcc-c++ cronie glibc-devel openssl-devel git perl && \
-    dnf install -y jq logrotate findutils && \
-    dnf clean all
+RUN curl -s https://packagecloud.io/install/repositories/varnishcache/varnish73/script.deb.sh | bash && \
+    apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        hitch \
+        varnish && \
+    rm -rf /var/lib/apt/lists/*
 
 
 COPY infrastructure/cdn-in-a-box/varnish/run.sh infrastructure/cdn-in-a-box/traffic_ops/to-access.sh infrastructure/cdn-in-a-box/enroller/server_template.json /
@@ -52,10 +63,10 @@ COPY infrastructure/cdn-in-a-box/dns/set-dns.sh \
 
 COPY infrastructure/cdn-in-a-box/varnish/systemctl.sh /usr/bin/systemctl
 
-ARG ORT_RPM=infrastructure/cdn-in-a-box/cache/trafficcontrol-cache-config.rpm
-COPY $ORT_RPM /
-RUN rpm -Uvh /$(basename $ORT_RPM) &&\
-    rm /$(basename $ORT_RPM)
+ARG ORT_DEB=infrastructure/cdn-in-a-box/cache/trafficcontrol-cache-config.deb
+COPY $ORT_DEB /
+RUN dpkg -i --force-depends /$(basename $ORT_DEB) &&\
+    rm /$(basename $ORT_DEB)
 
 COPY infrastructure/cdn-in-a-box/varnish/traffic_ops_ort.crontab /etc/cron.d/traffic_ops_ort-cron-template
 
@@ -71,4 +82,3 @@ COPY infrastructure/cdn-in-a-box/mid/init.d/ /opt/init.d/
 FROM common-varnish-cache-config-layers AS edge
 ENV CACHE_TYPE=edge
 COPY infrastructure/cdn-in-a-box/edge/init.d/ /opt/init.d/
-

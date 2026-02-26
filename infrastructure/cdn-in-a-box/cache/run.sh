@@ -45,14 +45,14 @@ set_trafficserver_parameters() {
 		mid) ats_profile=/traffic_ops_data/profiles/020-ATS_MID_TIER_CACHE.json;;
 	esac
 	local trafficserver_version
-	trafficserver_version="$(rpm -q --qf '%{version}-%{release}.%{arch}\n' trafficserver)"
-	logfile_dir="$(rpm -ql trafficserver | grep '/var/log/trafficserver$')"
+	trafficserver_version="$(dpkg-query -W -f='${Version}\n' trafficserver)"
+	logfile_dir="$(dpkg-query -L trafficserver | grep '/var/log/trafficserver$')"
 
 	until [[ -s "$ats_profile" ]]; do
 		echo "Waiting for ${ats_profile} to exist..."
 		sleep 3
 	done
-	set_profile_parameter "$ats_profile" package trafficserver "$trafficserver_version" 'trafficserver RPM version'
+	set_profile_parameter "$ats_profile" package trafficserver "$trafficserver_version" 'trafficserver package version'
 	set_profile_parameter "$ats_profile" records.config 'CONFIG proxy.config.log.logfile_dir' "STRING ${logfile_dir}" 'trafficserver logging directory'
 
 }

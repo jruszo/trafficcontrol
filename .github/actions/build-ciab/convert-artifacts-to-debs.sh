@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
 # distributed with this work for additional information
@@ -14,30 +15,34 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
----
 
-services:
+set -o errexit -o nounset -o pipefail
+trap 'echo "Error on line ${LINENO} of ${0}"; exit 1' ERR
 
-  trafficportalv2:
-    build:
-      context: .
-      dockerfile: optional/traffic_portal_v2/Dockerfile
-      args:
-        # Base image defaults to ubuntu:24.04
-        BASE_IMAGE: ${BASE_IMAGE:-ubuntu}
-        ubuntu_version: ${ubuntu_version:-24.04}
-        TRAFFIC_PORTAL_DEB: optional/traffic_portal_v2/traffic_portal_v2.deb
-    depends_on:
-      - enroller
-    domainname: infra.ciab.test
-    env_file:
-      - variables.env
-    hostname: trafficportalv2
-    image: trafficportalv2
-    volumes:
-      - shared:/shared
+workspace="${GITHUB_WORKSPACE:-$(pwd)}"
+dist_dir="${workspace}/dist"
 
-volumes:
-  shared:
-    external: false
-  junit:
+if [[ ! -d "${dist_dir}" ]]; then
+	echo "dist directory ${dist_dir} does not exist"
+	exit 1
+fi
+
+shopt -s nullglob
+rpm_files=("${dist_dir}"/*.rpm)
+if (( ${#rpm_files[@]} == 0 )); then
+	echo "No RPM artifacts found in ${dist_dir}; nothing to convert."
+	exit 0
+fi
+
+sudo apt-get update
+sudo apt-get install -y --no-install-recommends alien fakeroot
+
+pushd "${dist_dir}" >/dev/null
+for rpm_file in *.rpm; do
+	if [[ "${rpm_file}" == *.src.rpm ]]; then
+		continue
+	fi
+	fakeroot alien --to-deb --keep-version "${rpm_file}"
+done
+rm -f -- *.rpm
+popd >/dev/null

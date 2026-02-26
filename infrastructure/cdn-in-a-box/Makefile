@@ -21,15 +21,11 @@
 # Based on Ubuntu 24.04
 ############################################################
 
-ifeq ($(RHEL_VERSION),)
-	export RHEL_VERSION := 24.04
+ifeq ($(RPM_VERSION),)
+	export RPM_VERSION := 8
 endif
 
-ifeq ($(shell echo $(RHEL_VERSION) | grep -Eo '^[0-9]+'),7)
-	export BASE_IMAGE := centos
-else
-	BASE_IMAGE := ubuntu
-endif
+BASE_IMAGE := ubuntu
 
 CIAB_DIR_RELATIVE := $(dir $(MAKEFILE_LIST))
 CIAB_DIR_ABSOLUTE := $(shell cd $(CIAB_DIR_RELATIVE) && pwd)
@@ -42,7 +38,7 @@ DOCKER_COMPOSE := $(shell \
 	fi)
 
 PKG_COMMAND := $(TC_DIR)/pkg
-PKG_FLAGS := -v -$(RHEL_VERSION)
+PKG_FLAGS := -v -$(RPM_VERSION)
 BUILD_SUFFIX := _build
 BUILD_NUMBER := $(shell bash -c ' \
 	set -o errexit -o pipefail; \
@@ -59,19 +55,19 @@ BUILD_NUMBER := $(shell bash -c ' \
 	output+=".$$(git rev-parse --short=8 HEAD)"; \
 	echo "$$output"' || \
 	cat $(TC_DIR)/BUILD_NUMBER)
-BUILD_ARCH   := $(shell docker create --name=ciab-get-$(BASE_IMAGE)-$(RHEL_VERSION)-arch --rm $(BASE_IMAGE):$(RHEL_VERSION) rpm --eval %_arch >/dev/null 2>&1 || true && docker start --attach ciab-get-$(BASE_IMAGE)-$(RHEL_VERSION)-arch )
+BUILD_ARCH   := $(shell uname -m | sed -E 's/amd64/x86_64/; s/arm64/aarch64/')
 TC_VERSION := $(shell cat "$(TC_DIR)/VERSION")
 TOMCAT_VERSION := $(shell grep '^\s*TOMCAT_VERSION=' "$(TC_DIR)/.env"  | cut -d= -f2)
 ATS_VERSION := $(shell $(CIAB_DIR_RELATIVE)bin/ats-version.sh)
-ifeq ($(RHEL_VERSION),7)
+ifeq ($(RPM_VERSION),7)
 # The commit hash in `git describe` is only 7 characters in CentOS 7's git 1.8
 ATS_VERSION := $(shell echo "$(ATS_VERSION)" | sed -E 's/^(.*-[0-9]+\.[0-9a-f]{7})[0-9a-f]*/\1/')
 endif
 
-SPECIAL_SAUCE := $(TC_VERSION)-$(BUILD_NUMBER).el$(RHEL_VERSION).$(BUILD_ARCH).rpm
-SPECIAL_SAUCE_NOARCH := $(TC_VERSION)-$(BUILD_NUMBER).el$(RHEL_VERSION).noarch.rpm
-SPECIAL_SEASONING := $(TOMCAT_VERSION)-1.el$(RHEL_VERSION).noarch.rpm
-SPECIAL_SYRUP := $(ATS_VERSION).el$(RHEL_VERSION).$(BUILD_ARCH).rpm
+SPECIAL_SAUCE := $(TC_VERSION)-$(BUILD_NUMBER).el$(RPM_VERSION).$(BUILD_ARCH).rpm
+SPECIAL_SAUCE_NOARCH := $(TC_VERSION)-$(BUILD_NUMBER).el$(RPM_VERSION).noarch.rpm
+SPECIAL_SEASONING := $(TOMCAT_VERSION)-1.el$(RPM_VERSION).noarch.rpm
+SPECIAL_SYRUP := $(ATS_VERSION).el$(RPM_VERSION).$(BUILD_ARCH).rpm
 
 ATS_SOURCE := $(wildcard $(TC_DIR)/cache-config/testing/docker/trafficserver/**)
 TO_SOURCE := $(wildcard $(TC_DIR)/traffic_ops/**)
