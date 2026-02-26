@@ -34,6 +34,17 @@ on:
       - traffic_ops/**.go
       - '!**_test.go'
       - traffic_control/clients/python/**.py
+  pull_request:
+    branches: [ master ]
+    paths:
+      - .github/actions/todb-init/**
+      - .github/actions/to-api-contract-tests/**
+      - .github/workflows/to.api.contract.tests.yml
+      - traffic_ops/testing/api_contract/**
+      - lib/go-tc/**.go
+      - traffic_ops/**.go
+      - '!**_test.go'
+      - traffic_control/clients/python/**.py
 jobs:
 
   APIv4ContractTests:
@@ -55,7 +66,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@master
     - name: Cache Alpine Docker image
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: ${{ github.workspace }}/docker-images
         key: docker-images/alpine@${{ env.ALPINE_VERSION }}.tar.gz

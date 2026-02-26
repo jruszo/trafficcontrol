@@ -28,6 +28,8 @@ import (
 	"strings"
 	"time"
 
+	influx "github.com/influxdata/influxdb/client/v2"
+	"github.com/jmoiron/sqlx"
 	"github.com/jruszo/trafficcontrol/v8/lib/go-log"
 	"github.com/jruszo/trafficcontrol/v8/lib/go-rfc"
 	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
@@ -35,8 +37,6 @@ import (
 	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/config"
 	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/tenant"
 	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/trafficvault"
-	influx "github.com/influxdata/influxdb/client/v2"
-	"github.com/jmoiron/sqlx"
 )
 
 const createChangeLogQuery = `

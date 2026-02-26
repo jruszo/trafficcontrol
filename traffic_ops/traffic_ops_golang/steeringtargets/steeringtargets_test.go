@@ -22,10 +22,10 @@ package steeringtargets
 import (
 	"testing"
 
+	"github.com/jmoiron/sqlx"
 	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
 	"github.com/jruszo/trafficcontrol/v8/lib/go-util"
 	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/api"
-	"github.com/jmoiron/sqlx"
 	"gopkg.in/DATA-DOG/go-sqlmock.v1"
 )
 

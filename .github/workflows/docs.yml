@@ -23,6 +23,14 @@ on:
     branches: [ master ]
     paths:
       - docs/source/**
+      - docs/requirements.txt
+      - .github/workflows/docs.yml
+      - traffic_control/clients/python/**.py
+  pull_request:
+    branches: [ master ]
+    paths:
+      - docs/source/**
+      - docs/requirements.txt
       - .github/workflows/docs.yml
       - traffic_control/clients/python/**.py
 jobs:
@@ -31,18 +39,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-      - name: Checkout sphinx-action
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          repository: ammaraskar/sphinx-action
-          ref: 35082eb35b69713fe335801c4d5846a4cc3c91ff # Mon Apr 20 15:25:33 2020 -0700 Fix travis for docker image change
-          path: .github/actions/sphinx-action
+          python-version: "3.12"
+      - name: Install Documentation Dependencies
+        run: |
+          set -o errexit -o nounset -o pipefail
+          sudo apt-get update
+          sudo apt-get install -y pandoc
+          python -m pip install --upgrade pip
+          python -m pip install -r docs/requirements.txt
       - name: Build Documentation
-        uses: ./.github/actions/sphinx-action
-        with:
-          docs-folder: "docs/"
-          pre-build-command: "apt-get install -y pandoc"
+        run: |
+          set -o errexit -o nounset -o pipefail
+          make -C docs html
       - uses: actions/upload-artifact@v4
         with:
           name: HTMLDocumentation

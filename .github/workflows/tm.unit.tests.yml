@@ -35,6 +35,18 @@ on:
       - '!**_test.go'
       - 'traffic_monitor/**_test.go'
       - vendor/modules.txt
+  pull_request:
+    branches: [ master ]
+    paths:
+      - .github/actions/go-test/**
+      - .github/workflows/tm.unit.tests.yml
+      - go.mod
+      - go.sum
+      - GO_VERSION
+      - '**.go'
+      - '!**_test.go'
+      - 'traffic_monitor/**_test.go'
+      - vendor/modules.txt
 jobs:
   traffic_monitor_unit_tests:
     if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}
@@ -44,7 +56,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
       - name: Cache Alpine Docker image
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ${{ github.workspace }}/docker-images
           key: docker-images/alpine@${{ env.ALPINE_VERSION }}.tar.gz

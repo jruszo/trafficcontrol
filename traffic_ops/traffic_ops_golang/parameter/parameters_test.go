@@ -23,11 +23,11 @@ import (
 	"testing"
 	"time"
 
+	"github.com/jmoiron/sqlx"
 	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
 	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/api"
 	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/auth"
 	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/test"
-	"github.com/jmoiron/sqlx"
 	sqlmock "gopkg.in/DATA-DOG/go-sqlmock.v1"
 
 	"encoding/json"

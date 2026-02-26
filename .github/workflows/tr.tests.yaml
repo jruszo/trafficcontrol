@@ -35,6 +35,11 @@ on:
     paths:
       - .github/workflows/tr.tests.yaml
       - traffic_router/**
+  pull_request:
+    branches: [ master ]
+    paths:
+      - .github/workflows/tr.tests.yaml
+      - traffic_router/**
 jobs:
   tests:
     if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}
@@ -46,6 +51,12 @@ jobs:
         run: cp .env '${{ github.env }}'
       - name: Install Java dependencies
         run: sudo apt -y install libtcnative-1 maven
+      - name: Set up Java 11
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "11"
+          cache: maven
       - name: Cache local Maven repository
         uses: actions/cache@v3
         with:

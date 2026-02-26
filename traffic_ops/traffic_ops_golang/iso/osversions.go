@@ -27,10 +27,10 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/jmoiron/sqlx"
 	"github.com/jruszo/trafficcontrol/v8/lib/go-log"
 	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
 	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/api"
-	"github.com/jmoiron/sqlx"
 )
 
 // GetOSVersions returns a map of available Operating System (OS) versions for ISO generation,

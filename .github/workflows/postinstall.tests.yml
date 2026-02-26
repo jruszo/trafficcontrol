@@ -25,6 +25,12 @@ on:
       - .github/workflows/postinstall.tests.yml
       - traffic_ops/install/bin/_postinstall
       - traffic_ops/install/bin/postinstall.test.sh
+  pull_request:
+    branches: [ master ]
+    paths:
+      - .github/workflows/postinstall.tests.yml
+      - traffic_ops/install/bin/_postinstall
+      - traffic_ops/install/bin/postinstall.test.sh
 env:
   PYTHON3_VERSION: '3.6'
 

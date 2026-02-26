@@ -30,12 +30,12 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/jmoiron/sqlx"
 	"github.com/jruszo/trafficcontrol/v8/lib/go-log"
 	"github.com/jruszo/trafficcontrol/v8/lib/go-rfc"
 	"github.com/jruszo/trafficcontrol/v8/lib/go-util"
 	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/api"
 	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/auth"
-	"github.com/jmoiron/sqlx"
 )
 
 // Various directories and filenames related to ISO generation.

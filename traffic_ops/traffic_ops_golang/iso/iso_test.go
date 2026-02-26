@@ -33,10 +33,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/jmoiron/sqlx"
 	"github.com/jruszo/trafficcontrol/v8/lib/go-rfc"
 	libtc "github.com/jruszo/trafficcontrol/v8/lib/go-tc"
 	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/auth"
-	"github.com/jmoiron/sqlx"
 	"gopkg.in/DATA-DOG/go-sqlmock.v1"
 )
 

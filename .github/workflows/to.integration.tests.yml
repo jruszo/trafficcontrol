@@ -39,6 +39,22 @@ on:
       - traffic_ops/traffic_ops_golang/**.go
       - vendor/**.go
       - vendor/modules.txt
+  pull_request:
+    branches: [ master ]
+    paths:
+      - .github/actions/todb-init/**
+      - .github/actions/tvdb-init/**
+      - .github/actions/to-integration-tests/**
+      - .github/workflows/to.integration.tests.yml
+      - go.mod
+      - go.sum
+      - GO_VERSION
+      - infrastructure/cdn-in-a-box/optional/traffic_vault/**
+      - traffic_ops/*client/**.go
+      - traffic_ops/testing/api/**.go
+      - traffic_ops/traffic_ops_golang/**.go
+      - vendor/**.go
+      - vendor/modules.txt
 jobs:
 
   APIv3Tests:
@@ -74,7 +90,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@master
     - name: Cache Alpine Docker image
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: ${{ github.workspace }}/docker-images
         key: docker-images/alpine@${{ env.ALPINE_VERSION }}.tar.gz
@@ -151,7 +167,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@master
     - name: Cache Alpine Docker image
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: ${{ github.workspace }}/docker-images
         key: docker-images/alpine@${{ env.ALPINE_VERSION }}.tar.gz
@@ -230,7 +246,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@master
     - name: Cache Alpine Docker image
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: ${{ github.workspace }}/docker-images
         key: docker-images/alpine@${{ env.ALPINE_VERSION }}.tar.gz

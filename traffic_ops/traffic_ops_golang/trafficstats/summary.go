@@ -23,9 +23,9 @@ import (
 	"errors"
 	"fmt"
 
+	influx "github.com/influxdata/influxdb/client/v2"
 	"github.com/jruszo/trafficcontrol/v8/lib/go-log"
 	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
-	influx "github.com/influxdata/influxdb/client/v2"
 )
 
 func getSummary(db string, q influx.Query, client *influx.Client) (*tc.TrafficStatsSummary, error) {

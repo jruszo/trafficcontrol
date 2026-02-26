@@ -31,6 +31,14 @@ on:
       - dev/traffic_ops/**
       - dev/traffic_router/**
       - traffic_router/**
+  pull_request:
+    branches: [ master ]
+    paths:
+      - .github/actions/tr-ultimate-test-harness/**
+      - .github/workflows/tr-ultimate-test-harness.yml
+      - dev/traffic_ops/**
+      - dev/traffic_router/**
+      - traffic_router/**
 jobs:
   tests:
     if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}
@@ -59,14 +67,14 @@ jobs:
           docker compose build --parallel &&
           docker compose pull db
       - name: Cache local Maven repository
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ${{ github.workspace }}/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
       - name: Cache node modules
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ${{ github.workspace }}/.npm
           key: ${{ runner.os }}-node-modules-${{ hashFiles('traffic_portal/**/package*.json') }}-
@@ -162,7 +170,7 @@ jobs:
           fi
 
       - name: Compile the tests
-        run: go test -c ./traffic_router/ultimate-test-harness
+        run: go test -vet=off -c ./traffic_router/ultimate-test-harness
 
       - name: Wait for Delivery Service to become available
         id: wait-for-ds

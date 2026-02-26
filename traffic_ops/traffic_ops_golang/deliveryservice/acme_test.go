@@ -29,10 +29,10 @@ import (
 	"encoding/pem"
 	"testing"
 
+	"github.com/go-acme/lego/challenge/dns01"
 	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
 	"github.com/jruszo/trafficcontrol/v8/lib/go-util"
 	"github.com/jruszo/trafficcontrol/v8/traffic_ops/traffic_ops_golang/config"
-	"github.com/go-acme/lego/challenge/dns01"
 
 	"github.com/jmoiron/sqlx"
 	"gopkg.in/DATA-DOG/go-sqlmock.v1"

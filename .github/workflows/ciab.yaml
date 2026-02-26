@@ -56,6 +56,37 @@ on:
       - 'dev/**'
       - 'Makefile'
       - 'cache-config/Makefile'
+  pull_request:
+    branches: [ master ]
+    paths-ignore:
+      - '*.*'
+      - '**/.gitignore'
+      - '**/*.md'
+      - '**/test/**'
+      - 'blueprints/**'
+      - '!cache-config/testing/docker/docker-compose-ats-build.yml'
+      - '!cache-config/testing/docker/trafficserver/**'
+      - 'docs/**'
+      - 'experimental/**'
+      - '.github/**'
+      - '!.github/actions/build-ciab/**'
+      - '!.github/actions/build-rpms/**'
+      - '!.github/actions/repo-info/**'
+      - '!.github/actions/run-ciab/**'
+      - '!infrastructure/cdn-in-a-box/optional/**'
+      - '!.github/workflows/ciab.yaml'
+      - 'infrastructure/ansible/**'
+      - 'LICENSE'
+      - 'licenses/**'
+      - 'misc/**'
+      - 'NOTICE'
+      - 'traffic_control/java/**'
+      - 'traffic_portal/**.spec.js'
+      - 'cache-config/testing/**'
+      - 'traffic_ops/testing/**'
+      - 'dev/**'
+      - 'Makefile'
+      - 'cache-config/Makefile'
 jobs:
   traffic_monitor:
     if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}

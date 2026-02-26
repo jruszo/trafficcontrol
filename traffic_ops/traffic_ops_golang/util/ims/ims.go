@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/jmoiron/sqlx"
 	"github.com/jruszo/trafficcontrol/v8/lib/go-log"
 	"github.com/jruszo/trafficcontrol/v8/lib/go-rfc"
 	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
-	"github.com/jmoiron/sqlx"
 )
 
 /*

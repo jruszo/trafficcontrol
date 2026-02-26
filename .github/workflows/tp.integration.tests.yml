@@ -38,6 +38,20 @@ on:
       - traffic_ops/app/db/**
       - traffic_ops/traffic_ops_golang/**.go
       - traffic_portal/**
+  pull_request:
+    branches: [ master ]
+    paths:
+      - .github/actions/todb-init/**
+      - .github/actions/tvdb-init/**
+      - .github/actions/tp-integration-tests/**
+      - .github/workflows/tp.integration.tests.yml
+      - GO_VERSION
+      - '!**_test.go'
+      - infrastructure/cdn-in-a-box/optional/traffic_vault/**
+      - lib/go-tc/**
+      - traffic_ops/app/db/**
+      - traffic_ops/traffic_ops_golang/**.go
+      - traffic_portal/**
 jobs:
   unit-tests:
     if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}

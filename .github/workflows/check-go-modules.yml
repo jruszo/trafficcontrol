@@ -28,6 +28,15 @@ on:
       - go.sum
       - GO_VERSION
       - vendor/**
+  pull_request:
+    branches: [ master ]
+    paths:
+      - .github/check-go-modules/**
+      - .github/workflows/check-go-modules.yml
+      - go.mod
+      - go.sum
+      - GO_VERSION
+      - vendor/**
 jobs:
   check-go-modules:
     if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}

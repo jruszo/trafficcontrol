@@ -30,10 +30,10 @@ import (
 	"sync"
 	"time"
 
+	"github.com/hydrogen18/stoppableListener"
 	"github.com/jruszo/trafficcontrol/v8/lib/go-log"
 	"github.com/jruszo/trafficcontrol/v8/lib/go-rfc"
 	"github.com/jruszo/trafficcontrol/v8/lib/go-tc"
-	"github.com/hydrogen18/stoppableListener"
 )
 
 // GetCommonAPIData calculates and returns API data common to most endpoints

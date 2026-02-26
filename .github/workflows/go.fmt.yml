@@ -30,6 +30,13 @@ on:
       - .github/workflows/go.fmt.yml
       - GO_VERSION
       - "**.go"
+  pull_request:
+    branches: [ master ]
+    paths:
+      - .github/actions/go-fmt
+      - .github/workflows/go.fmt.yml
+      - GO_VERSION
+      - "**.go"
 jobs:
   format:
     if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}
@@ -39,7 +46,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@master
     - name: Cache Alpine Docker image
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: ${{ github.workspace }}/docker-images
         key: docker-images/alpine@${{ env.ALPINE_VERSION }}.tar.gz
