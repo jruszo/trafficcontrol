@@ -13,7 +13,7 @@
 #
 # shellcheck shell=ash
 trap 'exit_code=$?; [ $exit_code -ne 0 ] && echo "Error on line ${LINENO} of ${0}" >/dev/stderr; exit $exit_code' EXIT;
-set -o errexit -o nounset -o pipefail -o xtrace;
+set -o errexit -o nounset -o pipefail;
 
 #----------------------------------------
 importFunctions() {

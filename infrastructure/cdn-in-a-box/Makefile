@@ -47,7 +47,7 @@ PKG_COMMAND := $(TC_DIR)/pkg
 PKG_FLAGS := -v -$(RHEL_VERSION)
 BUILD_SUFFIX := _build
 BUILD_NUMBER := $(shell bash -c ' \
-	set -o errexit -o pipefail -o xtrace; \
+	set -o errexit -o pipefail; \
 	git rev-parse --is-inside-work-tree >/dev/null; \
 	output="$$(git describe \
 		--long \
