@@ -32,8 +32,8 @@ services:
       dockerfile: infrastructure/cdn-in-a-box/traffic_portal_integration_test/Dockerfile
       args:
         # Change BASE_IMAGE to centos when RHEL_VERSION=7
-        BASE_IMAGE: ${BASE_IMAGE:-rockylinux}
-        RHEL_VERSION: ${RHEL_VERSION:-8}
+        BASE_IMAGE: ${BASE_IMAGE:-ubuntu}
+        RHEL_VERSION: ${RHEL_VERSION:-24.04}
     env_file:
       - variables.env
     environment:

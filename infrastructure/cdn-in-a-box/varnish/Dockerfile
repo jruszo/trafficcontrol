@@ -15,8 +15,8 @@
 # specific language governing permissions and limitations
 # under the License.
 
-ARG BASE_IMAGE=rockylinux \
-    RHEL_VERSION=8 \
+ARG BASE_IMAGE=ubuntu \
+    RHEL_VERSION=24.04 \
     GO_VERSION=1.26.0
 
 FROM golang:${GO_VERSION}-alpine AS vstats-builder
@@ -26,7 +26,7 @@ COPY infrastructure/cdn-in-a-box/varnish/vstats.go /
 RUN go build -o /vstats /vstats.go
 
 FROM ${BASE_IMAGE}:${RHEL_VERSION} AS common-varnish-cache-config-layers
-ARG RHEL_VERSION=8
+ARG RHEL_VERSION=24.04
 # Makes RHEL_VERSION available at runtime
 ENV RHEL_VERSION="$RHEL_VERSION"
 

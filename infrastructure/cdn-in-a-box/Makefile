@@ -18,19 +18,17 @@
 ############################################################
 # Dockerfile to build Edge-Tier Cache container images for
 # Apache Traffic Control
-# Based on Rocky Linux 8
+# Based on Ubuntu 24.04
 ############################################################
 
 ifeq ($(RHEL_VERSION),)
-	export RHEL_VERSION := 8
-else
-	RHEL_VERSION := $(shell echo $(RHEL_VERSION) | cut -f1 -d.)
+	export RHEL_VERSION := 24.04
 endif
 
 ifeq ($(shell echo $(RHEL_VERSION) | grep -Eo '^[0-9]+'),7)
 	export BASE_IMAGE := centos
 else
-	BASE_IMAGE := rockylinux
+	BASE_IMAGE := ubuntu
 endif
 
 CIAB_DIR_RELATIVE := $(dir $(MAKEFILE_LIST))

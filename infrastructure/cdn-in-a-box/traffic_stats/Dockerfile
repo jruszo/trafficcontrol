@@ -20,10 +20,10 @@
 ############################################################
 
     # Change BASE_IMAGE to centos when RHEL_VERSION=7
-ARG BASE_IMAGE=rockylinux \
-    RHEL_VERSION=8
+ARG BASE_IMAGE=ubuntu \
+    RHEL_VERSION=24.04
 FROM ${BASE_IMAGE}:${RHEL_VERSION} AS trafficstats-dependencies
-ARG RHEL_VERSION=8
+ARG RHEL_VERSION=24.04
 
 RUN if [[ "${RHEL_VERSION%%.*}" -eq 7 ]]; then \
         yum -y install dnf || exit 1; \
