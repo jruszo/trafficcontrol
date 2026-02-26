@@ -19,8 +19,8 @@ ARG GO_VERSION
 FROM golang:${GO_VERSION} AS get-go
 FROM debian:bullseye AS enroller-dependencies
 
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
+RUN apt-get -o Acquire::Retries=5 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update && \
+    apt-get -o Acquire::Retries=5 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y --no-install-recommends \
         ca-certificates \
         git \
         wget && \
@@ -52,7 +52,8 @@ RUN set -o errexit -o nounset; \
     go mod vendor -v; \
     gcflags= ldflags=; \
     if [ "$ENROLLER_DEBUG_BUILD" = true ]; then \
-        apt-get install -y --no-install-recommends gcc libstdc++-9-dev; \
+        apt-get -o Acquire::Retries=5 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update; \
+        apt-get -o Acquire::Retries=5 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y --no-install-recommends gcc libstdc++-9-dev; \
         echo 'Building Enroller without optimization or inlining'; \
         gcflags='all=-N -l'; \
     else \
@@ -66,7 +67,8 @@ RUN go install github.com/go-delve/delve/cmd/dlv@v1.26.0
 
 FROM debian:bullseye AS enroller
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get -o Acquire::Retries=5 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update && \
+    apt-get -o Acquire::Retries=5 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y --fix-missing --no-install-recommends \
         netcat curl dnsutils net-tools \
         #to-access dependencies
         jq gettext && \

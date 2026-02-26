@@ -20,8 +20,8 @@ FROM influxdb:1.7.3
 RUN rm -f /etc/apt/sources.list.d/* && \
     echo "deb [trusted=yes check-valid-until=no] http://archive.debian.org/debian stretch main" > /etc/apt/sources.list
 
-RUN apt-get -o Acquire::Check-Valid-Until=false -o Acquire::AllowInsecureRepositories=true update && \
-    apt-get install -y --allow-unauthenticated --no-install-recommends \
+RUN apt-get -o Acquire::Check-Valid-Until=false -o Acquire::AllowInsecureRepositories=true -o Acquire::Retries=5 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update && \
+    apt-get -o Acquire::Retries=5 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y --allow-unauthenticated --no-install-recommends --fix-missing \
 			dnsutils \
 			gettext-base \
 			# server enrollment uses jq

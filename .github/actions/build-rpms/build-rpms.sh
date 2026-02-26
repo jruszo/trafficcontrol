@@ -16,7 +16,7 @@
 # specific language governing permissions and limitations
 # under the License.
 
-set -o errexit -o nounset -o pipefail -o xtrace
+set -o errexit -o nounset -o pipefail
 trap 'echo "Error on line ${LINENO} of ${0}"; exit 1' ERR
 
 export DOCKER_BUILDKIT=1 COMPOSE_DOCKER_CLI_BUILD=1
