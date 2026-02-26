@@ -532,7 +532,9 @@ build_traffic_router_deb() {
 	local tr_dir="${TC_DIR}/traffic_router"
 	(
 		cd "${tr_dir}"
-		mvn -B -Dmaven.test.skip=true -pl shared,connector,configuration,geolocation,core -am clean package
+		# Install reactor artifacts to the local Maven repo so the follow-up dependency
+		# copy in core does not attempt to resolve sibling modules from remote repos.
+		mvn -B -Dmaven.test.skip=true -pl shared,connector,configuration,geolocation,core -am clean install
 		(
 			cd core
 			mvn -B -Dmaven.test.skip=true dependency:copy-dependencies -DincludeScope=runtime -DoutputDirectory=target/dependency
