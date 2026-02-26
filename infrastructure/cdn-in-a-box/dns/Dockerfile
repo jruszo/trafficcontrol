@@ -22,11 +22,11 @@ ENV BIND_USER=bind \
 
 RUN echo 'APT::Install-Recommends 0;' >> /etc/apt/apt.conf.d/01norecommends \
  && echo 'APT::Install-Suggests 0;' >> /etc/apt/apt.conf.d/01norecommends \
- && apt-get update \
- && DEBIAN_FRONTEND=noninteractive apt-get install -y vim.tiny wget net-tools sudo net-tools ca-certificates unzip apt-transport-https \
+ && apt-get -o Acquire::Retries=5 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update \
+ && DEBIAN_FRONTEND=noninteractive apt-get -o Acquire::Retries=5 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y vim.tiny wget net-tools sudo net-tools ca-certificates unzip apt-transport-https \
  && rm -rf /var/lib/apt/lists/* && rm -rf /etc/apt/apt.conf.d/docker-gzip-indexes \
- && apt-get update \
- && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+ && apt-get -o Acquire::Retries=5 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update \
+ && DEBIAN_FRONTEND=noninteractive apt-get -o Acquire::Retries=5 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y --fix-missing \
         #to-access dependencies
         jq gettext \
         bind9=${BIND_VERSION}* bind9-host=${BIND_VERSION}* dnsutils \

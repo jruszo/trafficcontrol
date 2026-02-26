@@ -16,6 +16,7 @@
 const child_process = require("child_process");
 const fs = require("fs");
 const path = require("path");
+const dockerBuildProgress = process.env.CIAB_DOCKER_BUILD_PROGRESS || "tty";
 const spawnOptions = {
 	stdio: "inherit",
 	stderr: "inherit"
@@ -23,6 +24,7 @@ const spawnOptions = {
 const dockerCompose = ["docker", "compose", "-f", "docker-compose.yml", "-f", "docker-compose.readiness.yml"];
 process.env.DOCKER_BUILDKIT = 1;
 process.env.COMPOSE_DOCKER_CLI_BUILD = 1;
+process.env.BUILDKIT_PROGRESS = dockerBuildProgress;
 
 function moveRPMs() {
 	process.chdir(`${process.env.GITHUB_WORKSPACE}/dist`);
@@ -50,4 +52,4 @@ function runProcess(...commandArguments) {
 moveRPMs();
 process.chdir(`${process.env.GITHUB_WORKSPACE}/infrastructure/cdn-in-a-box`);
 runProcess("make"); // Place the RPMs for docker compose build. All RPMs should have already been built.
-runProcess(...dockerCompose, "build", "--parallel");
+runProcess(...dockerCompose, "build", "--parallel", `--progress=${dockerBuildProgress}`);
