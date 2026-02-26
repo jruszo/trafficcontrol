@@ -17,7 +17,7 @@ run:
   timeout: 2m
   tests: true
   skip-dirs:
-    - ^rpmbuild.*
+    - ^debbuild.*
   skip-dirs-use-default: true
 
   output:

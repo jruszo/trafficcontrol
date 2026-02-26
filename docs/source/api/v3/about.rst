@@ -47,9 +47,9 @@ Response Structure
 :commitHash:    The `Git <https://git-scm.com/>`_ commit hash that Traffic Ops was built at.
 :commits:       The number of commits in the branch of the commit that Traffic Ops was built at, including that commit. Calculated by extracting the commit count from running ``git describe --tags --long``.
 :goVersion:     The version of `Go <https://golang.org/>`_ that was used to build Traffic Ops.
-:release:       The major version of CentOS or Red Hat Enterprise Linux that the build environment was running.
-:name:          The human-readable name of the `RPM <https://rpm-packaging-guide.github.io/#packaging-software>`_ file.
-:RPMVersion:    The entire name of the RPM file, excluding the file extension.
+:release:       The major version of ubuntu or Red Hat Enterprise Linux that the build environment was running.
+:name:          The human-readable name of the `DEB <https://deb-packaging-guide.github.io/#packaging-software>`_ file.
+:debVersion:    The entire name of the DEB file, excluding the file extension.
 :Version:       The version of :abbr:`ATC (Apache Traffic Control)` that this version of Traffic Control belongs to.
 
 .. code-block:: http
@@ -74,6 +74,6 @@ Response Structure
 		"goVersion": "go1.11.13",
 		"release": "el7",
 		"name": "traffic_ops",
-		"RPMVersion": "traffic_ops-4.0.0-10555.1c9a2e9c.el7",
+		"debVersion": "traffic_ops-4.0.0-10555.1c9a2e9c.el7",
 		"Version": "4.0.0"
 	}

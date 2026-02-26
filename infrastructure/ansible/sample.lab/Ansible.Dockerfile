@@ -12,10 +12,10 @@
 # limitations under the License.
 #
 
-FROM centos:7.4.1708
+FROM ubuntu:7.4.1708
 MAINTAINER Jonathan Gray
-RUN yum -y install epel-release \
-  && yum -y install \
+RUN apt -y install epel-release \
+  && apt -y install \
   ansible \
   git \
   python-pip \
@@ -25,7 +25,7 @@ RUN yum -y install epel-release \
   libffi-devel \
   openssl-devel \
   gcc \
-  && yum clean all \
+  && apt clean all \
   && pip install --upgrade pip \
   && pip install --upgrade setuptools \
   && pip install --upgrade pyOpenSSL python-gilt paramiko Jinja2

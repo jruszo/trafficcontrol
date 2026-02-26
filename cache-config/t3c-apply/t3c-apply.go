@@ -260,7 +260,7 @@ func Main() int {
 		// make sure we got the data necessary to check packages
 		log.Infoln("======== Didn't get all files, no package processing needed or possible ========")
 		metaData.InstalledPackages = oldMetaData.InstalledPackages
-	} else if cfg.RpmDBOk {
+	} else if cfg.debDBOk {
 		log.Infoln("======== Start processing packages  ========")
 		err = trops.ProcessPackages()
 		if err != nil {
@@ -276,7 +276,7 @@ func Main() int {
 			return GitCommitAndExit(ExitCodeServicesError, FailureExitMsg, cfg, metaData, oldMetaData)
 		}
 	} else {
-		log.Warnln("======== RPM DB checks failed, package processing not possible, using installed packages from  metadata if available========")
+		log.Warnln("======== DEB DB checks failed, package processing not possible, using installed packages from  metadata if available========")
 		trops.ProcessPackagesWithMetaData(oldMetaData.InstalledPackages)
 	}
 

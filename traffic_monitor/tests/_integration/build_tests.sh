@@ -14,12 +14,12 @@
 
 cd ../../../
 ./pkg traffic_monitor_build
-rpm=`ls dist | grep monitor | grep -v log | grep -v src | grep "$(git rev-parse --short=8 HEAD)"`
+deb=`ls dist | grep monitor | grep -v log | grep -v src | grep "$(git rev-parse --short=8 HEAD)"`
 if [ $? -ne 0 ]; then
   echo "Unable to build TM"
   exit 1;
 fi
 
-cp "dist/$rpm"  "traffic_monitor/tests/_integration/tm/traffic_monitor.rpm"
+cp "dist/$deb"  "traffic_monitor/tests/_integration/tm/traffic_monitor.deb"
 cd -
 docker compose build

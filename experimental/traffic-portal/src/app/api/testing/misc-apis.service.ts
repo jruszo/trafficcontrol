@@ -26,9 +26,9 @@ export class MiscAPIsService {
 	/** Some static mock OS versions. */
 	public readonly osVersions = {
 		// eslint-disable-next-line @typescript-eslint/naming-convention
-		"CentOS 7": "centos7",
+		"ubuntu 7": "ubuntu7",
 		// eslint-disable-next-line @typescript-eslint/naming-convention
-		"Rocky Linux 8": "rocky8"
+		"ubuntu linux 8": "ubuntu8"
 	};
 
 	/**

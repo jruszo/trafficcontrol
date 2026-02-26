@@ -24,14 +24,14 @@ Traffic Vault is the component of Apache Traffic Control which stores sensitive 
 Requirements
 ------------
 
-* A valid RPM in an available yum repository.
+* A valid DEB in an available apt repository.
 
 Role Variables
 --------------
 
 Refer to the defaults/main.yml for most information.  For information regarding Riak configuration please consult their [documentation](https://docs.riak.com/riak/kv/latest/configuring/basic/index.html).
 
-additional_yum_repos: An optional list of additional yum repositories to enable specifically when installing this component.  This could be used to enable non-production ready rpms in a separate repository and not supplying the specific RPM version to automatically use the latest available.
+additional_yum_repos: An optional list of additional apt repositories to enable specifically when installing this component.  This could be used to enable non-production ready debs in a separate repository and not supplying the specific DEB version to automatically use the latest available.
 
 Dependencies
 ------------

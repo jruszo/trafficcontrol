@@ -41,7 +41,7 @@ import (
 )
 
 // userAgent is the UA used by this service in HTTP requests.
-// TODO dynamically add Version from RPM build.
+// TODO dynamically add Version from DEB build.
 const userAgent = "tc-health-client/1.0"
 
 const (

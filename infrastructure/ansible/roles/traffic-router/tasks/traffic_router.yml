@@ -13,7 +13,7 @@
 # limitations under the License.
 #
 - name: Get Traffic Router Version
-  shell: (rpm -qa | grep traffic_router || echo 2.3.0) | sed -re 's/[^-]+-([0-9]+\.[0-9]+).*/\1/'
+  shell: (deb -qa | grep traffic_router || echo 2.3.0) | sed -re 's/[^-]+-([0-9]+\.[0-9]+).*/\1/'
   register: tr_old_version
 
 - name: Remove Tomcat 6
@@ -22,18 +22,18 @@
     - tr_old_version.stdout | length > 0
     - tr_old_version.stdout is version('2.3', "<")
 
-- name: Protect against expired yum repo metadata
-  shell: yum clean expire-cache
+- name: Protect against expired apt repo metadata
+  shell: apt clean expire-cache
   become: yes
 
 - name: Install TR Dependencies
-  yum:
+  apt:
     name:
       - java-11-openjdk
       - tomcat-native-1.2.35
     state: present
     update_cache: yes
-    use_backend: yum
+    use_backend: apt
     lock_timeout: 300
     enablerepo: "{{ additional_yum_repos | default([]) }}"
   notify: Restart Traffic Router
@@ -42,7 +42,7 @@
   delay: 5
 
 - name: Install traffic_router
-  yum:
+  apt:
     name:
       - "{{ tr_pkg_name }}"
     state: present

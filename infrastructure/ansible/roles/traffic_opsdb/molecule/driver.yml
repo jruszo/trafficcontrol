@@ -30,15 +30,15 @@
     # tvdb_password: from secret file
 
   tasks:
-    - name: Install Postgres Yum Repo - Stable
+    - name: Install Postgres apt Repo - Stable
       yum_repository:
         name: "pgdg{{ item | replace('.','') }}"
         description: "Manually added repository for Stable Postgresql - {{ item }}"
-        baseurl: "https://download.postgresql.org/pub/repos/yum/{{ item }}/redhat/rhel-$releasever-$basearch"
+        baseurl: "https://download.postgresql.org/pub/repos/apt/{{ item }}/redhat/ubuntu-$releasever-$basearch"
         gpgcheck: yes
-        gpgkey: https://download.postgresql.org/pub/repos/yum/RPM-GPG-KEY-PGDG
+        gpgkey: https://download.postgresql.org/pub/repos/apt/DEB-GPG-KEY-PGDG
         file: pgdg
-        reposdir: /etc/yum.repos.d
+        reposdir: /etc/apt.repos.d
       with_items:
         - "13"
         - "12"
@@ -47,16 +47,16 @@
         - "9.6"
         - "9.5"
 
-    - name: Install Postgres Yum Repo - Testing
+    - name: Install Postgres apt Repo - Testing
       yum_repository:
         name: "pgdg{{ item | replace('.','') }}-updates-testing"
         description: "Manually added repository for Testing Postgresql - {{ item }}"
-        baseurl: "https://download.postgresql.org/pub/repos/yum/testing/{{ item }}/redhat/rhel-$releasever-$basearch"
+        baseurl: "https://download.postgresql.org/pub/repos/apt/testing/{{ item }}/redhat/ubuntu-$releasever-$basearch"
         enabled: "{{ (enable_postgres_testing_repos | default(false)) | ternary('yes','no') }}"
         gpgcheck: yes
-        gpgkey: https://download.postgresql.org/pub/repos/yum/RPM-GPG-KEY-PGDG
+        gpgkey: https://download.postgresql.org/pub/repos/apt/DEB-GPG-KEY-PGDG
         file: pgdg
-        reposdir: /etc/yum.repos.d
+        reposdir: /etc/apt.repos.d
       with_items:
         - "13"
         - "12"
@@ -65,8 +65,8 @@
         - "9.6"
         - "9.5"
 
-    - name: Disable the builtin Centos8 Appstream rpms
-      command: dnf -qy module disable postgresql
+    - name: Disable the builtin ubuntu8 Appstream debs
+      command: apt -qy module disable postgresql
       when: ansible_distribution_file_variety == "RedHat" and ansible_distribution_major_version == "8"
 
     - name: Create Postgres group

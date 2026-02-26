@@ -21,7 +21,7 @@
 /connector/target
 /core/target
 /geolocation/target
-/rpm/target
+/deb/target
 /shared/target
 /core/src/test/resources/var/auto-zones
 /core/src/test/db/cr-config.json

@@ -30,7 +30,7 @@ The resiliency of the stored keys is derived from the resiliency of the underlyi
 
 # Installation
 
-Basic requirements: Centos ver >= 7; Python >= 2.7
+Basic requirements: ubuntu ver >= 7; Python >= 2.7
 
 In order to install the module on a server please:
 1. Copy the module files to the server's root

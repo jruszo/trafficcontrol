@@ -21,20 +21,20 @@
     secret_varfile_src: "{{ playbook_dir }}/secret_varfile.json"
     secret_varfile_dest: "{{ lookup('env','MOLECULE_EPHEMERAL_DIRECTORY') }}/secret_varfile.json"
     lab_ssl_dir: "{{ playbook_dir }}/files/ssl"
-    lab_rpm_dir: "{{ lookup('env','MOLECULE_EPHEMERAL_DIRECTORY') }}//files/rpm/{{ centos_version }}"
-    lab_srpm_dir: "{{ lookup('env','MOLECULE_EPHEMERAL_DIRECTORY') }}//files/srpm/{{ centos_version }}"
+    lab_deb_dir: "{{ lookup('env','MOLECULE_EPHEMERAL_DIRECTORY') }}//files/deb/{{ ubuntu_version }}"
+    lab_sdeb_dir: "{{ lookup('env','MOLECULE_EPHEMERAL_DIRECTORY') }}//files/sdeb/{{ ubuntu_version }}"
     lab_ca_root_csr: "{{ lab_ssl_dir }}/lab.rootca.key.csr"
     lab_ca_root_key: "{{ lab_ssl_dir }}/lab.rootca.key.pem"
     lab_ca_root_crt: "{{ lab_ssl_dir }}/lab.rootca.crt"
     lab_ca_int_csr: "{{ lab_ssl_dir }}/lab.intermediateca.csr"
     lab_ca_int_key: "{{ lab_ssl_dir }}/lab.intermediateca.key.pem"
     lab_ca_int_crt: "{{ lab_ssl_dir }}/lab.intermediateca.crt"
-    rpm_dist_dir: "{{ playbook_dir }}/../../../../dist"
-    centos_version: "{{ matrix_distro_mapping[lookup('env','MOLECULE_DISTRO') | default('centos7',true)] }}"
-    extended_centos_version: "el{{ centos_version }}"
+    deb_dist_dir: "{{ playbook_dir }}/../../../../dist"
+    ubuntu_version: "{{ matrix_distro_mapping[lookup('env','MOLECULE_DISTRO') | default('ubuntu7',true)] }}"
+    extended_ubuntu_version: "el{{ ubuntu_version }}"
     matrix_distro_mapping:
-      centos7: 7
-      centos8: 8
+      ubuntu7: 7
+      ubuntu8: 8
 
   tasks:
     - name: Load existing secret varfile
@@ -157,81 +157,81 @@
         src: "{{ lab_ssl_dir }}/"
         dest: "{{ lookup('env','MOLECULE_EPHEMERAL_DIRECTORY') }}/files/ssl/"
 
-    - name: Prepare the RPMs for the upcoming instances
+    - name: Prepare the DEBs for the upcoming instances
       block:
-        - name: Check if needed RPMs exist
-          shell: "ls -l {{ rpm_dist_dir }}/*.rpm | grep -vE 'debuginfo|debugsource|\\.src\\.rpm' | tr -s ' ' ' ' | cut -d' ' -f9 | grep el{{ centos_version }} | grep -E '{{ scenario_requirements.required_rpms | map(attribute='rpm_prefix') | join('|') | default('NONE', true) }}'"
-          register: pkg_rpms
+        - name: Check if needed DEBs exist
+          shell: "ls -l {{ deb_dist_dir }}/*.deb | grep -vE 'debuginfo|debugsource|\\.src\\.deb' | tr -s ' ' ' ' | cut -d' ' -f9 | grep el{{ ubuntu_version }} | grep -E '{{ scenario_requirements.required_debs | map(attribute='deb_prefix') | join('|') | default('NONE', true) }}'"
+          register: pkg_debs
           ignore_errors: true
           changed_when: false
           failed_when: false
 
         - name: Get pkg targets that require the optional flag
-          command: "./pkg -{{ centos_version }} -o -l"
+          command: "./pkg -{{ ubuntu_version }} -o -l"
           args:
             chdir: "{{ playbook_dir }}/../../../.."
           register: optional_pkg_targets
           changed_when: false
 
-        - name: Find missing non-optional rpms
+        - name: Find missing non-optional debs
           set_fact:
-            missing_non_optional_rpms: "{{ (missing_non_optional_rpms | default([])) + [item.pkg_script_name] }}"
-          with_items: "{{ filtered_req_rpms }}"
-          when: (matched_rpms | length) == 0
+            missing_non_optional_debs: "{{ (missing_non_optional_debs | default([])) + [item.pkg_script_name] }}"
+          with_items: "{{ filtered_req_debs }}"
+          when: (matched_debs | length) == 0
           vars:
-            build_targets: "{{ scenario_requirements.required_rpms | map(attribute='pkg_script_name') | difference(optional_pkg_targets.stdout_lines) }}"
-            filtered_req_rpms_query_dynamic: "{% for p in build_targets %}pkg_script_name == `{{ p }}`{% if not loop.last %} || {% endif %}{% endfor %}"
-            filtered_req_rpms_query: "[?{{ filtered_req_rpms_query_dynamic if filtered_req_rpms_query_dynamic != '' else false }}]"
-            filtered_req_rpms: "{{ scenario_requirements.required_rpms | json_query(filtered_req_rpms_query) }}"
-            matched_rpms_query: "[?starts_with(@,`{{ item.rpm_prefix }}`)]"
-            matched_rpms: "{{ pkg_rpms.stdout_lines | map('basename') | json_query(matched_rpms_query) }}"
+            build_targets: "{{ scenario_requirements.required_debs | map(attribute='pkg_script_name') | difference(optional_pkg_targets.stdout_lines) }}"
+            filtered_req_debs_query_dynamic: "{% for p in build_targets %}pkg_script_name == `{{ p }}`{% if not loop.last %} || {% endif %}{% endfor %}"
+            filtered_req_debs_query: "[?{{ filtered_req_debs_query_dynamic if filtered_req_debs_query_dynamic != '' else false }}]"
+            filtered_req_debs: "{{ scenario_requirements.required_debs | json_query(filtered_req_debs_query) }}"
+            matched_debs_query: "[?starts_with(@,`{{ item.deb_prefix }}`)]"
+            matched_debs: "{{ pkg_debs.stdout_lines | map('basename') | json_query(matched_debs_query) }}"
 
-        - name: Find missing optional rpms
+        - name: Find missing optional debs
           set_fact:
-            missing_optional_rpms: "{{ (missing_optional_rpms | default([])) + [item.pkg_script_name] }}"
-          with_items: "{{ filtered_req_rpms }}"
-          when: (matched_rpms | length) == 0
+            missing_optional_debs: "{{ (missing_optional_debs | default([])) + [item.pkg_script_name] }}"
+          with_items: "{{ filtered_req_debs }}"
+          when: (matched_debs | length) == 0
           vars:
-            build_targets: "{{ scenario_requirements.required_rpms | map(attribute='pkg_script_name') | intersect(optional_pkg_targets.stdout_lines) }}"
-            filtered_req_rpms_query_dynamic: "{% for p in build_targets %}pkg_script_name == `{{ p }}`{% if not loop.last %} || {% endif %}{% endfor %}"
-            filtered_req_rpms_query: "[?{{ filtered_req_rpms_query_dynamic if filtered_req_rpms_query_dynamic != '' else false }}]"
-            filtered_req_rpms: "{{ scenario_requirements.required_rpms | json_query(filtered_req_rpms_query) }}"
-            matched_rpms_query: "[?starts_with(@,`{{ item.rpm_prefix }}`)]"
-            matched_rpms: "{{ pkg_rpms.stdout_lines | map('basename') | json_query(matched_rpms_query) }}"
+            build_targets: "{{ scenario_requirements.required_debs | map(attribute='pkg_script_name') | intersect(optional_pkg_targets.stdout_lines) }}"
+            filtered_req_debs_query_dynamic: "{% for p in build_targets %}pkg_script_name == `{{ p }}`{% if not loop.last %} || {% endif %}{% endfor %}"
+            filtered_req_debs_query: "[?{{ filtered_req_debs_query_dynamic if filtered_req_debs_query_dynamic != '' else false }}]"
+            filtered_req_debs: "{{ scenario_requirements.required_debs | json_query(filtered_req_debs_query) }}"
+            matched_debs_query: "[?starts_with(@,`{{ item.deb_prefix }}`)]"
+            matched_debs: "{{ pkg_debs.stdout_lines | map('basename') | json_query(matched_debs_query) }}"
 
-        - name: Invoke pkg to build missing rpms
+        - name: Invoke pkg to build missing debs
           command: "{{ item.cmdstr }}"
           args:
             chdir: "{{ playbook_dir }}/../../../.."
-          when: (item.target_rpms | length) > 0
+          when: (item.target_debs | length) > 0
           with_items:
-            - cmdstr: "./pkg -v -{{ centos_version }} {{ missing_non_optional_rpms | default([]) | join(' ') }}"
-              target_rpms: "{{ missing_non_optional_rpms | default([]) }}"
-            - cmdstr: "./pkg -v -{{ centos_version }} -o {{ missing_optional_rpms | default([]) | join(' ') }}"
-              target_rpms: "{{ missing_optional_rpms | default([]) }}"
+            - cmdstr: "./pkg -v -{{ ubuntu_version }} {{ missing_non_optional_debs | default([]) | join(' ') }}"
+              target_debs: "{{ missing_non_optional_debs | default([]) }}"
+            - cmdstr: "./pkg -v -{{ ubuntu_version }} -o {{ missing_optional_debs | default([]) | join(' ') }}"
+              target_debs: "{{ missing_optional_debs | default([]) }}"
 
-        - name: Ensure RPM directories exists
+        - name: Ensure DEB directories exists
           file:
             state: directory
             path: "{{ item }}"
           with_items:
-            - "{{ lab_rpm_dir }}"
-            - "{{ lab_srpm_dir }}"
+            - "{{ lab_deb_dir }}"
+            - "{{ lab_sdeb_dir }}"
             - "{{ playbook_dir }}/../../../../dist/"
 
-        - name: Copy in the RPMs
+        - name: Copy in the DEBs
           copy:
             src: "{{ item.0 }}"
             dest: "{{ item.1 }}"
           vars:
-            host_rpm_path: "{{ playbook_dir }}/../../../../dist/"
-            host_rpm_glob: "{{ host_rpm_path }}*{{ extended_centos_version }}*x86_64.rpm"
-            host_srpm_glob: "{{ host_rpm_path }}*{{ extended_centos_version }}*src.rpm"
-            rpm_dest: "{{ lab_rpm_dir }}"
-            srpm_dest: "{{ lab_srpm_dir }}"
-            rpm_name: "{{ item.0 | basename }}"
-            all_rpmname_regex: "{{ scenario_requirements.required_rpms | map(attribute='rpm_prefix') | map('regex_replace','^(.*)$','^\\1.*$') | join('|') }}"
-          when: rpm_name is search(all_rpmname_regex) and all_rpmname_regex != ""
+            host_deb_path: "{{ playbook_dir }}/../../../../dist/"
+            host_deb_glob: "{{ host_deb_path }}*{{ extended_ubuntu_version }}*x86_64.deb"
+            host_sdeb_glob: "{{ host_deb_path }}*{{ extended_ubuntu_version }}*src.deb"
+            deb_dest: "{{ lab_deb_dir }}"
+            sdeb_dest: "{{ lab_sdeb_dir }}"
+            deb_name: "{{ item.0 | basename }}"
+            all_debname_regex: "{{ scenario_requirements.required_debs | map(attribute='deb_prefix') | map('regex_replace','^(.*)$','^\\1.*$') | join('|') }}"
+          when: deb_name is search(all_debname_regex) and all_debname_regex != ""
           with_items:
-            - "{{ (lookup('fileglob',host_rpm_glob) | default('',true)).split(',') | product([rpm_dest]) }}"
-            - "{{ (lookup('fileglob',host_srpm_glob) | default('',true)).split(',') | product([srpm_dest]) }}"
+            - "{{ (lookup('fileglob',host_deb_glob) | default('',true)).split(',') | product([deb_dest]) }}"
+            - "{{ (lookup('fileglob',host_sdeb_glob) | default('',true)).split(',') | product([sdeb_dest]) }}"

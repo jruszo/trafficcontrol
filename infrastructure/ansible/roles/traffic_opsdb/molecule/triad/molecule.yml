@@ -25,7 +25,7 @@ dependency:
 
 platforms:
   - name: todb-1.testlab.invalid
-    image: geerlingguy/docker-${MOLECULE_DISTRO:-centos7}-ansible:latest
+    image: geerlingguy/docker-${MOLECULE_DISTRO:-ubuntu7}-ansible:latest
     command: ${MOLECULE_DOCKER_COMMAND:-""}
     privileged: true
     pre_build_image: true
@@ -55,7 +55,7 @@ platforms:
           - subnet: 172.16.240.0/24
           - subnet: "fc01:9400:1000:9::/64"
   - name: todb-2.testlab.invalid
-    image: geerlingguy/docker-${MOLECULE_DISTRO:-centos7}-ansible:latest
+    image: geerlingguy/docker-${MOLECULE_DISTRO:-ubuntu7}-ansible:latest
     command: ${MOLECULE_DOCKER_COMMAND:-""}
     privileged: true
     pre_build_image: true
@@ -76,7 +76,7 @@ platforms:
       - ${MOLECULE_EPHEMERAL_DIRECTORY}:/molecule
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
   - name: todb-3.testlab.invalid
-    image: geerlingguy/docker-${MOLECULE_DISTRO:-centos7}-ansible:latest
+    image: geerlingguy/docker-${MOLECULE_DISTRO:-ubuntu7}-ansible:latest
     command: ${MOLECULE_DOCKER_COMMAND:-""}
     privileged: true
     pre_build_image: true

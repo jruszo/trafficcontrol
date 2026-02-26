@@ -281,8 +281,8 @@ On each Traffic Vault server follow these steps.
 		# (OpenJDK is used here because of its permissive license, though OracleJDK
 		# should work with some tinkering)
 
-		# On CentOS/RedHat/Fedora (recommended)
-		yum install -y java-1.8.0-openjdk java-1.8.0-openjdk-devel
+		# On ubuntu/RedHat/Fedora (recommended)
+		apt install -y java-1.8.0-openjdk java-1.8.0-openjdk-devel
 
 		# On Ubuntu/Debian/Linux Mint
 		apt install -y openjdk-8-jdk

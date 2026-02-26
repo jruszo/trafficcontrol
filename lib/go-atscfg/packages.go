@@ -29,7 +29,7 @@ import (
 // PackagesFileName is an unused constant of unknown purpose.
 //
 // Deprecated: Since the 'package' ConfigFile value is a "dummy" value used to
-// indicate packages that should be installed through yum, there isn't a need
+// indicate packages that should be installed through apt, there isn't a need
 // for any definition of a file name, and the Parameter ConfigFile value is
 // already exported as PackagesParamConfigFile.
 const PackagesFileName = `packages`
@@ -41,7 +41,7 @@ const PackagesParamConfigFile = `package`
 // ContentTypePackages is a MIME type of unknown meaning and purpose.
 //
 // Deprecated: Since the 'package' ConfigFile value is a "dummy" value used to
-// indicate packages that should be installed through yum, there isn't a need
+// indicate packages that should be installed through apt, there isn't a need
 // for any definition of a content type for a file that doesn't exist, and this
 // value is never used for anything anyway. The contents of the file as output
 // by tc3-generate are actually encoded as JSON, so at best this is inaccurate.

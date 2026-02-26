@@ -33,10 +33,10 @@ t3c-update/t3c-update
 *.1
 *.rst
 
-# RPMs used for testing
-testing/docker/traffic_ops/traffic_ops*.rpm
-testing/docker/yumserver/test-rpms/*.rpm
-testing/docker/ort_test/trafficcontrol-cache-config*.rpm
+# Debian packages used for testing
+testing/docker/traffic_ops/traffic_ops*.deb
+testing/docker/yumserver/test-debs/*.deb
+testing/docker/ort_test/trafficcontrol-cache-config*.deb
 
 # Test logs
 testing/ort-tests/test.log

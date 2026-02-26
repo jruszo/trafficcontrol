@@ -160,13 +160,13 @@ getVersion() {
 }
 
 # ---------------------------------------
-getRhelVersion() {
+getubuntuVersion() {
 	local releasever=''
 	if [ -n "${PACKAGE_OS_VERSION:-}" ]; then
 		echo "${PACKAGE_OS_VERSION}"
 		return
 	fi
-	releasever="${RHEL_VERSION:-}"
+	releasever="${ubuntu_VERSION:-}"
 	if [ -n "$releasever" ]; then
 		if [[ "$releasever" == el* ]]; then
 			echo "${releasever}"
@@ -179,7 +179,7 @@ getRhelVersion() {
 	local redhat_release=/etc/redhat-release
 	local default_version=8
 	if [ -e $redhat_release ]; then
-		releasever="$(rpm -q --qf '%{version}' -f $redhat_release)"
+		releasever="$(deb -q --qf '%{version}' -f $redhat_release)"
 		releasever="${releasever%%.*}"
 	else
 		echo "${redhat_release} not found, defaulting package release to ${default_version}" >/dev/stderr
@@ -209,7 +209,7 @@ checkEnvironment() {
 	unset OPTIND
 	include_file="$(mktemp)"
 	exclude_file="$(mktemp)"
-	printf '%s\n' git rpmbuild  ${include_programs//,/ } | sort >"$include_file"
+	printf '%s\n' git debbuild  ${include_programs//,/ } | sort >"$include_file"
 	printf '%s\n' ${exclude_programs//,/ } | sort >"$exclude_file"
 	programs="$(comm -23 "$include_file" "$exclude_file")"
 	rm "$include_file" "$exclude_file"
@@ -228,17 +228,17 @@ checkEnvironment() {
 		return 1
 	fi
 
-	TC_VERSION='' BUILD_NUMBER='' RPMBUILD='' DIST=''
+	TC_VERSION='' BUILD_NUMBER='' debbuild='' DIST=''
 	TC_VERSION="$(getVersion "$TC_DIR")"
 	BUILD_NUMBER="$(getBuildNumber)"
 	GO_VERSION="$(getGoVersion "$TC_DIR")"
-	RHEL_VERSION="$(getRhelVersion)"
+	ubuntu_VERSION="$(getubuntuVersion)"
 	WORKSPACE="${WORKSPACE:-$TC_DIR}"
-	RPMBUILD="$WORKSPACE/rpmbuild"
+	debbuild="$WORKSPACE/debbuild"
 	GOOS="${GOOS:-linux}"
-	RPM_TARGET_OS="${RPM_TARGET_OS:-$GOOS}"
+	deb_TARGET_OS="${deb_TARGET_OS:-$GOOS}"
 	DIST="$WORKSPACE/dist"
-	export TC_VERSION BUILD_NUMBER GO_VERSION RHEL_VERSION WORKSPACE RPMBUILD GOOS RPM_TARGET_OS DIST
+	export TC_VERSION BUILD_NUMBER GO_VERSION ubuntu_VERSION WORKSPACE debbuild GOOS deb_TARGET_OS DIST
 
 	mkdir -p "$DIST" || { echo "Could not create ${DIST}: ${?}"; return 1; }
 
@@ -247,7 +247,7 @@ checkEnvironment() {
 	echo "=================================================="
 	echo "WORKSPACE: $WORKSPACE"
 	echo "BUILD_NUMBER: $BUILD_NUMBER"
-	echo "PACKAGE_RELEASE_TAG: $RHEL_VERSION"
+	echo "PACKAGE_RELEASE_TAG: $ubuntu_VERSION"
 	echo "TC_VERSION: $TC_VERSION"
 	echo "--------------------------------------------------"
 }
@@ -255,25 +255,25 @@ checkEnvironment() {
 # ---------------------------------------
 createSourceDir() {
 	local target="${1}-${TC_VERSION}"
-	local srcpath="$RPMBUILD/SOURCES/$target"
+	local srcpath="$debbuild/SOURCES/$target"
 	mkdir -p "$srcpath" || { echo "Could not create $srcpath: $?"; return 1; }
 	echo "$srcpath"
 }
 
 # ---------------------------------------
-buildRpm() {
+builddeb() {
 	for package in "$@"; do
-		local pre="${package}-${TC_VERSION}-${BUILD_NUMBER}.${RHEL_VERSION}"
-		local rpm
+		local pre="${package}-${TC_VERSION}-${BUILD_NUMBER}.${ubuntu_VERSION}"
+		local deb
 		local arch
-		arch="$(rpm --eval %_arch)"
-		rpm="${pre}.${arch}.rpm"
-		local srpm="${pre}.src.rpm"
+		arch="$(deb --eval %_arch)"
+		deb="${pre}.${arch}.deb"
+		local sdeb="${pre}.src.deb"
 		echo "Building package artifact."
 		{ set +o nounset
 		set -- # Clear arguments for reuse
 		if [ "$DEBUG_BUILD" = true ]; then
-			echo 'RPM will not strip binaries before packaging.';
+			echo 'DEB will not strip binaries before packaging.';
 			set -- "$@" --define '%__os_install_post %{nil}' # Do not strip binaries before packaging
 		fi;
 		set -- "$@" --define '%_source_payload w2.xzdio' # xz level 2 compression for text files
@@ -285,15 +285,15 @@ buildRpm() {
 			build_flags="-bb";
 		fi
 
-		pushd "$RPMBUILD";
+		pushd "$debbuild";
 
-		rpmbuild --define "_topdir $(pwd)" \
+		debbuild --define "_topdir $(pwd)" \
 			--define "traffic_control_version $TC_VERSION" \
 			--define "go_version $GO_VERSION" \
 			--define "commit $(getCommit)" \
-			--define "build_number $BUILD_NUMBER.$RHEL_VERSION" \
-			--define "rhel_vers $RHEL_VERSION" \
-			--define "_target_os $RPM_TARGET_OS" \
+			--define "build_number $BUILD_NUMBER.$ubuntu_VERSION" \
+			--define "ubuntu_vers $ubuntu_VERSION" \
+			--define "_target_os $deb_TARGET_OS" \
 			"$build_flags" SPECS/$package.spec \
 			"$@";
 		code=$?
@@ -304,21 +304,21 @@ buildRpm() {
 
 		echo
 		echo "========================================================================================"
-		echo "Package build for $package succeeded, see $DIST/$rpm."
+		echo "Package build for $package succeeded, see $DIST/$deb."
 		echo "========================================================================================"
 		echo
 
-		rpmDest=".";
-		srcRPMDest=".";
+		debDest=".";
+		srcdebDest=".";
 		if [[ "$SIMPLE" -eq 1 ]]; then
-			rpmDest="${package}.rpm";
-			srcRPMDest="${package}.src.rpm";
+			debDest="${package}.deb";
+			srcdebDest="${package}.src.deb";
 		fi
 
-		cp -f "$RPMBUILD/RPMS/${arch}/$rpm" "$DIST/$rpmDest";
+		cp -f "$debbuild/debS/${arch}/$deb" "$DIST/$debDest";
 		code="$?";
 		if [[ "$code" -ne 0 ]]; then
-			echo "Could not copy $rpm to $DIST: $code" >&2;
+			echo "Could not copy $deb to $DIST: $code" >&2;
 			return "$code";
 		fi
 
@@ -326,10 +326,10 @@ buildRpm() {
 			return 0;
 		fi
 
-		cp -f "$RPMBUILD/SRPMS/$srpm" "$DIST/$srcRPMDest";
+		cp -f "$debbuild/SdebS/$sdeb" "$DIST/$srcdebDest";
 		code="$?";
 		if [[ "$code" -ne 0 ]]; then
-			echo "Could not copy $srpm to $DIST: $code" >&2;
+			echo "Could not copy $sdeb to $DIST: $code" >&2;
 			return "$code";
 		fi
 	done

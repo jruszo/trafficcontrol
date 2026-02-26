@@ -225,11 +225,11 @@ func PackageAction(cmdstr string, name string) (bool, error) {
 
 	switch cmdstr {
 	case "info":
-		_, rc, err = ExecCommand("/usr/bin/yum", "info", "-y", name)
+		_, rc, err = ExecCommand("/usr/bin/apt", "info", "-y", name)
 	case "install":
-		_, rc, err = ExecCommand("/usr/bin/yum", "install", "-y", name)
+		_, rc, err = ExecCommand("/usr/bin/apt", "install", "-y", name)
 	case "remove":
-		_, rc, err = ExecCommand("/usr/bin/yum", "remove", "-y", name)
+		_, rc, err = ExecCommand("/usr/bin/apt", "remove", "-y", name)
 	}
 
 	if rc == 0 {
@@ -239,21 +239,21 @@ func PackageAction(cmdstr string, name string) (bool, error) {
 	return result, err
 }
 
-// runs the rpm command.
-// if the return code from rpm == 0, then a valid package list is returned.
+// runs the deb command.
+// if the return code from deb == 0, then a valid package list is returned.
 //
 // if the return code is 1, the the 'name' queried for is not part of a
 //
 //	package or is not installed.
 //
 // otherwise, if the return code is not 0 or 1 and error is set, a general
-// rpm command execution error is assumed and the error is returned.
+// deb command execution error is assumed and the error is returned.
 func PackageInfo(cmdstr string, name string) ([]string, error) {
 	var result []string
 	switch cmdstr {
 	case "cfg-files": // returns a list of the package configuration files.
-		output, rc, err := ExecCommand("/bin/rpm", "-q", "-c", name)
-		if rc == 1 { // rpm package for 'name' was not found.
+		output, rc, err := ExecCommand("/bin/deb", "-q", "-c", name)
+		if rc == 1 { // deb package for 'name' was not found.
 			return nil, nil
 		} else if rc == 0 { // add the package name the file belongs to.
 			log.Debugf("output from cfg-files query: %s\n", string(output))
@@ -265,8 +265,8 @@ func PackageInfo(cmdstr string, name string) ([]string, error) {
 		} else if err != nil {
 			return nil, err
 		}
-	case "file-query": // returns the rpm name that owns the file 'name'
-		output, rc, err := ExecCommand("/bin/rpm", "-q", "-f", name)
+	case "file-query": // returns the deb name that owns the file 'name'
+		output, rc, err := ExecCommand("/bin/deb", "-q", "-f", name)
 		if rc == 1 { // file is not part of any package.
 			return nil, nil
 		} else if rc == 0 { // add the package name the file belongs to.
@@ -277,7 +277,7 @@ func PackageInfo(cmdstr string, name string) ([]string, error) {
 			return nil, err
 		}
 	case "pkg-provides": // returns the package name that provides 'name'
-		output, rc, err := ExecCommand("/bin/rpm", "-q", "--whatprovides", name)
+		output, rc, err := ExecCommand("/bin/deb", "-q", "--whatprovides", name)
 		log.Debugf("pkg-provides - name: %s, output: %s\n", name, output)
 		if rc == 1 { // no package provides 'name'
 			return nil, nil
@@ -287,19 +287,19 @@ func PackageInfo(cmdstr string, name string) ([]string, error) {
 				result = append(result, strings.TrimSpace(pkgs[ii]))
 			}
 		} else if err != nil {
-			return nil, errors.New("rpm -q --whatprovides '" + name + "' returned: " + err.Error())
+			return nil, errors.New("deb -q --whatprovides '" + name + "' returned: " + err.Error())
 		}
 	case "pkg-query": // returns the package name for 'name'.
-		output, rc, err := ExecCommand("/bin/rpm", "-q", name)
+		output, rc, err := ExecCommand("/bin/deb", "-q", name)
 		if rc == 1 { // the package is not installed.
 			return nil, nil
-		} else if rc == 0 { // add the rpm name
+		} else if rc == 0 { // add the deb name
 			result = append(result, string(strings.TrimSpace(string(output))))
 		} else if err != nil {
-			return nil, errors.New("rpm -q '" + name + "' returned: " + err.Error())
+			return nil, errors.New("deb -q '" + name + "' returned: " + err.Error())
 		}
 	case "pkg-requires": // returns a list of packages that requires package 'name'
-		output, rc, err := ExecCommand("/bin/rpm", "-q", "--whatrequires", name)
+		output, rc, err := ExecCommand("/bin/deb", "-q", "--whatrequires", name)
 		if rc == 1 { // no package reuires package 'name'
 			return nil, nil
 		} else if rc == 0 {
@@ -308,7 +308,7 @@ func PackageInfo(cmdstr string, name string) ([]string, error) {
 				result = append(result, strings.TrimSpace(pkgs[ii]))
 			}
 		} else if err != nil {
-			return nil, errors.New("rpm -q --whatrequires '" + name + "' returned: " + err.Error())
+			return nil, errors.New("deb -q --whatrequires '" + name + "' returned: " + err.Error())
 		}
 	}
 	return result, nil

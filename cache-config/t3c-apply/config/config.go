@@ -82,7 +82,7 @@ type Cfg struct {
 	SvcManagement       SvcManagement
 	Retries             int
 	ReverseProxyDisable bool
-	RpmDBOk             bool
+	debDBOk             bool
 	SkipOSCheck         bool
 	UseStrategies       t3cutil.UseStrategiesFlag
 	TOInsecure          bool
@@ -192,17 +192,17 @@ func directoryExists(dir string) (bool, os.FileInfo) {
 }
 
 // derives the ATS Installation directory from
-// the rpm config file list.
+// the deb config file list.
 func GetTSPackageHome() string {
 	var dir []string
 	var output bytes.Buffer
 	var tsHome string = ""
 	var files []string
 
-	cmd := exec.Command("/bin/rpm", "-q", "-c", "trafficserver")
+	cmd := exec.Command("/bin/deb", "-q", "-c", "trafficserver")
 	cmd.Stdout = &output
 	err := cmd.Run()
-	// on error or if the trafficserver rpm is not installed indicated
+	// on error or if the trafficserver deb is not installed indicated
 	// by a return code of '1', return an empty string.
 	if err != nil || cmd.ProcessState.ExitCode() == 1 {
 		return ""
@@ -229,23 +229,23 @@ func GetTSPackageHome() string {
 }
 
 const (
-	rpmDBBdb             = "bdb"
-	rpmDBSquLite         = "sqlite"
-	rpmDBUnknown         = "unknown"
-	rpmDBVerifyCmd       = "/usr/lib/rpm/rpmdb_verify"
-	sqliteRpmDbVerifyCmd = "/bin/sqlite3"
-	rpmDir               = "/var/lib/rpm"
-	sqliteRpmDB          = "rpmdb.sqlite"
+	debDBBdb             = "bdb"
+	debDBSquLite         = "sqlite"
+	debDBUnknown         = "unknown"
+	debDBVerifyCmd       = "/usr/lib/deb/debdb_verify"
+	sqlitedebDbVerifyCmd = "/bin/sqlite3"
+	debDir               = "/var/lib/deb"
+	sqlitedebDB          = "debdb.sqlite"
 )
 
-// getRpmDBBackend uses "%_db_backend" macro to get the database type
-func getRpmDBBackend() (string, error) {
+// getdebDBBackend uses "%_db_backend" macro to get the database type
+func getdebDBBackend() (string, error) {
 	var outBuf bytes.Buffer
-	cmd := exec.Command("/bin/rpm", "-E", "%_db_backend")
+	cmd := exec.Command("/bin/deb", "-E", "%_db_backend")
 	cmd.Stdout = &outBuf
 	err := cmd.Run()
 	if err != nil {
-		return rpmDBUnknown, err
+		return debDBUnknown, err
 	}
 	return strings.TrimSpace(outBuf.String()), nil
 }
@@ -257,11 +257,11 @@ func isSqliteInstalled() bool {
 	return sqliteUtil
 }
 
-// verifies the rpm database files. if there is any database corruption
+// verifies the deb database files. if there is any database corruption
 // it will return false
-func verifyRpmDB(rpmDir string) bool {
+func verifydebDB(debDir string) bool {
 	exclude := regexp.MustCompile(`(^\.|^__)`)
-	dbFiles, err := os.ReadDir(rpmDir)
+	dbFiles, err := os.ReadDir(debDir)
 	if err != nil {
 		return false
 	}
@@ -269,7 +269,7 @@ func verifyRpmDB(rpmDir string) bool {
 		if exclude.Match([]byte(file.Name())) {
 			continue
 		}
-		cmd := exec.Command(rpmDBVerifyCmd, rpmDir+"/"+file.Name())
+		cmd := exec.Command(debDBVerifyCmd, debDir+"/"+file.Name())
 		err := cmd.Run()
 		if err != nil || cmd.ProcessState.ExitCode() > 0 {
 			return false
@@ -278,11 +278,11 @@ func verifyRpmDB(rpmDir string) bool {
 	return true
 }
 
-// verifySqliteRpmDB runs PRAGMA quick_check
+// verifySqlitedebDB runs PRAGMA quick_check
 // requires /bin/sqlite3
-func verifySqliteRpmDB(sqliteDB string) bool {
+func verifySqlitedebDB(sqliteDB string) bool {
 	args := []string{sqliteDB, `PRAGMA quick_check`}
-	cmd := exec.Command(sqliteRpmDbVerifyCmd, args...)
+	cmd := exec.Command(sqlitedebDbVerifyCmd, args...)
 	err := cmd.Run()
 	if err != nil || cmd.ProcessState.ExitCode() > 0 {
 		return false
@@ -310,7 +310,7 @@ func GetCfg(appVersion string, gitRevision string) (Cfg, error) {
 	useGitStr := getopt.StringLong("git", 'g', "auto", "Create and use a git repo in the config directory. Options are yes, no, and auto. If yes, create and use. If auto, use if it exist. Default is auto.")
 	noCachePtr := getopt.BoolLong("no-cache", 'n', "Whether to not use a cache and make conditional requests to Traffic Ops")
 	syncdsUpdatesIPAllowPtr := getopt.BoolLong("syncds-updates-ipallow", 'S', "Whether syncds mode will update ipallow. This exists because ATS had a bug where reloading after changing ipallow would block everything. Default is false.")
-	omitViaStringReleasePtr := getopt.BoolLong("omit-via-string-release", 'e', "Whether to set the records.config via header to the ATS release from the RPM. Default true.")
+	omitViaStringReleasePtr := getopt.BoolLong("omit-via-string-release", 'e', "Whether to set the records.config via header to the ATS release from the DEB. Default true.")
 	noOutgoingIP := getopt.BoolLong("no-outgoing-ip", 'i', "Whether to not set the records.config outgoing IP to the server's addresses in Traffic Ops. Default is false.")
 	disableParentConfigCommentsPtr := getopt.BoolLong("disable-parent-config-comments", 'c', "Whether to disable verbose parent.config comments. Default false.")
 	defaultEnableH2 := getopt.BoolLong("default-client-enable-h2", '2', "Whether to enable HTTP/2 on Delivery Services by default, if they have no explicit Parameter. This is irrelevant if ATS records.config is not serving H2. If omitted, H2 is disabled.")
@@ -538,35 +538,35 @@ If any of the related flags are also set, they override the mode's default behav
 		os.Setenv("TO_PASS", toPass)
 	}
 
-	rpmDBisOk := true
-	rpmDBType, err := getRpmDBBackend()
+	debDBisOk := true
+	debDBType, err := getdebDBBackend()
 	if err != nil {
 		toInfoLog = append(toInfoLog, fmt.Sprintf("error getting db type: %s", err.Error()))
-		rpmDBType = rpmDBUnknown
+		debDBType = debDBUnknown
 	}
 
-	if rpmDBType == rpmDBSquLite {
+	if debDBType == debDBSquLite {
 		sqliteUtil := isSqliteInstalled()
-		toInfoLog = append(toInfoLog, fmt.Sprintf("RPM database is %s", rpmDBSquLite))
+		toInfoLog = append(toInfoLog, fmt.Sprintf("DEB database is %s", debDBSquLite))
 		if sqliteUtil {
-			rpmDBisOk = verifySqliteRpmDB(rpmDir + "/" + sqliteRpmDB)
-			toInfoLog = append(toInfoLog, fmt.Sprintf("RPM database is ok: %t", rpmDBisOk))
+			debDBisOk = verifySqlitedebDB(debDir + "/" + sqlitedebDB)
+			toInfoLog = append(toInfoLog, fmt.Sprintf("DEB database is ok: %t", debDBisOk))
 		} else {
-			toInfoLog = append(toInfoLog, "/bin/sqlite3 not available, RPM database not checked")
+			toInfoLog = append(toInfoLog, "/bin/sqlite3 not available, DEB database not checked")
 		}
-	} else if rpmDBType == rpmDBBdb {
-		toInfoLog = append(toInfoLog, fmt.Sprintf("RPM database is %s", rpmDBBdb))
-		rpmDBisOk = verifyRpmDB(rpmDir)
-		toInfoLog = append(toInfoLog, fmt.Sprintf("RPM database is ok: %t", rpmDBisOk))
+	} else if debDBType == debDBBdb {
+		toInfoLog = append(toInfoLog, fmt.Sprintf("DEB database is %s", debDBBdb))
+		debDBisOk = verifydebDB(debDir)
+		toInfoLog = append(toInfoLog, fmt.Sprintf("DEB database is ok: %t", debDBisOk))
 	} else {
-		toInfoLog = append(toInfoLog, fmt.Sprintf("RPM DB type is %s DB check will be skipped", rpmDBUnknown))
+		toInfoLog = append(toInfoLog, fmt.Sprintf("DEB DB type is %s DB check will be skipped", debDBUnknown))
 	}
 
-	if *installPackagesPtr && !rpmDBisOk {
+	if *installPackagesPtr && !debDBisOk {
 		if t3cutil.StrToMode(*runModePtr) == t3cutil.ModeBadAss {
-			fatalLogStrs = append(fatalLogStrs, "RPM database check failed unable to install packages cannot continue in badass mode")
+			fatalLogStrs = append(fatalLogStrs, "DEB database check failed unable to install packages cannot continue in badass mode")
 		} else {
-			fatalLogStrs = append(fatalLogStrs, "RPM database check failed unable to install packages cannot continue")
+			fatalLogStrs = append(fatalLogStrs, "DEB database check failed unable to install packages cannot continue")
 		}
 	}
 
@@ -576,14 +576,14 @@ If any of the related flags are also set, they override the mode's default behav
 		tsHome = *tsHomePtr
 		toInfoLog = append(toInfoLog, fmt.Sprintf("set TSHome from command line: '%s'", TSHome))
 	}
-	if *tsHomePtr == "" { // evironment or rpm check.
+	if *tsHomePtr == "" { // evironment or deb check.
 		tsHome = os.Getenv("TS_HOME") // check for the environment variable.
 		if tsHome != "" {
 			toInfoLog = append(toInfoLog, fmt.Sprintf("set TSHome from TS_HOME environment variable '%s'\n", TSHome))
-		} else if rpmDBisOk { // check using the config file listing from the rpm package if rpmdb is ok.
+		} else if debDBisOk { // check using the config file listing from the deb package if debdb is ok.
 			tsHome = GetTSPackageHome()
 			if tsHome != "" {
-				toInfoLog = append(toInfoLog, fmt.Sprintf("set TSHome from the RPM config file  list '%s'\n", TSHome))
+				toInfoLog = append(toInfoLog, fmt.Sprintf("set TSHome from the DEB config file  list '%s'\n", TSHome))
 			}
 		} else if tsHome == "" {
 			toInfoLog = append(toInfoLog, fmt.Sprintf("no override for TSHome was found, using the configured default: '%s'\n", TSHome))
@@ -642,7 +642,7 @@ If any of the related flags are also set, they override the mode's default behav
 		CacheHostName:               cacheHostName,
 		SvcManagement:               svcManagement,
 		Retries:                     retries,
-		RpmDBOk:                     rpmDBisOk,
+		debDBOk:                     debDBisOk,
 		ReverseProxyDisable:         reverseProxyDisable,
 		SkipOSCheck:                 skipOsCheck,
 		UseStrategies:               useStrategies,

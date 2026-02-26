@@ -13,7 +13,7 @@
 #
 
 - name: Install ORT/t3c
-  yum:
+  apt:
     name:
       - "{{ ort_pkg_name }}"
     state: present

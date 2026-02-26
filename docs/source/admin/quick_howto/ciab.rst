@@ -31,29 +31,29 @@ Because it runs in Docker, the only true prerequisites are:
 
 Building
 --------
-The CDN in a Box directory is found within the Traffic Control repository at :file:`infrastructure/cdn-in-a-box/`. CDN in a Box relies on the presence of pre-built :file:`{component}.rpm` files for the following Traffic Control components:
+The CDN in a Box directory is found within the Traffic Control repository at :file:`infrastructure/cdn-in-a-box/`. CDN in a Box relies on the presence of pre-built :file:`{component}.deb` files for the following Traffic Control components:
 
-* Traffic Monitor - at :file:`infrastructure/cdn-in-a-box/traffic_monitor/traffic_monitor.rpm`
-* Traffic Ops - at :file:`infrastructure/cdn-in-a-box/traffic_ops/traffic_ops.rpm`
-* Traffic Portal - at :file:`infrastructure/cdn-in-a-box/traffic_portal/traffic_portal.rpm`
-* Traffic Router - at :file:`infrastructure/cdn-in-a-box/traffic_router/traffic_router.rpm` - also requires an Apache Tomcat RPM at :file:`infrastructure/cdn-in-a-box/traffic_router/tomcat.rpm`
+* Traffic Monitor - at :file:`infrastructure/cdn-in-a-box/traffic_monitor/traffic_monitor.deb`
+* Traffic Ops - at :file:`infrastructure/cdn-in-a-box/traffic_ops/traffic_ops.deb`
+* Traffic Portal - at :file:`infrastructure/cdn-in-a-box/traffic_portal/traffic_portal.deb`
+* Traffic Router - at :file:`infrastructure/cdn-in-a-box/traffic_router/traffic_router.deb` - also requires an Apache Tomcat DEB at :file:`infrastructure/cdn-in-a-box/traffic_router/tomcat.deb`
 
-.. note:: These can also be specified via the ``RPM`` variable to a direct Docker build of the component - with the exception of Traffic Router, which instead accepts ``TRAFFIC_ROUTER_RPM`` to specify a Traffic Router RPM and ``TOMCAT_RPM`` to specify an Apache Tomcat RPM.
+.. note:: These can also be specified via the ``DEB`` variable to a direct Docker build of the component - with the exception of Traffic Router, which instead accepts ``TRAFFIC_ROUTER_deb`` to specify a Traffic Router DEB and ``TOMCAT_deb`` to specify an Apache Tomcat DEB.
 
-These can all be supplied manually via the steps in :ref:`dev-building` (for Traffic Control component RPMs) or via some external source. Alternatively, the :file:`infrastructure/cdn-in-a-box/Makefile` file contains recipes to build all of these - simply run :manpage:`make(1)` from the :file:`infrastructure/cdn-in-a-box/` directory. Once all RPM dependencies have been satisfied, run ``docker compose build --parallel`` from the :file:`infrastructure/cdn-in-a-box/` directory to construct the images needed to run CDN in a Box.
+These can all be supplied manually via the steps in :ref:`dev-building` (for Traffic Control component DEBs) or via some external source. Alternatively, the :file:`infrastructure/cdn-in-a-box/Makefile` file contains recipes to build all of these - simply run :manpage:`make(1)` from the :file:`infrastructure/cdn-in-a-box/` directory. Once all DEB dependencies have been satisfied, run ``docker compose build --parallel`` from the :file:`infrastructure/cdn-in-a-box/` directory to construct the images needed to run CDN in a Box.
 
-.. tip:: If you have gone through the steps to :ref:`dev-building-natively`, you can run ``make native`` instead of ``make`` to build the RPMs quickly. Another option is running ``make -j4`` to build 4 components at once, if your computer can handle it.
+.. tip:: If you have gone through the steps to :ref:`dev-building-natively`, you can run ``make native`` instead of ``make`` to build the DEBs quickly. Another option is running ``make -j4`` to build 4 components at once, if your computer can handle it.
 
 .. tip:: When updating CDN-in-a-Box, there is no need to remove old images before building new ones. Docker detects which files are updated and only reuses cached layers that have not changed.
 
-By default, CDN in a Box will be based on Rocky Linux 8. To base CDN in a Box on CentOS 7, set the ``BASE_IMAGE`` environment variable to ``centos`` and set the ``RHEL_VERSION`` environment variable to ``7`` (for CDN in a Box, ``BASE_IMAGE`` defaults to ``rockylinux`` and ``RHEL_VERSION`` defaults to ``8``):
+By default, CDN in a Box will be based on ubuntu linux 8. To base CDN in a Box on ubuntu 7, set the ``BASE_IMAGE`` environment variable to ``ubuntu`` and set the ``ubuntu_VERSION`` environment variable to ``7`` (for CDN in a Box, ``BASE_IMAGE`` defaults to ``ubuntu`` and ``ubuntu_VERSION`` defaults to ``8``):
 
 .. code-block:: shell
-	:caption: Building CDN in a Box to run CentOS 7 instead of Rocky Linux 8
+	:caption: Building CDN in a Box to run ubuntu 7 instead of ubuntu linux 8
 
-	export BASE_IMAGE=centos RHEL_VERSION=7
-	make # Builds RPMs for CentOS 7
-	docker compose build --parallel # Builds CentOS 7 CDN in a Box images
+	export BASE_IMAGE=ubuntu ubuntu_VERSION=7
+	make # Builds DEBs for ubuntu 7
+	docker compose build --parallel # Builds ubuntu 7 CDN in a Box images
 
 Usage
 -----
@@ -214,7 +214,7 @@ Importing the :abbr:`CA (Certificate Authority)` certificate on Windows
 #. Import the CIAB intermediate :abbr:`CA (Certificate Authority)` certificate into :menuselection:`Trusted Root Certification Authorities --> Certificates`.
 #. Restart all HTTPS clients (browsers, etc).
 
-Importing the :abbr:`CA (Certificate Authority)` certificate on Rocky Linux 8 (Linux)
+Importing the :abbr:`CA (Certificate Authority)` certificate on ubuntu linux 8 (Linux)
 -------------------------------------------------------------------------------------
 #. Copy the CIAB full chain :abbr:`CA (Certificate Authority)` certificate bundle from :file:`infrastructure/cdn-in-a-box/traffic_ops/ca/CIAB-CA-fullchain.crt` to path :file:`/etc/pki/ca-trust/source/anchors/`.
 #. Run ``update-ca-trust-extract`` as the root user or with :manpage:`sudo(8)`.

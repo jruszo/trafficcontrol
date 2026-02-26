@@ -16,15 +16,15 @@
 # specific language governing permissions and limitations
 # under the License.
 
-FROM centos:7
+FROM ubuntu:7
 
-RUN yum -y --setopt=tsflags=nodocs update && \
-    yum -y --setopt=tsflags=nodocs install httpd && \
-    yum -y --setopt=tsflags=nodocs install perl && \
-    yum -y --setopt=tsflags=nodocs install git && \
-    yum -y --setopt=tsflags=nodocs install golang && \
-    yum -y --setopt=tsflags=nodocs install openssl && \
-    yum clean all
+RUN apt -y --setopt=tsflags=nodocs update && \
+    apt -y --setopt=tsflags=nodocs install httpd && \
+    apt -y --setopt=tsflags=nodocs install perl && \
+    apt -y --setopt=tsflags=nodocs install git && \
+    apt -y --setopt=tsflags=nodocs install golang && \
+    apt -y --setopt=tsflags=nodocs install openssl && \
+    apt clean all
 
 #EXPOSE 80
 

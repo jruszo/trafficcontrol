@@ -350,11 +350,11 @@ export async function getVersion(path?: string): Promise<ServerVersion> {
 	}
 
 	try {
-		const releaseNo = execSync("rpm -q --qf '%{version}' -f /etc/redhat-release", {encoding: "utf8"}).trimEnd();
+		const releaseNo = execSync("deb -q --qf '%{version}' -f /etc/redhat-release", {encoding: "utf8"}).trimEnd();
 		ver.elRelease = `el${releaseNo}`;
 	} catch (e) {
 		ver.elRelease = "el7";
-		console.warn(`getting RHEL version: ${e}`);
+		console.warn(`getting ubuntu version: ${e}`);
 	}
 
 	try {

@@ -53,7 +53,7 @@ jobs:
         env:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
-          MOLECULE_DISTRO: 'centos8'
+          MOLECULE_DISTRO: 'ubuntu8'
         working-directory: ${{ github.workspace }}/infrastructure/ansible/roles/traffic_opsdb
 
   verify:
@@ -62,8 +62,8 @@ jobs:
     strategy:
       matrix:
         distro:
-          - centos8
-          - centos7
+          - ubuntu8
+          - ubuntu7
         scenario:
           - default
           - triad

@@ -20,7 +20,7 @@
       - " valid_build_version == 'true' "
     
 - name: Install Postgres client tools
-  yum:
+  apt:
     name:
       - "{{ postgresql_client_pkg_name }}"
     state: present
@@ -35,7 +35,7 @@
     content: PATH=$PATH:{{ pg_bin_path }}
 
 - name: Install Traffic Ops
-  yum:
+  apt:
     name: "{{ to_pkg_name }}"
     state: installed
     lock_timeout: 300

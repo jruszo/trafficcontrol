@@ -41,16 +41,16 @@ git clone https://github.com/jruszo/trafficcontrol/grove
 cd $GOPATH/src/github.com/jruszo/trafficcontrol/grove
 go build
 ```
-6. Install and configure an RPM development environment
-   * See https://wiki.centos.org/HowTos/SetupRpmBuildEnvironment
-7. Build the RPM
+6. Install and configure an DEB development environment
+   * See https://wiki.ubuntu.org/HowTos/SetupdebbuildEnvironment
+7. Build the DEB
 ```bash
-./build/build_rpm.sh
+./build/build_deb.sh
 ```
 
 # Configuration
 
-A config file must be passed with the `-cfg` flag on startup. The RPM uses a config file at `/etc/grove/grove.cfg`.
+A config file must be passed with the `-cfg` flag on startup. The DEB uses a config file at `/etc/grove/grove.cfg`.
 
 The config file is JSON of the following format:
 
@@ -221,7 +221,7 @@ Each file is a key-value database, which internally uses a B+tree (see https://g
 
 # Running
 
-The application may be run manually via `./grove -cfg grove.cfg`, or if installed via the RPM, as a service via `service grove start` or `systemctl start grove`.
+The application may be run manually via `./grove -cfg grove.cfg`, or if installed via the DEB, as a service via `service grove start` or `systemctl start grove`.
 
 If there are errors, they will be logged to the error location in the config file (`/etc/grove/grove.cfg` for the service), or if the errors are with the config file itself, to stdout.
 

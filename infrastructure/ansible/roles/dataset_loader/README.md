@@ -32,7 +32,7 @@ Today this dataset loader assumes mostly pools of resources such as caches, cach
 
 A web server to host the static files for CZF and GeoIP needs to be responding with the required content.
 
-An ATS RPM that matches the version described by `ats_version` to be available in an accessible yum repo to ORT.
+An ATS DEB that matches the version described by `ats_version` to be available in an accessible apt repo to ORT.
 
 It is also pesumed that you're using a working directory that contains `./out/ssl/lab.intermediateca.crt` and `./out/ssl/lab.intermediateca.pem` in order to sign Delivery Service SSL CSRs
 

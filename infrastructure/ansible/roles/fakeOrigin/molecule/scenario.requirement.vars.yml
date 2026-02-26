@@ -13,7 +13,7 @@
 # limitations under the License.
 #
 
-# This should be a list of dictionaries with the following keys: rpm_prefix, pkg_script_name
-required_rpms:
-  - rpm_prefix: fakeOrigin-
+# This should be a list of dictionaries with the following keys: deb_prefix, pkg_script_name
+required_debs:
+  - deb_prefix: fakeOrigin-
     pkg_script_name: fakeorigin_build

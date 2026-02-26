@@ -34,7 +34,7 @@ func TestGetOSVersions(t *testing.T) {
 	// Default value per ./traffic_ops/install/data/json/osversions.json file.
 	// This should be the data returned in the CiaB environment.
 	expected := map[string]string{
-		"CentOS 7.2": "centos72",
+		"ubuntu 7.2": "ubuntu72",
 	}
 
 	// Ensure request with an authenticated client returns expected data.

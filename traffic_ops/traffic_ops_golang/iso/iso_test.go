@@ -51,7 +51,7 @@ func TestISOS(t *testing.T) {
 			name: "cmd success",
 			input: isoRequest{
 				DHCP:          boolStr{true, false},
-				OSVersionDir:  "centos72",
+				OSVersionDir:  "ubuntu72",
 				HostName:      "db",
 				DomainName:    "infra.ciab.test",
 				IPAddr:        net.IP{172, 20, 0, 4},
@@ -112,7 +112,7 @@ func TestISOS(t *testing.T) {
 			name: "cmd failure",
 			input: isoRequest{
 				DHCP:          boolStr{true, false},
-				OSVersionDir:  "centos72",
+				OSVersionDir:  "ubuntu72",
 				HostName:      "db",
 				DomainName:    "infra.ciab.test",
 				IPAddr:        net.IP{172, 20, 0, 4},
@@ -249,7 +249,7 @@ func TestISORequest_validate(t *testing.T) {
 			true,
 			isoRequest{
 				DHCP:          boolStr{true, false},
-				OSVersionDir:  "centos72",
+				OSVersionDir:  "ubuntu72",
 				HostName:      "db",
 				DomainName:    "infra.ciab.test",
 				IPAddr:        net.IP{172, 20, 0, 4},
@@ -272,7 +272,7 @@ func TestISORequest_validate(t *testing.T) {
 			true,
 			isoRequest{
 				DHCP:          boolStr{true, false},
-				OSVersionDir:  "centos72",
+				OSVersionDir:  "ubuntu72",
 				HostName:      "db",
 				DomainName:    "infra.ciab.test",
 				IPAddr:        net.IP{172, 20, 0, 4},
@@ -295,7 +295,7 @@ func TestISORequest_validate(t *testing.T) {
 			true,
 			isoRequest{
 				DHCP:          boolStr{true, false},
-				OSVersionDir:  "centos72",
+				OSVersionDir:  "ubuntu72",
 				HostName:      "db",
 				DomainName:    "infra.ciab.test",
 				IPAddr:        net.IP{172, 20, 0, 4},
@@ -318,7 +318,7 @@ func TestISORequest_validate(t *testing.T) {
 			false,
 			isoRequest{
 				DHCP:          boolStr{true, false},
-				OSVersionDir:  "centos72",
+				OSVersionDir:  "ubuntu72",
 				HostName:      "db",
 				DomainName:    "infra.ciab.test",
 				IPAddr:        net.IP{172, 20, 0, 4},
@@ -341,7 +341,7 @@ func TestISORequest_validate(t *testing.T) {
 			false,
 			isoRequest{
 				DHCP:          boolStr{true, false},
-				OSVersionDir:  "centos72",
+				OSVersionDir:  "ubuntu72",
 				HostName:      "db",
 				DomainName:    "infra.ciab.test",
 				IPAddr:        net.IP{172, 20, 0, 4},
@@ -364,7 +364,7 @@ func TestISORequest_validate(t *testing.T) {
 			true,
 			isoRequest{
 				DHCP:          boolStr{true, true},
-				OSVersionDir:  "centos72",
+				OSVersionDir:  "ubuntu72",
 				HostName:      "db",
 				DomainName:    "infra.ciab.test",
 				IPAddr:        net.IP{},
@@ -387,7 +387,7 @@ func TestISORequest_validate(t *testing.T) {
 			false,
 			isoRequest{
 				DHCP:          boolStr{true, false},
-				OSVersionDir:  "centos72",
+				OSVersionDir:  "ubuntu72",
 				HostName:      "db",
 				DomainName:    "infra.ciab.test",
 				IPAddr:        net.IP{},
@@ -411,7 +411,7 @@ func TestISORequest_validate(t *testing.T) {
 			true,
 			isoRequest{
 				DHCP:          boolStr{true, true},
-				OSVersionDir:  "centos72",
+				OSVersionDir:  "ubuntu72",
 				HostName:      "db",
 				DomainName:    "infra.ciab.test",
 				IPAddr:        net.IP{},
@@ -434,7 +434,7 @@ func TestISORequest_validate(t *testing.T) {
 			false,
 			isoRequest{
 				DHCP:          boolStr{true, true},
-				OSVersionDir:  "centos72",
+				OSVersionDir:  "ubuntu72",
 				HostName:      "db",
 				DomainName:    "infra.ciab.test",
 				IPAddr:        net.IP{},

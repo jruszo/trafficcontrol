@@ -32,11 +32,7 @@ if ! _brinfo="$(curl --silent "${GITHUB_API_URL}/repos/${INPUT_OWNER}/${INPUT_RE
   exit 2
 fi
 
-if [[ "$RHEL_VERSION" -ge 8 ]]; then
-	sha_length=9
-else
-	sha_length=7
-fi
+sha_length=8
 
 # parse out the commit sha
 _sha="$(<<<"$_brinfo" jq -r .commit.sha)"
@@ -68,8 +64,15 @@ ahead_by="$(<<<"$compare" jq -r .ahead_by)"
 if [[ -z "$ahead_by" ]]; then
 	echo "Error: could not fetch commit count between tag ${latest_tag} and the tip of branch ${INPUT_BRANCH}"
 fi
-expected_rpm_name="${INPUT_REPO}-${latest_tag}-${ahead_by}.${_sha}.el${RHEL_VERSION}.${TARGET_ARCH}.rpm"
 
-echo "expected-rpm-name=${expected_rpm_name}" >> $GITHUB_OUTPUT
+target_arch="${TARGET_ARCH:-amd64}"
+case "${target_arch}" in
+	x86_64) target_arch="amd64" ;;
+	aarch64) target_arch="arm64" ;;
+esac
+
+expected_deb_name="${INPUT_REPO}_${latest_tag}-${ahead_by}.${_sha}_${target_arch}.deb"
+
+echo "expected-deb-name=${expected_deb_name}" >> "$GITHUB_OUTPUT"
 
 exit 0

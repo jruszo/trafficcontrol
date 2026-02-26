@@ -12,7 +12,7 @@
 # limitations under the License.
 #
 - name: Install grove and config tool
-  yum:
+  apt:
     name:
       - "{{ g_pkg_name }}"
       - "{{ gtccfg_pkg_name }}"

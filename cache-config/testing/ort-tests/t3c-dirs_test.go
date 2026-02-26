@@ -21,7 +21,7 @@ import (
 	"github.com/jruszo/trafficcontrol/v8/cache-config/t3c-apply/util"
 )
 
-// TestDirs tests that the t3c rpm creates directories that t3c-apply requires to run.
+// TestDirs tests that the t3c deb creates directories that t3c-apply requires to run.
 // Right now, that's just /var/lib/trafficcontrol-cache-config, but in the future it may include others like /var/log/trafficcontrol-cache-config or /etc/trafficcontrol-cache-config.
 func TestDirs(t *testing.T) {
 	requiredDirs := []string{

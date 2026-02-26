@@ -15,10 +15,12 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-#
 
-/usr/sbin/httpd
+set -eu
 
-createrepo /var/www/html/traffic-control/7/x86_64 
+cd /var/www/html
 
-tail -f /var/log/httpd/access_log
+dpkg-scanpackages . /dev/null > Packages
+gzip -kf Packages
+
+exec python3 -m http.server 80 --directory /var/www/html

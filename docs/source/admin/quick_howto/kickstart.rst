@@ -13,10 +13,10 @@
 .. limitations under the License.
 ..
 
-.. _Creating-CentOS-Kickstart:
+.. _Creating-ubuntu-Kickstart:
 
 **********************************
-Creating the CentOS Kickstart File
+Creating the ubuntu Kickstart File
 **********************************
 The Kickstart file is a text file, containing a list of items, each identified by a keyword. This file can be generated using the `Red Hat Kickstart Configurator application <https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/5/html/installation_guide/ch-redhat-config-kickstart>`_, or it can be written from scratch. The Red Hat Enterprise Linux installation program also creates a sample Kickstart file based on the options selected during installation. It is written to the file :file:`/root/anaconda-ks.cfg` in this case. This file is editable using most text editors.
 
@@ -34,8 +34,8 @@ Generating a System Image
 	mkdir newdir
 	cd newdir/
 
-	# In this example, the pre-existing system image definition tree is for CentOS 7.4 located in `centos74`
-	cp -r ../centos74/* .
+	# In this example, the pre-existing system image definition tree is for ubuntu 7.4 located in `ubuntu74`
+	cp -r ../ubuntu74/* .
 	vim ks.src
 	vim isolinux/isolinux.cfg
 	cd ..

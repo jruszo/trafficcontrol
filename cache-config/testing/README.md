@@ -36,10 +36,10 @@ the Github actions UI.
 # Running the tests manually.
 
 The first thing you need do is to provide the Traffic Ops and
-Traffic Ops ORT RPM files for the build you wish to test using 
+Traffic Ops ORT DEB files for the build you wish to test using
 this framework.  This test environment provides the necessary
 Docker containers used to support and execute the tests when
-given the necessary RPM's.  If you choose to not use the provided
+given the necessary DEBs.  If you choose to not use the provided
 Docker containers you will need to provide the following resources:
 
   - A running Traffic Ops with the installed release to be tested
@@ -47,7 +47,7 @@ Docker containers you will need to provide the following resources:
     test data for the Traffic Ops release.
   - An Apache Traffic Server host that has the installed release of
     ORT to be tested against the release of Traffic Ops.
-  - A yum server configured to provide the test rpm's herein.
+  - An APT repo server configured to provide the test DEBs herein.
   - A Traffic vault server.
 
 # Directory layout
@@ -59,19 +59,19 @@ Docker containers you will need to provide the following resources:
 
 # Setup.
 
-  1.  Build the Traffic Ops and Cache Config RPM's on the branch
+  1.  Build the Traffic Ops and Cache Config DEBs on the branch
       that you wish to test.  See the top level 'build' directory for
       building instructions.
-  2.  Copy the Traffic Ops RPM from the 'dist' directory to
+  2.  Copy the Traffic Ops DEB from the 'dist' directory to
       docker/traffic_ops/, no renaming is required.
-  3.  Copy the Traffic Ops ORT rpm from the 'dist' directory to
+  3.  Copy the Traffic Ops ORT DEB from the 'dist' directory to
       docker/ort_test/, no renaming is required.
-  4.  You may copy an Apache Trafficserver RPM to the
-      docker/yumserver/test-rpms directory or you can run:
+  4.  You may copy an Apache Trafficserver DEB to the
+      docker/yumserver/test-debs directory or you can run:
 
       **docker compose -f docker-compose-ats-build.yml run trafficserver_build**
 
-      to build an rpm which is copied to docker/yumserver/test-rpms.
+      to fetch/build a DEB which is copied to docker/yumserver/test-debs.
 
   5.  The container Docker files have the usernames and passwords used in the various
       containers ie, postgresql db, traffic_ops, and cache-config.  The usernames

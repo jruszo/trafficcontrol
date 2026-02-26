@@ -13,7 +13,7 @@
 # limitations under the License.
 #
 - name: Install Traffic Portal
-  yum:
+  apt:
     name: "{{ tp_pkg_name }}"
     state: installed
     lock_timeout: 300

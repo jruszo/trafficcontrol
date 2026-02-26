@@ -44,7 +44,7 @@ This makes ORT:
 
 The implementation should adhere to the "UNIX Philosophy," POSIX, Linux Standard Base (LSB), and GNU as much as possible.
 
-ORT will continue to consist of a single OS package (e.g. RPM), which installs all executables.
+ORT will continue to consist of a single OS package (e.g. DEB), which installs all executables.
 
 ORT will require the following executables:
 - **Aggregator**. This is the “primary application” which will emulate the existing ORT script, and be called by CRON or operators to deploy all configs, as ORT does today. Note this is similar to how git works, and several other common Linux CLI utilities. Will include a "Report Mode" which executes the pipeline of commands necessary to emulate the existing ORT Report Mode.
@@ -100,11 +100,11 @@ ORT will require the following executables:
 
 The following features of the current ORT are specifically not being implemented in the redesign:
 
-- **Chkconfig**. Chkconfig is not used by CentOS 7+; specifically, SystemD does not use it. It is misleading that ORT sets it today.
+- **Chkconfig**. Chkconfig is not used by ubuntu 7+; specifically, SystemD does not use it. It is misleading that ORT sets it today.
 - **Ntpd**. ORT currently has custom logic to restart ntpd if an ntpd.conf is changed. This should be managed by whatever system is managing the server (Ansible/Puppet/Manual/etc). Network time should not be the responsibility of Traffic Control or its config applicator. 
 - **Interactive mode**. This mode is rarely possibly never used today. Further, by dividing ORT into UNIX-style apps for each function, an operator can easily see what results would be before running them.
 - **Revalidate Mode**. ORT is now fast enough to make a separate Revalidate unnecessary. It should always check and apply all files.
-- **Package Installation**. ORT will cease to perform this. OS (RPM) package installation will no longer be done by Traffic Control, but rather by whoever or whatever is managing the machine and operating system (Ansible, Puppet, human system administrators, etc).
+- **Package Installation**. ORT will cease to perform this. OS (DEB) package installation will no longer be done by Traffic Control, but rather by whoever or whatever is managing the machine and operating system (Ansible, Puppet, human system administrators, etc).
     - Whatever is managing the other hundreds of packages on the operating system should also manage ATS and its plugins. ORT's job is to manage Traffic Control configuration data, not the operating system.
 
 #### Additional Utilities.

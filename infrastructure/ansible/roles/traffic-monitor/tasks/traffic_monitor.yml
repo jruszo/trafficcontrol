@@ -13,11 +13,11 @@
 # limitations under the License.
 #
 - name: Install traffic_monitor
-  yum:
+  apt:
     name: "{{ tm_pkg_name }}"
     state: present
     update_cache: yes
-    use_backend: yum
+    use_backend: apt
     lock_timeout: 300
     enablerepo: "{{ additional_yum_repos | default([]) }}"
   notify: Restart Traffic Monitor

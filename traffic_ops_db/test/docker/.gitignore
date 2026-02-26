@@ -15,5 +15,5 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-traffic_ops.rpm
+traffic_ops.deb
 initdb.d/*dump

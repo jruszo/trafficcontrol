@@ -42,6 +42,6 @@ RUN chmod 0600 /root/.pgpass
 # These versions don't actually do anything - because the dev env can't make ISO
 # system images - but having them defined anyway helps when testing related
 # functionality, to a point.
-RUN mkdir -p /var/www/files/ && echo '{"CentOS 7": "centos7", "Rocky Linux 8": "rocky8"}' > /var/www/files/osversions.json
+RUN mkdir -p /var/www/files/ && echo '{"ubuntu 7": "ubuntu7", "ubuntu linux 8": "ubuntu8"}' > /var/www/files/osversions.json
 
 CMD $TC/dev/traffic_ops/run.sh

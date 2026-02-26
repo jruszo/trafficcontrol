@@ -17,49 +17,46 @@
 
 ############################################################
 # Dockerfile to build Traffic Ops DB admin test environment
+# Ubuntu + Debian package
 ############################################################
 
-FROM rockylinux:8
+FROM ubuntu:24.04
 ARG POSTGRES_VERSION
 ENV POSTGRES_VERSION=$POSTGRES_VERSION
 
-# NOTE: temporary workaround for removal of golang packages from CentOS 7 base repo
-RUN yum install -y \
-	epel-release \
-	libicu \
-	"https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-$(rpm --eval %_arch)/pgdg-redhat-repo-latest.noarch.rpm" \
-	git && \
-	dnf -y --repo=pgdg13 install postgresql13 && \
-	dnf -y remove pgdg-redhat-repo && \
-	dnf -y --enablerepo=powertools install \
-		cpanminus            \
-		expat-devel          \
-		golang               \
-		libcap               \
-		libcurl-devel        \
-		libidn-devel         \
-		libpcap-devel        \
-		mkisofs              \
-		openssl-devel        \
-		perl-core            \
-		perl-Crypt-ScryptKDF \
-		perl-DBD-Pg          \
-		perl-DBI             \
-		perl-Digest-SHA1     \
-		perl-JSON            \
-		perl-libwww-perl     \
-		perl-TermReadKey     \
-		perl-Test-CPAN-Meta  \
-		perl-WWW-Curl        \
-		python3
+RUN apt-get update && \
+	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+		ca-certificates \
+		cpanminus \
+		expat1-dev \
+		genisoimage \
+		git \
+		golang-go \
+		libcap2 \
+		libcurl4-openssl-dev \
+		libdbd-pg-perl \
+		libdbi-perl \
+		libdigest-sha-perl \
+		libexpat1-dev \
+		libicu-dev \
+		libidn2-dev \
+		libjson-perl \
+		libpcap-dev \
+		libssl-dev \
+		libterm-readkey-perl \
+		libwww-curl-perl \
+		libwww-perl \
+		openssl \
+		perl \
+		postgresql-client \
+		python3 && \
+	rm -rf /var/lib/apt/lists/*
 
-# Override TRAFFIC_OPS_RPM arg to use a different one using --build-arg TRAFFIC_OPS_RPM=...  Can be local file or http://...
-ARG TRAFFIC_OPS_RPM=traffic_ops.rpm
-ADD $TRAFFIC_OPS_RPM /
-RUN yum install -y \
-        /$(basename $TRAFFIC_OPS_RPM) && \
-        rm /$(basename $TRAFFIC_OPS_RPM) && \
-    yum clean all
+# Override TRAFFIC_OPS_DEB arg to use a different one using --build-arg TRAFFIC_OPS_DEB=... .
+ARG TRAFFIC_OPS_DEB=traffic_ops.deb
+ADD $TRAFFIC_OPS_DEB /
+RUN dpkg -i --force-depends "$(basename "$TRAFFIC_OPS_DEB")" && \
+	rm "$(basename "$TRAFFIC_OPS_DEB")"
 
 WORKDIR /opt/traffic_ops/app
 

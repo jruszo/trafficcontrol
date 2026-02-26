@@ -13,7 +13,7 @@
 # limitations under the License.
 #
 #
-# RPM spec file for Traffic Stats (tm).
+# DEB spec file for Traffic Stats (tm).
 #
 %define debug_package %{nil}
 Name:     trafficcontrol-cache-config
@@ -32,7 +32,7 @@ Requires: git
 Installs Traffic Control Cache Configuration utilities. See the `t3c` application.
 
 %prep
-tar xvf %{SOURCE0} -C $RPM_SOURCE_DIR
+tar xvf %{SOURCE0} -C $deb_SOURCE_DIR
 
 
 %build
@@ -137,65 +137,65 @@ installdir="/usr/bin"
 mandir="/usr/share/man"
 man1dir="man1"
 
-mkdir -p ${RPM_BUILD_ROOT}/"$installdir"
-mkdir -p "${RPM_BUILD_ROOT}"/etc/logrotate.d
-mkdir -p "${RPM_BUILD_ROOT}"/var/log/trafficcontrol-cache-config
-mkdir -p ${RPM_BUILD_ROOT}/"$mandir"/"$man1dir"
-mkdir -p ${RPM_BUILD_ROOT}/usr/lib/systemd/system
+mkdir -p ${deb_BUILD_ROOT}/"$installdir"
+mkdir -p "${deb_BUILD_ROOT}"/etc/logrotate.d
+mkdir -p "${deb_BUILD_ROOT}"/var/log/trafficcontrol-cache-config
+mkdir -p ${deb_BUILD_ROOT}/"$mandir"/"$man1dir"
+mkdir -p ${deb_BUILD_ROOT}/usr/lib/systemd/system
 
 src=src/github.com/jruszo/trafficcontrol/cache-config
-cp -p ${RPM_SOURCE_DIR}/trafficcontrol-cache-config-%{version}/build/atstccfg.logrotate "${RPM_BUILD_ROOT}"/etc/logrotate.d/atstccfg
-touch ${RPM_BUILD_ROOT}/var/log/trafficcontrol-cache-config/atstccfg.log
+cp -p ${deb_SOURCE_DIR}/trafficcontrol-cache-config-%{version}/build/atstccfg.logrotate "${deb_BUILD_ROOT}"/etc/logrotate.d/atstccfg
+touch ${deb_BUILD_ROOT}/var/log/trafficcontrol-cache-config/atstccfg.log
 
-cp -p "$src"/t3c-generate/t3c-generate ${RPM_BUILD_ROOT}/"$installdir"
-gzip -c -9 "$src"/t3c-generate/t3c-generate.1 > ${RPM_BUILD_ROOT}/"$mandir"/"$man1dir"/t3c-generate.1.gz
+cp -p "$src"/t3c-generate/t3c-generate ${deb_BUILD_ROOT}/"$installdir"
+gzip -c -9 "$src"/t3c-generate/t3c-generate.1 > ${deb_BUILD_ROOT}/"$mandir"/"$man1dir"/t3c-generate.1.gz
 
 t3csrc=src/github.com/jruszo/trafficcontrol/"$ccdir"/t3c
-cp -p "$t3csrc"/t3c ${RPM_BUILD_ROOT}/"$installdir"
-gzip -c -9 "$src"/t3c/t3c.1 > ${RPM_BUILD_ROOT}/"$mandir"/"$man1dir"/t3c.1.gz
+cp -p "$t3csrc"/t3c ${deb_BUILD_ROOT}/"$installdir"
+gzip -c -9 "$src"/t3c/t3c.1 > ${deb_BUILD_ROOT}/"$mandir"/"$man1dir"/t3c.1.gz
 
 t3c_apply_src=src/github.com/jruszo/trafficcontrol/"$ccdir"/t3c-apply
-cp -p "$t3c_apply_src"/t3c-apply ${RPM_BUILD_ROOT}/"$installdir"
-gzip -c -9 "$src"/t3c-apply/t3c-apply.1 > ${RPM_BUILD_ROOT}/"$mandir"/"$man1dir"/t3c-apply.1.gz
+cp -p "$t3c_apply_src"/t3c-apply ${deb_BUILD_ROOT}/"$installdir"
+gzip -c -9 "$src"/t3c-apply/t3c-apply.1 > ${deb_BUILD_ROOT}/"$mandir"/"$man1dir"/t3c-apply.1.gz
 
 to_req_src=src/github.com/jruszo/trafficcontrol/"$ccdir"/t3c-request
-cp -p "$to_req_src"/t3c-request ${RPM_BUILD_ROOT}/"$installdir"
-gzip -c -9 "$src"/t3c-request/t3c-request.1 > ${RPM_BUILD_ROOT}/"$mandir"/"$man1dir"/t3c-request.1.gz
+cp -p "$to_req_src"/t3c-request ${deb_BUILD_ROOT}/"$installdir"
+gzip -c -9 "$src"/t3c-request/t3c-request.1 > ${deb_BUILD_ROOT}/"$mandir"/"$man1dir"/t3c-request.1.gz
 
 to_upd_src=src/github.com/jruszo/trafficcontrol/"$ccdir"/t3c-update
-cp -p "$to_upd_src"/t3c-update ${RPM_BUILD_ROOT}/"$installdir"
-gzip -c -9 "$src"/t3c-update/t3c-update.1 > ${RPM_BUILD_ROOT}/"$mandir"/"$man1dir"/t3c-update.1.gz
+cp -p "$to_upd_src"/t3c-update ${deb_BUILD_ROOT}/"$installdir"
+gzip -c -9 "$src"/t3c-update/t3c-update.1 > ${deb_BUILD_ROOT}/"$mandir"/"$man1dir"/t3c-update.1.gz
 
 t3c_diff_src=src/github.com/jruszo/trafficcontrol/"$ccdir"/t3c-diff
-cp -p "$t3c_diff_src"/t3c-diff ${RPM_BUILD_ROOT}/"$installdir"
-gzip -c -9 "$src"/t3c-diff/t3c-diff.1 > ${RPM_BUILD_ROOT}/"$mandir"/"$man1dir"/t3c-diff.1.gz
+cp -p "$t3c_diff_src"/t3c-diff ${deb_BUILD_ROOT}/"$installdir"
+gzip -c -9 "$src"/t3c-diff/t3c-diff.1 > ${deb_BUILD_ROOT}/"$mandir"/"$man1dir"/t3c-diff.1.gz
 
 t3c_tail_src=src/github.com/jruszo/trafficcontrol/"$ccdir"/t3c-tail
-cp -p "$t3c_tail_src"/t3c-tail ${RPM_BUILD_ROOT}/"$installdir"
-gzip -c -9 "$src"/t3c-tail/t3c-tail.1 > ${RPM_BUILD_ROOT}/"$mandir"/"$man1dir"/t3c-tail.1.gz
+cp -p "$t3c_tail_src"/t3c-tail ${deb_BUILD_ROOT}/"$installdir"
+gzip -c -9 "$src"/t3c-tail/t3c-tail.1 > ${deb_BUILD_ROOT}/"$mandir"/"$man1dir"/t3c-tail.1.gz
 
 t3c_check_src=src/github.com/jruszo/trafficcontrol/"$ccdir"/t3c-check
-cp -p "$t3c_check_src"/t3c-check ${RPM_BUILD_ROOT}/"$installdir"
-gzip -c -9 "$src"/t3c-check/t3c-check.1 > ${RPM_BUILD_ROOT}/"$mandir"/"$man1dir"/t3c-check.1.gz
+cp -p "$t3c_check_src"/t3c-check ${deb_BUILD_ROOT}/"$installdir"
+gzip -c -9 "$src"/t3c-check/t3c-check.1 > ${deb_BUILD_ROOT}/"$mandir"/"$man1dir"/t3c-check.1.gz
 
 t3c_check_refs_src=src/github.com/jruszo/trafficcontrol/"$ccdir"/t3c-check-refs
-cp -p "$t3c_check_refs_src"/t3c-check-refs ${RPM_BUILD_ROOT}/"$installdir"
-gzip -c -9 "$src"/t3c-check-refs/t3c-check-refs.1 > ${RPM_BUILD_ROOT}/"$mandir"/"$man1dir"/t3c-check-refs.1.gz
+cp -p "$t3c_check_refs_src"/t3c-check-refs ${deb_BUILD_ROOT}/"$installdir"
+gzip -c -9 "$src"/t3c-check-refs/t3c-check-refs.1 > ${deb_BUILD_ROOT}/"$mandir"/"$man1dir"/t3c-check-refs.1.gz
 
 t3c_check_reload_src=src/github.com/jruszo/trafficcontrol/"$ccdir"/t3c-check-reload
-cp -p "$t3c_check_reload_src"/t3c-check-reload ${RPM_BUILD_ROOT}/"$installdir"
-gzip -c -9 "$src"/t3c-check-reload/t3c-check-reload.1 > ${RPM_BUILD_ROOT}/"$mandir"/"$man1dir"/t3c-check-reload.1.gz
+cp -p "$t3c_check_reload_src"/t3c-check-reload ${deb_BUILD_ROOT}/"$installdir"
+gzip -c -9 "$src"/t3c-check-reload/t3c-check-reload.1 > ${deb_BUILD_ROOT}/"$mandir"/"$man1dir"/t3c-check-reload.1.gz
 
 t3c_preprocess_src=src/github.com/jruszo/trafficcontrol/"$ccdir"/t3c-preprocess
-cp -p "$t3c_preprocess_src"/t3c-preprocess ${RPM_BUILD_ROOT}/"$installdir"
-gzip -c -9 "$src"/t3c-preprocess/t3c-preprocess.1 > ${RPM_BUILD_ROOT}/"$mandir"/"$man1dir"/t3c-preprocess.1.gz
+cp -p "$t3c_preprocess_src"/t3c-preprocess ${deb_BUILD_ROOT}/"$installdir"
+gzip -c -9 "$src"/t3c-preprocess/t3c-preprocess.1 > ${deb_BUILD_ROOT}/"$mandir"/"$man1dir"/t3c-preprocess.1.gz
 
-mkdir -p ${RPM_BUILD_ROOT}/var/lib/trafficcontrol-cache-config
+mkdir -p ${deb_BUILD_ROOT}/var/lib/trafficcontrol-cache-config
 
-ls ${RPM_BUILD_ROOT}/"$mandir"/"$man1dir"/
+ls ${deb_BUILD_ROOT}/"$mandir"/"$man1dir"/
 
 %clean
-rm -rf ${RPM_BUILD_ROOT}
+rm -rf ${deb_BUILD_ROOT}
 
 %post
 

@@ -19,7 +19,7 @@ Group:        Base System/System Tools
 Prefix:       /usr/sbin/%{name}
 Source:       %{_sourcedir}/%{name}-%{version}.tgz
 URL:          https://github.com/jruszo/trafficcontrol/%{name}
-Distribution: CentOS Linux
+Distribution: ubuntu Linux
 Vendor:       Apache Software Foundation
 BuildRoot:    %{buildroot}
 

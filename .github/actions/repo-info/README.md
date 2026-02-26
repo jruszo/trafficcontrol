@@ -17,8 +17,9 @@
   under the License.
 -->
 
-# repo-info docker action
-This action builds an RPM name, after fetching the latest git commit sha and latest tag on a GitHub repo branch.
+# repo-info action
+This action computes an expected Debian package name after fetching the latest
+git commit SHA and latest tag on a GitHub repo branch.
 
 ## Inputs
 
@@ -51,7 +52,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@master
-      - name: Fetch RPM name
+      - name: Fetch package name
         uses: ./.github/actions/repo-info
           with:
             - owner: apache

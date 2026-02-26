@@ -66,7 +66,7 @@ When using an abbreviation, acronym or initialism for the first time on a page, 
 - JSON
 - PDF
 - PNG
-- RPM
+- DEB
 - SQL
 - SSL
 - SVG

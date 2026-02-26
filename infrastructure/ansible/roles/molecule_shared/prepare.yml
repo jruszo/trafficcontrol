@@ -111,24 +111,24 @@
       retries: 10
       delay: 10
 
-    - name: Populate yum repo data
+    - name: Populate apt repo data
       command: "createrepo --update {{ item }}"
       run_once: true
       with_items:
-        - "/molecule/files/rpm/{{ ansible_distribution_major_version }}"
-        - "/molecule/files/srpm/{{ ansible_distribution_major_version }}"
+        - "/molecule/files/deb/{{ ansible_distribution_major_version }}"
+        - "/molecule/files/sdeb/{{ ansible_distribution_major_version }}"
 
     - name: Create a cronjob to ensure the repo metadata stays in sync
       cron:
-        name: Refresh molecule yum repo metadata
+        name: Refresh molecule apt repo metadata
         minute: '*/3'
         job: "createrepo --update -C {{ item }}"
       run_once: true
       with_items:
-        - "/molecule/files/rpm/{{ ansible_distribution_major_version }}"
-        - "/molecule/files/srpm/{{ ansible_distribution_major_version }}"
+        - "/molecule/files/deb/{{ ansible_distribution_major_version }}"
+        - "/molecule/files/sdeb/{{ ansible_distribution_major_version }}"
 
-    - name: Add the molecule yum repos
+    - name: Add the molecule apt repos
       yum_repository:
         name: "{{ item.name }}"
         description: The local molecule mounted ATC repo
@@ -137,13 +137,13 @@
         enabled: "{{ item.enabled }}"
       with_items:
         - name: molecule
-          path: "/molecule/files/rpm/{{ ansible_distribution_major_version }}"
+          path: "/molecule/files/deb/{{ ansible_distribution_major_version }}"
           enabled: yes
         - name: molecule-src
-          path: "/molecule/files/srpm/{{ ansible_distribution_major_version }}"
+          path: "/molecule/files/sdeb/{{ ansible_distribution_major_version }}"
           enabled: no
 
-    - name: Ensure the yum metadata contains the new repos
-      shell: yum clean all && yum repolist
+    - name: Ensure the apt metadata contains the new repos
+      shell: apt clean all && apt repolist
       args:
         warn: no

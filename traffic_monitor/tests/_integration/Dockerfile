@@ -22,7 +22,7 @@
 
 ARG GO_VERSION
 FROM golang:${GO_VERSION} AS get-go
-FROM rockylinux:8
+FROM ubuntu:8
 MAINTAINER dev@trafficcontrol.apache.org
 
 COPY --from=get-go /usr/local/go /usr/local/go
@@ -30,7 +30,7 @@ ENV PATH=/usr/local/go/bin:${PATH} \
     GOPATH=/go \
     CGO_ENABLED=0
 
-RUN dnf install -y initscripts epel-release jq git
+RUN apt install -y initscripts epel-release jq git
 
 COPY traffic_monitor/tests/_integration/ /tm/
 

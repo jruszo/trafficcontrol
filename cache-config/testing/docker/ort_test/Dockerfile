@@ -15,39 +15,34 @@
 # specific language governing permissions and limitations
 # under the License.
 
-# For cache, you may either use (RAM or disk) block devices or disk directories
-# To use RAM block devices, pass them as /dev/ram0 and /dev/ram1 via `docker run --device`
-# To use disk directories, simply don't pass devices, and the container will configure Traffic Server for directories
-
-# Block devices may be created on the native machine with, for example, `modprobe brd`.
-# The recommended minimum size for each block devices is 1G.
-# For example, `sudo modprobe brd rd_size=1048576 rd_nr=2`
-
-ARG OS_VERSION=8 \
-	OS_DISTRO=rockylinux
-
-FROM ${OS_DISTRO}:${OS_VERSION}
+FROM ubuntu:24.04
 MAINTAINER dev@trafficcontrol.apache.org
 EXPOSE 80 443
 
-RUN yum install -y epel-release && \
-	yum install -y initscripts git jq gcc lua nmap-ncat && \
-	yum clean all && \
-	# Add skip git's safe.directory check
+RUN apt-get update && \
+	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+		ca-certificates \
+		curl \
+		gcc \
+		git \
+		jq \
+		lua5.4 \
+		ncat \
+		dpkg \
+		python3 && \
+	rm -rf /var/lib/apt/lists/* && \
 	git config --global --add safe.directory '*'
 
-# Note that if more than one t3c RPM matches this wildcard, this Dockerfile will
-# break because this will create a directory instead of an RPM file, which it
-# will then fail to install.
-ADD ort_test/trafficcontrol-cache-config*.rpm /trafficcontrol-cache-config.rpm
-RUN yum install -y /trafficcontrol-cache-config.rpm && yum clean all
+ADD ort_test/trafficcontrol-cache-config*.deb /trafficcontrol-cache-config.deb
+RUN dpkg -i --force-depends /trafficcontrol-cache-config.deb
 
-RUN sed -i 's/HOME\/bin/HOME\/bin:\/usr\/local\/go\/bin:/g' /root/.bash_profile &&\
-	echo "GOPATH=/root/go; export GOPATH" >> /root/.bash_profile &&\
+RUN printf '%s\n' 'deb [trusted=yes] http://yumserver ./' > /etc/apt/sources.list.d/ort-test.list
+
+RUN sed -i 's/HOME\/bin/HOME\/bin:\/usr\/local\/go\/bin:/g' /root/.bashrc &&\
+	echo "GOPATH=/root/go; export GOPATH" >> /root/.bashrc &&\
 	echo "StrictHostKeyChecking no" >> /etc/ssh/ssh_config &&\
-	mkdir /root/go
+	mkdir -p /root/go
 
-ADD ort_test/Ort-test.repo /etc/yum.repos.d
 ADD ort_test/run.sh ort_test/systemctl.sh /
 
 ENTRYPOINT /run.sh

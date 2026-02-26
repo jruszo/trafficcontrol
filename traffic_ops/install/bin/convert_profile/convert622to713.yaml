@@ -23,17 +23,17 @@ replace_description:
 validate_parameters:
 - name: trafficserver
   config_file: package
-  value: 6.2.1-62.3f63b3a.el7.centos.x86_64
+  value: 6.2.1-62.3f63b3a.el7.ubuntu.x86_64
 conversion_actions:
 - match_parameter:
     name: trafficserver
     config_file: package
-    value: 6.2.1-62.3f63b3a.el7.centos.x86_64
+    value: 6.2.1-62.3f63b3a.el7.ubuntu.x86_64
   new_value: "<PLACE TRAFFICSERVER7 VERSION STRING HERE>"
 - match_parameter:
     name: trafficserver-debuginfo
     config_file: package
-    value: 6.2.1-62.3f63b3a.el7.centos.x86_64
+    value: 6.2.1-62.3f63b3a.el7.ubuntu.x86_64
   new_value: "<PLACE TRAFFICSERVER7 VERSION STRING HERE>"
 - match_parameter:
     name: location

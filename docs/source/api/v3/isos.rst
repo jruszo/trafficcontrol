@@ -68,7 +68,7 @@ Request Structure
 	Content-Type: application/json
 
 	{
-		"osversionDir": "centos72",
+		"osversionDir": "ubuntu72",
 		"hostName": "test",
 		"domainName": "quest",
 		"rootPass": "twelve",
@@ -98,7 +98,7 @@ ISO image as a streaming download.
 	Access-Control-Allow-Methods: POST,GET,OPTIONS,PUT,DELETE
 	Access-Control-Allow-Origin: *
 	Connection: keep-alive
-	Content-Disposition: attachment; filename="test-centos72_centos72-netinstall.iso"
+	Content-Disposition: attachment; filename="test-ubuntu72_ubuntu72-netinstall.iso"
 	Content-Encoding: gzip
 	Content-Type: application/download
 	Date: Wed, 05 Feb 2020 21:59:15 GMT

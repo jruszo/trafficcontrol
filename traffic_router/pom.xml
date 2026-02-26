@@ -133,7 +133,7 @@
 	</dependencyManagement>
 	<profiles>
 		<profile>
-			<id>rpm-build</id>
+			<id>deb-build</id>
 			<activation>
 				<os>
 					<name>linux</name>

@@ -26,7 +26,7 @@ Traffic Ops at its core is mainly a PostgreSQL database used to store configurat
 
 Software Requirements
 =====================
-Traffic Ops is only supported on CentOS 7+ systems (although many developers do use Mac OS with some success). Here are the requirements:
+Traffic Ops is only supported on ubuntu 7+ systems (although many developers do use Mac OS with some success). Here are the requirements:
 
 - |install-postgres-link|_ - the machine where Traffic Ops is running must have the client tool set (e.g. :manpage:`psql(1)`), but the actual database can be run anywhere so long as it is accessible.
 
@@ -129,12 +129,12 @@ Traffic Ops Project Tree Overview
 		- script/ - Mojolicious bootstrap/startup scripts.
 		- templates/ - Mojolicious Embedded Perl (:file:`{template name}.ep`) files for the now-removed Traffic Ops UI
 
-	- build/ - Contains files that are responsible for packaging Traffic Ops into an RPM file - and also for doing the same with :term:`ORT`
-	- etc/ - Configuration files for various systems associated with running production instances of Traffic Ops, which are installed under ``/etc`` by the Traffic Ops RPM
+	- build/ - Contains files that are responsible for packaging Traffic Ops into an DEB file - and also for doing the same with :term:`ORT`
+	- etc/ - Configuration files for various systems associated with running production instances of Traffic Ops, which are installed under ``/etc`` by the Traffic Ops DEB
 
 		- cron.d/ - Holds specifications for :manpage:`cron(8)` jobs that need to be run periodically on Traffic Ops servers
 
-			.. note:: At least one of these jobs expects itself to be run on a server that has the Perl implementation of Traffic Ops installed under ``/opt/traffic_ops/``. Nothing terrible will happen if that's not true, just that it/they won't work. Installation using the RPM will set up all of these kinds of things up automatically.
+			.. note:: At least one of these jobs expects itself to be run on a server that has the Perl implementation of Traffic Ops installed under ``/opt/traffic_ops/``. Nothing terrible will happen if that's not true, just that it/they won't work. Installation using the DEB will set up all of these kinds of things up automatically.
 
 		- init.d/ - Contains the old, initscripts-based job control for Traffic Ops
 		- logrotate.d/ - Specifications for the Linux :manpage:`logrotate(8)` utility for Traffic Ops log files
@@ -143,7 +143,7 @@ Traffic Ops Project Tree Overview
 	- install/ - Contains all of the resources necessary for a full install of Traffic Ops
 
 		- bin/ - Binaries related to installing Traffic Ops, as well as installing its prerequisites, certificates, and database
-		- data/ - Contains things that need to be accessible by the running server for certain functionality - typically installed to ``/var/www/data`` by the RPM (hence the name).
+		- data/ - Contains things that need to be accessible by the running server for certain functionality - typically installed to ``/var/www/data`` by the DEB (hence the name).
 		- etc/ - This directory left empty; it's used to contain post-installation extensions and resources
 		- lib/ - Contains libraries used by the various installation binaries
 

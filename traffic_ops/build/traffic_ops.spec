@@ -13,7 +13,7 @@
 # limitations under the License.
 #
 #
-# RPM spec file for Traffic Ops (tm).
+# DEB spec file for Traffic Ops (tm).
 #
 
 %define TRAFFIC_OPS_USER trafops
@@ -62,7 +62,7 @@ Built: %(date) by %{getenv: USER}
 set -o nounset
 # copy LICENSE
 cp "${TC_DIR}/LICENSE" %{_builddir}
-# avoid detecting LICENSE as an unpackaged RPM file
+# avoid detecting LICENSE as an unpackaged DEB file
 rm LICENSE
 
 # copy traffic_ops_golang binary
@@ -110,50 +110,50 @@ convert_dir=src/github.com/jruszo/trafficcontrol/traffic_ops/install/bin/convert
 
 %install
 
-if [ -d $RPM_BUILD_ROOT ]; then
-	%__rm -rf $RPM_BUILD_ROOT
+if [ -d $deb_BUILD_ROOT ]; then
+	%__rm -rf $deb_BUILD_ROOT
 fi
 
-if [ ! -d $RPM_BUILD_ROOT/%{PACKAGEDIR} ]; then
-	%__mkdir -p $RPM_BUILD_ROOT/%{PACKAGEDIR}
+if [ ! -d $deb_BUILD_ROOT/%{PACKAGEDIR} ]; then
+	%__mkdir -p $deb_BUILD_ROOT/%{PACKAGEDIR}
 fi
 
-%__cp -R $RPM_BUILD_DIR/traffic_ops-%{version}/* $RPM_BUILD_ROOT/%{PACKAGEDIR}
-echo "go rming $RPM_BUILD_ROOT/%{PACKAGEDIR}/{pkg,src,bin}"
-%__rm -rf $RPM_BUILD_ROOT/%{PACKAGEDIR}/{pkg,src,bin}
+%__cp -R $deb_BUILD_DIR/traffic_ops-%{version}/* $deb_BUILD_ROOT/%{PACKAGEDIR}
+echo "go rming $deb_BUILD_ROOT/%{PACKAGEDIR}/{pkg,src,bin}"
+%__rm -rf $deb_BUILD_ROOT/%{PACKAGEDIR}/{pkg,src,bin}
 
-%__mkdir -p $RPM_BUILD_ROOT/var/www/files
-%__cp install/data/json/osversions.json $RPM_BUILD_ROOT/var/www/files/.
+%__mkdir -p $deb_BUILD_ROOT/var/www/files
+%__cp install/data/json/osversions.json $deb_BUILD_ROOT/var/www/files/.
 
 # install traffic_ops_golang binary
-if [ ! -d $RPM_BUILD_ROOT/%{PACKAGEDIR}/app/bin ]; then
-	%__mkdir -p $RPM_BUILD_ROOT/%{PACKAGEDIR}/app/bin
+if [ ! -d $deb_BUILD_ROOT/%{PACKAGEDIR}/app/bin ]; then
+	%__mkdir -p $deb_BUILD_ROOT/%{PACKAGEDIR}/app/bin
 fi
 
 src=src/github.com/jruszo/trafficcontrol/traffic_ops/traffic_ops_golang
-%__cp -p  "$src"/traffic_ops_golang        "${RPM_BUILD_ROOT}"/opt/traffic_ops/app/bin/traffic_ops_golang
+%__cp -p  "$src"/traffic_ops_golang        "${deb_BUILD_ROOT}"/opt/traffic_ops/app/bin/traffic_ops_golang
 
 db_admin_src=src/github.com/jruszo/trafficcontrol/traffic_ops/app/db
-%__cp -p  "$db_admin_src"/admin           "${RPM_BUILD_ROOT}"/opt/traffic_ops/app/db/admin
-%__rm $RPM_BUILD_ROOT/%{PACKAGEDIR}/app/db/*.go
-%__rm -r $RPM_BUILD_ROOT/%{PACKAGEDIR}/app/db/trafficvault/test
+%__cp -p  "$db_admin_src"/admin           "${deb_BUILD_ROOT}"/opt/traffic_ops/app/db/admin
+%__rm $deb_BUILD_ROOT/%{PACKAGEDIR}/app/db/*.go
+%__rm -r $deb_BUILD_ROOT/%{PACKAGEDIR}/app/db/trafficvault/test
 
 to_dnssec_refresh_src=src/github.com/jruszo/trafficcontrol/traffic_ops/app/bin/checks/DnssecRefresh
-%__cp -p  "$to_dnssec_refresh_src"/ToDnssecRefresh           "${RPM_BUILD_ROOT}"/opt/traffic_ops/app/bin/checks/DnssecRefresh/ToDnssecRefresh
-%__rm $RPM_BUILD_ROOT/%{PACKAGEDIR}/app/bin/checks/DnssecRefresh/*.go
-%__rm -r $RPM_BUILD_ROOT/%{PACKAGEDIR}/app/bin/checks/DnssecRefresh/config
+%__cp -p  "$to_dnssec_refresh_src"/ToDnssecRefresh           "${deb_BUILD_ROOT}"/opt/traffic_ops/app/bin/checks/DnssecRefresh/ToDnssecRefresh
+%__rm $deb_BUILD_ROOT/%{PACKAGEDIR}/app/bin/checks/DnssecRefresh/*.go
+%__rm -r $deb_BUILD_ROOT/%{PACKAGEDIR}/app/bin/checks/DnssecRefresh/config
 
 reencrypt_src=src/github.com/jruszo/trafficcontrol/traffic_ops/app/db/reencrypt
-%__cp -p  "$reencrypt_src"/reencrypt           "${RPM_BUILD_ROOT}"/opt/traffic_ops/app/db/reencrypt/reencrypt
-%__rm $RPM_BUILD_ROOT/%{PACKAGEDIR}/app/db/reencrypt/*.go
+%__cp -p  "$reencrypt_src"/reencrypt           "${deb_BUILD_ROOT}"/opt/traffic_ops/app/db/reencrypt/reencrypt
+%__rm $deb_BUILD_ROOT/%{PACKAGEDIR}/app/db/reencrypt/*.go
 
 tv_migrate_src=src/github.com/jruszo/trafficcontrol/traffic_ops/app/db/traffic_vault_migrate
-%__cp -p  "$tv_migrate_src"/traffic_vault_migrate           "${RPM_BUILD_ROOT}"/opt/traffic_ops/app/db/traffic_vault_migrate/traffic_vault_migrate
-%__rm $RPM_BUILD_ROOT/%{PACKAGEDIR}/app/db/traffic_vault_migrate/*.go
+%__cp -p  "$tv_migrate_src"/traffic_vault_migrate           "${deb_BUILD_ROOT}"/opt/traffic_ops/app/db/traffic_vault_migrate/traffic_vault_migrate
+%__rm $deb_BUILD_ROOT/%{PACKAGEDIR}/app/db/traffic_vault_migrate/*.go
 
 convert_profile_src=src/github.com/jruszo/trafficcontrol/traffic_ops/install/bin/convert_profile
-%__cp -p  "$convert_profile_src"/convert_profile           "${RPM_BUILD_ROOT}"/opt/traffic_ops/install/bin/convert_profile
-%__rm $RPM_BUILD_ROOT/%{PACKAGEDIR}/install/bin/convert_profile/*.go
+%__cp -p  "$convert_profile_src"/convert_profile           "${deb_BUILD_ROOT}"/opt/traffic_ops/install/bin/convert_profile
+%__rm $deb_BUILD_ROOT/%{PACKAGEDIR}/install/bin/convert_profile/*.go
 
 %pre
 /usr/bin/getent group %{TRAFFIC_OPS_GROUP} || /usr/sbin/groupadd -r %{TRAFFIC_OPS_GROUP}
@@ -209,7 +209,7 @@ fi
 # upgrade
 if [ "$1" == "2" ]; then
 	echo -e "\n\nTo complete the update, perform the following steps:\n"
-	echo -e "1. If any *.rpmnew files are in /opt/traffic_ops/...,  reconcile with any local changes\n"
+	echo -e "1. If any *.debnew files are in /opt/traffic_ops/...,  reconcile with any local changes\n"
 	echo -e "2. Run './db/admin --env production upgrade'\n"
 	echo -e "   from the /opt/traffic_ops/app directory.\n"
 	echo -e "To start Traffic Ops:  systemctl start traffic_ops\n";

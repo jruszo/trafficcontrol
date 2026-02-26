@@ -300,7 +300,7 @@ type ApplyMetaData struct {
 	// because of --no-unset-reval-flag or --report-only.
 	UnsetRevalFlag bool `json:"unset-reval-flag"`
 
-	// InstalledPackages is which yum packages are installed.
+	// InstalledPackages is which apt packages are installed.
 	// Note this packages currently installed, not what would have been e.g.
 	// because of --install-packages=false or --report-only.
 	InstalledPackages []string `json:"installed-packages"`

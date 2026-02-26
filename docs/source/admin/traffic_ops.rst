@@ -30,9 +30,9 @@ System Requirements
 -------------------
 The user must have the following for a successful minimal install:
 
-- CentOS 7 or later
+- ubuntu 7 or later
 - Two machines - physical or virtual -, each with at least two (v)CPUs, 4GB of RAM, and 20 GB of disk space
-- Access to CentOS Base and EPEL :manpage:`yum(8)` repositories
+- Access to ubuntu Base and EPEL :manpage:`apt(8)` repositories
 - Access to `The Comprehensive Perl Archive Network (CPAN) <http://www.cpan.org/>`_
 
 Guide
@@ -44,9 +44,9 @@ Guide
 	.. code-block:: shell
 		:caption: Example PostgreSQL Install Procedure
 
-		yum update -y
-		yum install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
-		yum install -y postgresql13-server
+		apt update -y
+		apt install -y https://download.postgresql.org/pub/repos/apt/repodebs/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.deb
+		apt install -y postgresql13-server
 		su - postgres -c '/usr/pgsql-13/bin/initdb -A md5 -W' #-W forces the user to provide a superuser (postgres) password
 
 
@@ -62,21 +62,21 @@ Guide
 		systemctl status postgresql-13 # Prints the status of the PostgreSQL service, to prove it's running
 
 
-#. Build a :file:`traffic_ops-{version string}.rpm` file using the instructions under the :ref:`dev-building` page - or download a pre-built release from `the Apache Continuous Integration server <https://builds.apache.org/view/S-Z/view/TrafficControl/>`_.
+#. Build a :file:`traffic_ops-{version string}.deb` file using the instructions under the :ref:`dev-building` page - or download a pre-built release from `the Apache Continuous Integration server <https://builds.apache.org/view/S-Z/view/TrafficControl/>`_.
 
 #. Install a PostgreSQL client on the Traffic Ops host
 
 	.. code-block:: shell
 		:caption: Installing PostgreSQL Client from a Hosted Source
 
-		yum install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+		apt install -y https://download.postgresql.org/pub/repos/apt/repodebs/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.deb
 
-#. Install the Traffic Ops RPM. The Traffic Ops RPM file should have been built in an earlier step.
+#. Install the Traffic Ops DEB. The Traffic Ops DEB file should have been built in an earlier step.
 
 	.. code-block:: shell
-		:caption: Installing a Generated Traffic Ops RPM
+		:caption: Installing a Generated Traffic Ops DEB
 
-		yum install -y ./dist/traffic_ops-3.0.0-xxxx.yyyyyyy.el7.x86_64.rpm
+		apt install -y ./dist/traffic_ops-3.0.0-xxxx.yyyyyyy.el7.x86_64.deb
 
 	.. note:: This will install the PostgreSQL client, ``psql`` as a dependency.
 
@@ -227,7 +227,7 @@ The postinstall script can also be run non-interactively using :atc-file:`traffi
 
 Upgrading
 =========
-To upgrade from older Traffic Ops versions, stop the service, use :manpage:`yum(8)` to upgrade to the latest available Traffic Ops package, and use the :ref:`admin <database-management>` tool to perform the database upgrade.
+To upgrade from older Traffic Ops versions, stop the service, use :manpage:`apt(8)` to upgrade to the latest available Traffic Ops package, and use the :ref:`admin <database-management>` tool to perform the database upgrade.
 
 .. tip:: In order to upgrade to the latest version of Traffic Ops, please be sure that you have first upgraded to the latest available minor or patch version of your current release. For example, if your current Traffic Ops version is 3.0.0 and version 3.1.0 is available, you must first upgrade to 3.1.0 before proceeding to upgrade to 4.0.0. (Specifically, this means running all migrations, :atc-file:`traffic_ops/app/db/seeds.sql`, and :file:`traffic_ops/app/db/patches.sql` for the latest of your current major version - which should be handled by the :program:`admin` tool). The latest migration available before the release of 4.0.0 (pending at the time of this writing) was :file:`traffic_ops/app/db/migrations/20180814000625_remove_capabilities_for_reseed.sql`, so be sure that migrations up to this point have been run before attempting to upgrade Traffic Ops.
 
@@ -237,7 +237,7 @@ To upgrade from older Traffic Ops versions, stop the service, use :manpage:`yum(
 	:caption: Sample Script for Upgrading Traffic Ops
 
 	systemctl stop traffic_ops
-	yum upgrade traffic_ops
+	apt upgrade traffic_ops
 	pushd /opt/traffic_ops/app/
 	./db/admin --env production upgrade
 	./db/admin --env production --trafficvault upgrade

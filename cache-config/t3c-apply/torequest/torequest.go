@@ -594,7 +594,7 @@ func (r *TrafficOpsReq) CheckSystemServices() error {
 	return nil
 }
 
-// IsPackageInstalled returns true/false if the named rpm package is installed.
+// IsPackageInstalled returns true/false if the named deb package is installed.
 // the prefix before the version is matched.
 func (r *TrafficOpsReq) IsPackageInstalled(name string) bool {
 	for k, v := range r.Pkgs {
@@ -603,11 +603,11 @@ func (r *TrafficOpsReq) IsPackageInstalled(name string) bool {
 			return v
 		}
 	}
-	if !r.Cfg.RpmDBOk {
-		log.Warnf("RPM DB is corrupted cannot run IsPackageInstalled for '%s' and package metadata is unavailable", name)
+	if !r.Cfg.debDBOk {
+		log.Warnf("DEB DB is corrupted cannot run IsPackageInstalled for '%s' and package metadata is unavailable", name)
 		return false
 	}
-	log.Infof("IsPackageInstalled '%v' not found in cache, querying rpm", name)
+	log.Infof("IsPackageInstalled '%v' not found in cache, querying deb", name)
 	pkgArr, err := util.PackageInfo("pkg-query", name)
 	if err != nil {
 		log.Errorf(`IsPackageInstalled PackageInfo(pkg-query, %v) failed, caching as not installed and returning false! Error: %v\n`, name, err.Error())
@@ -616,11 +616,11 @@ func (r *TrafficOpsReq) IsPackageInstalled(name string) bool {
 	}
 	if len(pkgArr) > 0 {
 		pkgAndVersion := pkgArr[0]
-		log.Infof("IsPackageInstalled '%v' found in rpm, adding '%v' to cache", name, pkgAndVersion)
+		log.Infof("IsPackageInstalled '%v' found in deb, adding '%v' to cache", name, pkgAndVersion)
 		r.Pkgs[pkgAndVersion] = true
 		return true
 	}
-	log.Infof("IsPackageInstalled '%v' not found in rpm, adding '%v'=false to cache", name, name)
+	log.Infof("IsPackageInstalled '%v' not found in deb, adding '%v'=false to cache", name, name)
 	r.Pkgs[name] = false
 	return false
 }
@@ -916,7 +916,7 @@ func (r *TrafficOpsReq) ProcessConfigFiles(metaData *t3cutil.ApplyMetaData) (Upd
 	return updateStatus, nil
 }
 
-// ProcessPackages retrieves a list of required RPM's from Traffic Ops
+// ProcessPackages retrieves a list of required DEB's from Traffic Ops
 // and determines which need to be installed or removed on the cache.
 func (r *TrafficOpsReq) ProcessPackages() error {
 	log.Infoln("Calling ProcessPackages")
@@ -1168,7 +1168,7 @@ func (r *TrafficOpsReq) StartServices(syncdsUpdate *UpdateStatus, metaData *t3cu
 	}
 
 	if (serviceNeeds == t3cutil.ServiceNeedsRestart || serviceNeeds == t3cutil.ServiceNeedsReload) && !r.IsPackageInstalled(packageName) {
-		// TODO try to reload/restart anyway? To allow non-RPM installs?
+		// TODO try to reload/restart anyway? To allow non-DEB installs?
 		return errors.New(packageName + " needs " + serviceNeeds.String() + " but is not installed.")
 	}
 

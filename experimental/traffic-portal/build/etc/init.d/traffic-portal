@@ -4,7 +4,7 @@
 # the process monitor.
 #
 # This was written for Debian distributions such as Ubuntu, but should still
-# work on RedHat, Fedora, or other RPM-based distributions, since none of the
+# work on RedHat, Fedora, or other DEB-based distributions, since none of the
 # built-in service functions are used. So information is provided for both.
 #
 ### BEGIN INIT INFO

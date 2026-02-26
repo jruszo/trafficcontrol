@@ -21,7 +21,7 @@
 # docker build --file Postgrest_Dockerfile --rm --tag traffic_ops_postgrest:0.1 .
 # docker run --add-host="localhost:10.0.2.2" -p 9001:9001 --name my-postgrest --hostname my-postgrest --env USER=admin --env PASS=mypass --env URI=example.net:5432 --env DATABASE=mydb --detach traffic_ops_postgrest:0.1
 
-# Based on Ubuntu because PostgREST binaries have issues on CentOS and would require building from source.
+# Based on Ubuntu because PostgREST binaries have issues on ubuntu and would require building from source.
 FROM ubuntu:15.10
 MAINTAINER dev@trafficcontrol.apache.org
 

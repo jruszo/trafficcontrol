@@ -77,20 +77,20 @@ func TestTrimParamUnderscoreNumSuffix(t *testing.T) {
 
 func TestGetATSMajorVersionFromATSVersion(t *testing.T) {
 	inputExpected := map[string]uint{
-		`7.1.2-34.56abcde.el7.centos.x86_64`:    7,
+		`7.1.2-34.56abcde.el7.ubuntu.x86_64`:    7,
 		`8`:                                     8,
 		`8.1`:                                   8,
 		`10.1`:                                  10,
-		`1234.1.2-34.56abcde.el7.centos.x86_64`: 1234,
+		`1234.1.2-34.56abcde.el7.ubuntu.x86_64`: 1234,
 	}
 	errExpected := []string{
-		"a7.1.2-34.56abcde.el7.centos.x86_64",
-		`-7.1.2-34.56abcde.el7.centos.x86_64`,
-		".7.1.2-34.56abcde.el7.centos.x86_64",
-		"7a.1.2-34.56abcde.el7.centos.x86_64",
-		"7-a.1.2-34.56abcde.el7.centos.x86_64",
-		"7-2.1.2-34.56abcde.el7.centos.x86_64",
-		"100-2.1.2-34.56abcde.el7.centos.x86_64",
+		"a7.1.2-34.56abcde.el7.ubuntu.x86_64",
+		`-7.1.2-34.56abcde.el7.ubuntu.x86_64`,
+		".7.1.2-34.56abcde.el7.ubuntu.x86_64",
+		"7a.1.2-34.56abcde.el7.ubuntu.x86_64",
+		"7-a.1.2-34.56abcde.el7.ubuntu.x86_64",
+		"7-2.1.2-34.56abcde.el7.ubuntu.x86_64",
+		"100-2.1.2-34.56abcde.el7.ubuntu.x86_64",
 		"7a",
 		"",
 		"-",

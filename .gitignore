@@ -17,8 +17,8 @@
 #
 .DS_Store
 cpanfile.snapshot
-rpm/build.number
-rpmbuild/
+deb/build.number
+debbuild/
 docs/build/*
 /grove/grove
 /grove/grovetccfg/grovetccfg

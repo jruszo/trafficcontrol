@@ -80,7 +80,7 @@ func GetCfg(appVersion string, gitRevision string) (Cfg, error) {
 	help := getopt.BoolLong("help", 'h', "Print usage information and exit")
 	revalOnly := getopt.BoolLong("revalidate-only", 'y', "Whether to exclude files not named 'regex_revalidate.config'")
 	dir := getopt.StringLong("dir", 'D', "", "ATS config directory, used for config files without location parameters or with relative paths. May be blank. If blank and any required config file location parameter is missing or relative, will error.")
-	viaRelease := getopt.BoolLong("via-string-release", 'r', "Whether to use the Release value from the RPM package as a replacement for the ATS version specified in the build that is returned in the Via and Server headers from ATS.")
+	viaRelease := getopt.BoolLong("via-string-release", 'r', "Whether to use the Release value from the DEB package as a replacement for the ATS version specified in the build that is returned in the Via and Server headers from ATS.")
 	dnsLocalBind := getopt.BoolLong("dns-local-bind", 'b', "Whether to use the server's Service Addresses to set the ATS DNS local bind address.")
 	disableParentConfigComments := getopt.BoolLong("disable-parent-config-comments", 'c', "Disable adding a comments to parent.config individual lines")
 	defaultEnableH2 := getopt.BoolLong("default-client-enable-h2", '2', "Whether to enable HTTP/2 on Delivery Services by default, if they have no explicit Parameter. This is irrelevant if ATS records.config is not serving H2. If omitted, H2 is disabled.")

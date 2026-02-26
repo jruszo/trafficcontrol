@@ -129,7 +129,7 @@ nfpms:
     license: BSD 3-Clause
     formats:
       - deb
-      - rpm
+      - deb
     replacements:
       darwin: Darwin
       linux: Linux

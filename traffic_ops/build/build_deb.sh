@@ -34,9 +34,9 @@ importFunctions() {
 # ---------------------------------------
 initBuildArea() {
 	echo "Initializing the build area."
-	(mkdir -p "$RPMBUILD"
-	 cd "$RPMBUILD"
-	 mkdir -p SPECS SOURCES RPMS SRPMS BUILD BUILDROOT) || { echo "Could not create $RPMBUILD: $?"; return 1; }
+	(mkdir -p "$debbuild"
+	 cd "$debbuild"
+	 mkdir -p SPECS SOURCES debS SdebS BUILD BUILDROOT) || { echo "Could not create $debbuild: $?"; return 1; }
 
 	local dest
 	dest="$(createSourceDir traffic_ops)"
@@ -65,7 +65,7 @@ initBuildArea() {
 		ldflags="${ldflags} -s -w"; # strip binary
 	fi;
 	set -o nounset; }
-	go build -v -gcflags "$gcflags" -ldflags "${ldflags} -X main.version=traffic_ops-${TC_VERSION}-${BUILD_NUMBER}.${RHEL_VERSION} -B 0x$(git rev-parse HEAD)" || \
+	go build -v -gcflags "$gcflags" -ldflags "${ldflags} -X main.version=traffic_ops-${TC_VERSION}-${BUILD_NUMBER}.${ubuntu_VERSION} -B 0x$(git rev-parse HEAD)" || \
 								{ echo "Could not build traffic_ops_golang binary"; return 1; }
 	cd -
 
@@ -104,10 +104,10 @@ initBuildArea() {
 	# include LICENSE in the tarball
 	cp "${TC_DIR}/LICENSE" "$dest"
 
-	tar -czvf "$dest".tgz -C "$RPMBUILD"/SOURCES "$(basename "$dest")" || \
+	tar -czvf "$dest".tgz -C "$debbuild"/SOURCES "$(basename "$dest")" || \
 		 { echo "Could not create tar archive $dest.tgz: $?"; return 1; }
 
-	cp "$TO_DIR"/build/traffic_ops.spec "$RPMBUILD"/SPECS/. || \
+	cp "$TO_DIR"/build/traffic_ops.spec "$debbuild"/SPECS/. || \
 		 { echo "Could not copy spec files: $?"; return 1; }
 
 	source "${TC_DIR}/.env"
@@ -121,4 +121,4 @@ initBuildArea() {
 importFunctions
 checkEnvironment -i go,rsync
 initBuildArea
-buildRpm traffic_ops
+builddeb traffic_ops

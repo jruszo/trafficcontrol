@@ -28,7 +28,7 @@ setowner() {
 	shift
 	chown -R "${own}" "$@"
 }
-trap 'exit_code=$?; setowner /rpmbuilddir/RPMS/x86_64 /rpmbuilddir/RPMS/x86_64; exit $exit_code' EXIT;
+trap 'exit_code=$?; setowner /debbuilddir/debS/x86_64 /debbuilddir/debS/x86_64; exit $exit_code' EXIT;
 
 mkdir /opt/build
 cp -fa /opt/{src,build}/jansson
@@ -45,10 +45,10 @@ if [ "$1" == "--with_openssl" ]; then
 		make install_sw
 	) || die "Failed to build OpenSSL"
 	cjose_openssl='--with-openssl=/opt/trafficserver/openssl'
-	rpmbuild_openssl='--with openssl_included'
+	debbuild_openssl='--with openssl_included'
 else
 	cjose_openssl=''
-	rpmbuild_openssl='--without openssl_included'
+	debbuild_openssl='--without openssl_included'
 fi
 
 
@@ -56,12 +56,12 @@ fi
 (cd /opt/build/cjose && patch -p1 < /opt/src/cjose.pic.patch && autoreconf -i && ./configure --enable-shared=no ${cjose_openssl} && make -j`nproc` && make install) || die "Failed to install cjose from source."
 
 # Patch astats in so that it builds in-tree.
-cp -far /opt/src/astats_over_http /rpmbuilddir/SOURCES/src/plugins/astats_over_http
-cat > /rpmbuilddir/SOURCES/src/plugins/astats_over_http/Makefile.inc <<MAKEFILE
+cp -far /opt/src/astats_over_http /debbuilddir/SOURCES/src/plugins/astats_over_http
+cat > /debbuilddir/SOURCES/src/plugins/astats_over_http/Makefile.inc <<MAKEFILE
 pkglib_LTLIBRARIES += astats_over_http/astats_over_http.la
 astats_over_http_astats_over_http_la_SOURCES = astats_over_http/astats_over_http.c
 MAKEFILE
-(ed /rpmbuilddir/SOURCES/src/plugins/Makefile.am <<ED
+(ed /debbuilddir/SOURCES/src/plugins/Makefile.am <<ED
 /stats_over_http/
 t
 s/stats/astats/g
@@ -71,5 +71,5 @@ ED
 
 # Patch trafficserver systemd service
 # This includes adding udev-settle to wait for disks
-(sed -i 's/After=syslog.target network.target/Wants=systemd-udev-settle.service \nAfter=syslog.target network.target systemd-udev-settle.service/g' /rpmbuilddir/SOURCES/src/rc/trafficserver.service.in)
-rpmbuild -bb ${rpmbuild_openssl} --define "_topdir /rpmbuilddir" /rpmbuilddir/SPECS/trafficserver.spec || die "Failed to build rpm."
+(sed -i 's/After=syslog.target network.target/Wants=systemd-udev-settle.service \nAfter=syslog.target network.target systemd-udev-settle.service/g' /debbuilddir/SOURCES/src/rc/trafficserver.service.in)
+debbuild -bb ${debbuild_openssl} --define "_topdir /debbuilddir" /debbuilddir/SPECS/trafficserver.spec || die "Failed to build deb."

@@ -20,4 +20,4 @@
 You can download the trafficserver source here:
 http://archive.apache.org/dist/trafficserver/?C=M;O=D
 
-Then with the spec file you can build an RPM for trafficserver.
+Then with the spec file you can build an DEB for trafficserver.

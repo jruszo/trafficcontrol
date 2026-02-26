@@ -15,10 +15,10 @@
 # specific language governing permissions and limitations
 # under the License.
 
-FROM rockylinux:8
+FROM ubuntu:8
 MAINTAINER dev@trafficcontrol.apache.org
 
-RUN dnf -y install golang git
+RUN apt -y install golang git
 
 ENV GOPATH=/go
 

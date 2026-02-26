@@ -13,7 +13,7 @@
 # limitations under the License.
 #
 #
-# RPM spec file for Traffic Stats (tm).
+# DEB spec file for Traffic Stats (tm).
 #
 %define   debug_package %{nil}
 Name:     traffic_stats
@@ -58,28 +58,28 @@ scenesdir=src/github.com/jruszo/trafficcontrol/traffic_stats/trafficcontrol-scen
 ) || { echo "Could not copy trafficcontrol-scenes at $(pwd): $!"; exit 1; }
 
 %install
-mkdir -p "${RPM_BUILD_ROOT}"/opt/traffic_stats
-mkdir -p "${RPM_BUILD_ROOT}"/opt/traffic_stats/bin
-mkdir -p "${RPM_BUILD_ROOT}"/opt/traffic_stats/conf
-mkdir -p "${RPM_BUILD_ROOT}"/opt/traffic_stats/backup
-mkdir -p "${RPM_BUILD_ROOT}"/opt/traffic_stats/influxdb_tools
-mkdir -p "${RPM_BUILD_ROOT}"/opt/traffic_stats/var/run
-mkdir -p "${RPM_BUILD_ROOT}"/var/log/traffic_stats
+mkdir -p "${deb_BUILD_ROOT}"/opt/traffic_stats
+mkdir -p "${deb_BUILD_ROOT}"/opt/traffic_stats/bin
+mkdir -p "${deb_BUILD_ROOT}"/opt/traffic_stats/conf
+mkdir -p "${deb_BUILD_ROOT}"/opt/traffic_stats/backup
+mkdir -p "${deb_BUILD_ROOT}"/opt/traffic_stats/influxdb_tools
+mkdir -p "${deb_BUILD_ROOT}"/opt/traffic_stats/var/run
+mkdir -p "${deb_BUILD_ROOT}"/var/log/traffic_stats
 # TODO: The /opt/traffic_stats/var/log symlink is deprecated and should be removed for ATC 9.0.0.
-ln -sfT /var/log/traffic_stats "${RPM_BUILD_ROOT}"/opt/traffic_stats/var/log
-mkdir -p "${RPM_BUILD_ROOT}"/etc/init.d
-mkdir -p "${RPM_BUILD_ROOT}"/etc/logrotate.d
-mkdir -p "${RPM_BUILD_ROOT}"/var/lib/grafana/plugins/trafficcontrol-scenes-app
+ln -sfT /var/log/traffic_stats "${deb_BUILD_ROOT}"/opt/traffic_stats/var/log
+mkdir -p "${deb_BUILD_ROOT}"/etc/init.d
+mkdir -p "${deb_BUILD_ROOT}"/etc/logrotate.d
+mkdir -p "${deb_BUILD_ROOT}"/var/lib/grafana/plugins/trafficcontrol-scenes-app
 
 src=src/github.com/jruszo/trafficcontrol/traffic_stats
-cp -p "$src"/traffic_stats         "${RPM_BUILD_ROOT}"/opt/traffic_stats/bin/traffic_stats
-cp "$src"/traffic_stats.cfg        "${RPM_BUILD_ROOT}"/opt/traffic_stats/conf/traffic_stats.cfg
-cp "$src"/traffic_stats_seelog.xml "${RPM_BUILD_ROOT}"/opt/traffic_stats/conf/traffic_stats_seelog.xml
-cp "$src"/traffic_stats.init       "${RPM_BUILD_ROOT}"/etc/init.d/traffic_stats
-cp "$src"/traffic_stats.logrotate  "${RPM_BUILD_ROOT}"/etc/logrotate.d/traffic_stats
-cp -r "$src"/trafficcontrol-scenes/dist/* "${RPM_BUILD_ROOT}"/var/lib/grafana/plugins/trafficcontrol-scenes-app/
-cp "$src"/influxdb_tools/sync_ts_databases  "${RPM_BUILD_ROOT}"/opt/traffic_stats/influxdb_tools/
-cp "$src"/influxdb_tools/create_ts_databases  "${RPM_BUILD_ROOT}"/opt/traffic_stats/influxdb_tools/
+cp -p "$src"/traffic_stats         "${deb_BUILD_ROOT}"/opt/traffic_stats/bin/traffic_stats
+cp "$src"/traffic_stats.cfg        "${deb_BUILD_ROOT}"/opt/traffic_stats/conf/traffic_stats.cfg
+cp "$src"/traffic_stats_seelog.xml "${deb_BUILD_ROOT}"/opt/traffic_stats/conf/traffic_stats_seelog.xml
+cp "$src"/traffic_stats.init       "${deb_BUILD_ROOT}"/etc/init.d/traffic_stats
+cp "$src"/traffic_stats.logrotate  "${deb_BUILD_ROOT}"/etc/logrotate.d/traffic_stats
+cp -r "$src"/trafficcontrol-scenes/dist/* "${deb_BUILD_ROOT}"/var/lib/grafana/plugins/trafficcontrol-scenes-app/
+cp "$src"/influxdb_tools/sync_ts_databases  "${deb_BUILD_ROOT}"/opt/traffic_stats/influxdb_tools/
+cp "$src"/influxdb_tools/create_ts_databases  "${deb_BUILD_ROOT}"/opt/traffic_stats/influxdb_tools/
 
 
 %pre
@@ -161,7 +161,7 @@ fi
 %attr(755, traffic_stats, traffic_stats) /opt/traffic_stats/influxdb_tools/sync_ts_databases
 
 %preun
-# args for hooks: https://www.ibm.com/developerworks/library/l-rpm2/
+# args for hooks: https://www.ibm.com/developerworks/library/l-deb2/
 # if $1 = 0, this is an uninstallation, if $1 = 1, this is an upgrade (don't do anything)
 if [ "$1" = "0" ]; then
 	/sbin/chkconfig traffic_stats off

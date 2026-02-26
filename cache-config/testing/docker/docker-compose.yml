@@ -15,12 +15,10 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-# Build trafficcontrol:  
-#   Copy the traffic_ops rpm to traffic_ops/traffic_ops.rpm
-#   Copy the trafficcontrol-cache-config rpm to ort_test/trafficcontrol-cache-config.rpm
-#   Copy an ATS rpm to yumserver/test-rpms (the ort_tests
-#     container updates ../ort-tests/tc-fixtures.json with
-#     the corresponding version string)
+# Build trafficcontrol:
+#   Copy the traffic_ops deb to traffic_ops/traffic_ops.deb
+#   Copy the trafficcontrol-cache-config deb to ort_test/trafficcontrol-cache-config.deb
+#   Copy a Traffic Server deb to yumserver/test-debs
 #
 #   Run: docker compose build
 #   Run: docker compose run ort_test
@@ -38,19 +36,15 @@ services:
     image: postgres:${POSTGRES_VERSION}
     env_file:
       - variables.env
-    ports: 
+    ports:
       - "5432:5432"
 
   to_server:
     env_file:
       - variables.env
-    ports: 
+    ports:
       - "443:443"
     build:
-      args:
-        - OS_DISTRO=${OS_DISTRO:-rockylinux}
-        - OS_VERSION=${OS_VERSION:-8}
-        - POSTGRES_VERSION=${POSTGRES_VERSION}
       context: ../../..
       dockerfile: cache-config/testing/docker/traffic_ops/Dockerfile
     volumes:
@@ -62,12 +56,9 @@ services:
     env_file:
       - variables.env
     build:
-      args:
-        - OS_DISTRO=${OS_DISTRO:-rockylinux}
-        - OS_VERSION=${OS_VERSION:-8}
       context: .
       dockerfile: ort_test/Dockerfile
-    cap_add: ['SYS_ADMIN'] # necessary for hostname tests
+    cap_add: ['SYS_ADMIN']
     depends_on:
       - yumserver
       - to_server
@@ -82,4 +73,4 @@ services:
     depends_on:
       - db
     volumes:
-      - ./yumserver/test-rpms:/var/www/html/traffic-control/7/x86_64/Packages
+      - ./yumserver/test-debs:/var/www/html

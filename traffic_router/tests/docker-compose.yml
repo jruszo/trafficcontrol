@@ -25,7 +25,7 @@ services:
     build:
       context: ../..
       dockerfile: traffic_router/tests/Dockerfile-test-alpine
-      #dockerfile: traffic_router/tests/Dockerfile-test-centos
+      #dockerfile: traffic_router/tests/Dockerfile-test-ubuntu
     volumes:
       - traffic_router:/traffic_router
       - ../../junit:/junit

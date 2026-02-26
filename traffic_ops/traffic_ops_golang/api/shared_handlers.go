@@ -153,7 +153,7 @@ type createSuccessWriterFunc func(w http.ResponseWriter, r *http.Request, status
 //	produces the proper status code based on the error code returned
 //	marshals the structs returned into the proper response json
 func ReadHandler(reader Reader) http.HandlerFunc {
-	return readHandlerHelper(
+	return readHandleubuntuper(
 		reader,
 		HandleErr,
 		func(w http.ResponseWriter, r *http.Request, statusCode int, results interface{}) {
@@ -166,7 +166,7 @@ func ReadHandler(reader Reader) http.HandlerFunc {
 // DeprecatedReadHandler creates a net/http.HandlerFunc for the passed Reader object, and adds a deprecation
 // notice, optionally with a passed alternative route suggestion.
 func DeprecatedReadHandler(reader Reader, alternative *string) http.HandlerFunc {
-	return readHandlerHelper(
+	return readHandleubuntuper(
 		reader,
 		func(w http.ResponseWriter, r *http.Request, tx *sql.Tx, statusCode int, userErr error, sysErr error) {
 			HandleDeprecatedErr(w, r, tx, statusCode, userErr, sysErr, alternative)
@@ -178,11 +178,11 @@ func DeprecatedReadHandler(reader Reader, alternative *string) http.HandlerFunc 
 	)
 }
 
-// readHandlerHelper takes a Reader, errWriterFunc, and readSuccessWriterFunc as input and returns a basic http.HandlerFunc for Reader types.
+// readHandleubuntuper takes a Reader, errWriterFunc, and readSuccessWriterFunc as input and returns a basic http.HandlerFunc for Reader types.
 // By taking an errWriterFunc and readSuccessWriterFunc as input, this function allows callers to provide their own variations of error
 // handling and success handling. For instance, ReadHandler and DeprecatedReadHandler should be exactly the same, except that
 // DeprecatedReadHandler always returns a deprecation alert in its response, whereas ReadHandler does not.
-func readHandlerHelper(reader Reader, errHandler errWriterFunc, successHandler readSuccessWriterFunc) http.HandlerFunc {
+func readHandleubuntuper(reader Reader, errHandler errWriterFunc, successHandler readSuccessWriterFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		useIMS := false
 		inf, userErr, sysErr, errCode := NewInfo(r, nil, nil)
@@ -326,7 +326,7 @@ func UpdateHandler(updater Updater) http.HandlerFunc {
 //	*change log entry
 //	*forming and writing the body over the wire
 func DeleteHandler(deleter Deleter) http.HandlerFunc {
-	return deleteHandlerHelper(
+	return deleteHandleubuntuper(
 		deleter,
 		HandleErr,
 		func(w http.ResponseWriter, r *http.Request, message string) {
@@ -349,7 +349,7 @@ func DeleteHandler(deleter Deleter) http.HandlerFunc {
 //	*change log entry
 //	*forming and writing the body over the wire
 func DeprecatedDeleteHandler(deleter Deleter, alternative *string) http.HandlerFunc {
-	return deleteHandlerHelper(
+	return deleteHandleubuntuper(
 		deleter,
 		func(w http.ResponseWriter, r *http.Request, tx *sql.Tx, statusCode int, userErr error, sysErr error) {
 			HandleDeprecatedErr(w, r, tx, statusCode, userErr, sysErr, alternative)
@@ -362,11 +362,11 @@ func DeprecatedDeleteHandler(deleter Deleter, alternative *string) http.HandlerF
 	)
 }
 
-// deleteHandlerHelper takes a Deleter, errWriterFunc, and deleteSuccessWriterFunc as input and returns a basic http.HandlerFunc for Deleter types.
+// deleteHandleubuntuper takes a Deleter, errWriterFunc, and deleteSuccessWriterFunc as input and returns a basic http.HandlerFunc for Deleter types.
 // By taking an errWriterFunc and deleteSuccessWriterFunc as input, this function allows callers to provide their own variations of error
 // handling and success handling. For instance, DeleteHandler and DeprecatedDeleteHandler should be exactly the same, except that
 // DeprecatedDeleteHandler always returns a deprecation alert in its response, whereas DeleteHandler does not.
-func deleteHandlerHelper(deleter Deleter, errHandler errWriterFunc, successHandler deleteSuccessWriterFunc) http.HandlerFunc {
+func deleteHandleubuntuper(deleter Deleter, errHandler errWriterFunc, successHandler deleteSuccessWriterFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		inf, userErr, sysErr, errCode := NewInfo(r, nil, nil)
 		if userErr != nil || sysErr != nil {
@@ -474,7 +474,7 @@ func deleteHandlerHelper(deleter Deleter, errHandler errWriterFunc, successHandl
 //	*change log entry
 //	*forming and writing the body over the wire
 func CreateHandler(creator Creator) http.HandlerFunc {
-	return createHandlerHelper(
+	return createHandleubuntuper(
 		creator,
 		HandleErr,
 		func(w http.ResponseWriter, r *http.Request, statusCode int, alerts tc.Alerts, results interface{}) {
@@ -489,7 +489,7 @@ func CreateHandler(creator Creator) http.HandlerFunc {
 	)
 }
 
-func createHandlerHelper(creator Creator, errHandler errWriterFunc, successHandler createSuccessWriterFunc) http.HandlerFunc {
+func createHandleubuntuper(creator Creator, errHandler errWriterFunc, successHandler createSuccessWriterFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		inf, userErr, sysErr, errCode := NewInfo(r, nil, nil)
 		if userErr != nil || sysErr != nil {
@@ -628,7 +628,7 @@ func createHandlerHelper(creator Creator, errHandler errWriterFunc, successHandl
 // DeprecatedCreateHandler creates a net/http.HandlerFunc for the passed Creator object, and adds a deprecation
 // notice, optionally with a passed alternative route suggestion.
 func DeprecatedCreateHandler(creator Creator, alternative *string) http.HandlerFunc {
-	return createHandlerHelper(
+	return createHandleubuntuper(
 		creator,
 		func(w http.ResponseWriter, r *http.Request, tx *sql.Tx, statusCode int, userErr error, sysErr error) {
 			HandleDeprecatedErr(w, r, tx, statusCode, userErr, sysErr, alternative)

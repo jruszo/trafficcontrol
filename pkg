@@ -160,12 +160,12 @@ while getopts h78abdf:lopqvsSL opt; do
 			failure=1;
 			;;
 		7)
-			BASE_IMAGE=centos
-			RHEL_VERSION=7
+			BASE_IMAGE=ubuntu
+			ubuntu_VERSION=7
 			;;
 		8)
-			BASE_IMAGE=rockylinux
-			RHEL_VERSION=8
+			BASE_IMAGE=ubuntu
+			ubuntu_VERSION=8
 			;;
 		a)
 			all=1
@@ -176,7 +176,7 @@ while getopts h78abdf:lopqvsSL opt; do
 		d)
 			echo '-d is set! Disabling all compiler optimizations for debugging...';
 			# If DEBUG_BUILD is true, then Golang binaries will remain unoptimized and
-			# RPM packaging will not strip binaries.
+			# DEB packaging will not strip binaries.
 			RUN_OPTIONS+=(-e 'DEBUG_BUILD=true');
 			debug=1
 			;;
@@ -220,8 +220,8 @@ CMD=$("${COMPOSECMD[@]}" -f $COMPOSE_FILE config --services)
 PROJECTS=$(grep -E "^weasel$" <<<"$CMD"; grep -Ev "^weasel$"<<<"$CMD")
 HELP_TEXT="$(cat <<HELP_TEXT
 Usage: $SELF [options] [projects]
-  -7           Build RPMs targeting CentOS 7
-  -8           Build RPMs targeting Rocky Linux 8 (default)
+  -7           Build DEBs targeting ubuntu 7
+  -8           Build DEBs targeting ubuntu linux 8 (default)
   -a           Build all projects, including optional ones.
   -b           Build builder Docker images before building projects
   -d           Disable compiler optimizations for debugging.
@@ -232,8 +232,8 @@ Usage: $SELF [options] [projects]
   -o           Build from the optional list. Same as -f "$COMPOSE_FILE_OPT"
   -p           Pull builder images first; on pull or runtime failure, build locally (default)
   -q           Quiet mode. Supresses output. (default)
-  -s           Simple output filenames - e.g. traffic_ops.rpm instead of traffic_ops-6.1.0-11637.ec9ff6a6.el8.x86_64.rpm
-  -S           Skip building "source rpms"
+  -s           Simple output filenames - e.g. traffic_ops.deb instead of traffic_ops-6.1.0-11637.ec9ff6a6.el8.x86_64.deb
+  -S           Skip building "source debs"
   -v           Verbose mode. Lists all build output.
 
 If no projects are listed, all projects will be packaged.
@@ -264,10 +264,10 @@ export BASE_IMAGE;
 if [[ -n "$BASE_IMAGE" ]]; then
 	RUN_OPTIONS+=(-e BASE_IMAGE);
 fi
-# Mark RHEL_VERSION for export
-export RHEL_VERSION;
-if [[ -n "$RHEL_VERSION" ]]; then
-	RUN_OPTIONS+=(-e RHEL_VERSION);
+# Mark ubuntu_VERSION for export
+export ubuntu_VERSION;
+if [[ -n "$ubuntu_VERSION" ]]; then
+	RUN_OPTIONS+=(-e ubuntu_VERSION);
 fi
 export SIMPLE;
 export NO_SOURCE;

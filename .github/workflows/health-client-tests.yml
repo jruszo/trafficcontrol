@@ -19,7 +19,6 @@ name: TC Health Client Integration Tests
 
 env:
   ATS_VERSION: 9.2.x
-  RHEL_VERSION: 8
   TARGET_ARCH: x86_64
 
 on:
@@ -42,8 +41,7 @@ on:
       - tc-health-client/**_test.go
       - vendor/**.go
       - vendor/modules.txt
-      - .github/actions/build-ats-test-rpm/**
-      - .github/actions/repo-info/**
+      - .github/actions/build-ats-test-package/**
       - .github/actions/health-client-integration-tests/**
   pull_request:
     branches: [ master ]
@@ -63,11 +61,10 @@ on:
       - tc-health-client/**_test.go
       - vendor/**.go
       - vendor/modules.txt
-      - .github/actions/build-ats-test-rpm/**
-      - .github/actions/repo-info/**
+      - .github/actions/build-ats-test-package/**
       - .github/actions/health-client-integration-tests/**
-jobs:
 
+jobs:
   traffic_ops:
     if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}
     runs-on: ubuntu-latest
@@ -76,15 +73,15 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 5
-      - name: Build RPM
-        uses: ./.github/actions/build-rpms
+      - name: Build DEB
+        uses: ./.github/actions/build-packages
         env:
           ATC_COMPONENT: ${{ github.job }}
-      - name: Upload RPM
+      - name: Upload DEB
         uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}
-          path: ${{ github.workspace }}/dist/${{ github.job }}-*.x86_64.rpm
+          path: ${{ github.workspace }}/dist/*traffic_ops*.deb
 
   tc-health-client:
     if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}
@@ -94,16 +91,15 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 5
-      - name: Build RPM
-        uses: ./.github/actions/build-rpms
+      - name: Build DEB
+        uses: ./.github/actions/build-packages
         env:
-          NO_SOURCE: 1
           ATC_COMPONENT: ${{ github.job }}
-      - name: Upload RPM
+      - name: Upload DEB
         uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}
-          path: ${{ github.workspace }}/dist/trafficcontrol-health-client-*.x86_64.rpm
+          path: ${{ github.workspace }}/dist/*trafficcontrol-health-client*.deb
 
   trafficserver:
     if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}
@@ -111,34 +107,24 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Get expected RPM name
-        uses: ./.github/actions/repo-info
-        with:
-          owner: apache
-          repo: trafficserver
-          branch: ${{ env.ATS_VERSION }}
-        id: repo-info
       - name: Check Cache
-        id: ats-rpm-cache
+        id: ats-package-cache
         uses: actions/cache@v4
         with:
           path: ${{ github.workspace }}/dist
-          key: ${{ steps.repo-info.outputs.expected-rpm-name }}-${{ hashFiles('cache-config/testing/docker/trafficserver/**') }}
-      - name: Build ATS RPM
-        if: steps.ats-rpm-cache.outputs.cache-hit != 'true'
-        uses: ./.github/actions/build-ats-test-rpm
-        env:
-          ATC_COMPONENT: ${{ github.job }}
-      - name: Check ATS RPM name
+          key: ats-package-${{ env.TARGET_ARCH }}-${{ hashFiles('cache-config/testing/docker/trafficserver/**') }}
+      - name: Build ATS DEB
+        if: steps.ats-package-cache.outputs.cache-hit != 'true'
+        uses: ./.github/actions/build-ats-test-package
+      - name: Check ATS DEB
         run: |
           set -o errexit -o nounset -o xtrace
-          actual_rpm_name="$(ls dist | grep -E '^trafficserver-[0-9.]+-[0-9]+\.[0-9a-f]+.el${{ env.RHEL_VERSION }}.${{ env.TARGET_ARCH }}.rpm$')"
-          [[ "${{ steps.repo-info.outputs.expected-rpm-name }}" == "$actual_rpm_name" ]]
-      - name: Upload RPM
+          ls dist/trafficserver*.deb
+      - name: Upload DEB
         uses: actions/upload-artifact@v4
         with:
           name: ${{ github.job }}
-          path: ${{ github.workspace }}/dist/${{ github.job }}-*.x86_64.rpm
+          path: ${{ github.workspace }}/dist/trafficserver*.deb
 
   health-client_tests:
     if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}
@@ -149,26 +135,26 @@ jobs:
       - trafficserver
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@master
-    - name: Download TO RPM
-      uses: actions/download-artifact@v4
-      with:
-        name: traffic_ops
-        path: ${{ github.workspace }}/tc-health-client/testing/docker/traffic_ops
-    - name: Download Health Client RPM
-      uses: actions/download-artifact@v4
-      with:
-        name: tc-health-client
-        path: ${{ github.workspace }}/tc-health-client/testing/docker/health-check-test
-    - name: Download ATS RPM
-      uses: actions/download-artifact@v4
-      with:
-        name: trafficserver
-        path: ${{ github.workspace }}/tc-health-client/testing/docker/health-check-test
-    - name: display directory
-      run: ls -l ${{ github.workspace }}/tc-health-client/testing/docker/health-check-test
-    - name: Build health client test containers
-      run: docker compose -f ${{ github.workspace }}/tc-health-client/testing/docker/docker-compose.yml build --parallel
-    - name: Run health client integration tests
-      uses: ./.github/actions/health-client-integration-tests
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Download TO DEB
+        uses: actions/download-artifact@v4
+        with:
+          name: traffic_ops
+          path: ${{ github.workspace }}/tc-health-client/testing/docker/traffic_ops
+      - name: Download Health Client DEB
+        uses: actions/download-artifact@v4
+        with:
+          name: tc-health-client
+          path: ${{ github.workspace }}/tc-health-client/testing/docker/health-check-test
+      - name: Download ATS DEB
+        uses: actions/download-artifact@v4
+        with:
+          name: trafficserver
+          path: ${{ github.workspace }}/tc-health-client/testing/docker/health-check-test
+      - name: Display directory
+        run: ls -l ${{ github.workspace }}/tc-health-client/testing/docker/health-check-test
+      - name: Build health client test containers
+        run: docker compose -f ${{ github.workspace }}/tc-health-client/testing/docker/docker-compose.yml build --parallel
+      - name: Run health client integration tests
+        uses: ./.github/actions/health-client-integration-tests

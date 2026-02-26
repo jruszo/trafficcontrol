@@ -28,7 +28,7 @@ Traffic Router is a Java Tomcat application that routes clients to the closest a
 * geolocation - Submodule for defining geolocation services
 * neustar - A JAR that provides a bean "neustarGeolocationService" that implements the GeolocationService interface defined in the geolocation maven submodule, which can optionally be added to the build of Traffic Router
 * core - Services DNS and HTTP requests, performs localization on routing requests, and is deployed as a WAR to a Service (read: connector/listen port) within Tomcat which is separate from the API
-* build - A simple Maven project which gathers the artifacts from the modules and builds an RPM
+* build - A simple Maven project which gathers the artifacts from the modules and builds an DEB
 
 Software Requirements
 =====================
@@ -75,8 +75,8 @@ Traffic Router Project Tree Overview
 			* ``lib/systemd/system/traffic_router.service`` - Unit script for launching the Traffic Router with Tomcat
 			* ``conf/`` - All of the required configuration files for running the traffic_router web application, including those needed for Tomcat
 			* ``java/`` - Java source code for Traffic Router Core
-			* ``resources/`` - Resources pulled in during an RPM build
-			* ``scripts/`` - Scripts used by the RPM build process
+			* ``resources/`` - Resources pulled in during an DEB build
+			* ``scripts/`` - Scripts used by the DEB build process
 			* ``webapp/`` - Java "webapp" resources
 			* ``var/log/`` - location of all the Traffic Router runtime logs
 
@@ -139,7 +139,7 @@ Once running, the :ref:`tr-api` is available over HTTP at http://localhost:3333 
 
 Development Environment Upgrade
 -------------------------------
-If a development environment is already set up for the previous version of Traffic Router, then ``openssl``, ``apr`` and ``tomcat-native`` will need to be manually installed with :manpage:`yum(8)` or :manpage:`rpm(8)`. Also, whenever either ``mvn clean verify`` or ``TrafficRouterStart`` is/are run, the location of the ``tomcat-native`` libraries will need to be made known to the :abbr:`JVM (Java Virtual Machine)` via command line arguments.
+If a development environment is already set up for the previous version of Traffic Router, then ``openssl``, ``apr`` and ``tomcat-native`` will need to be manually installed with :manpage:`apt(8)` or :manpage:`deb(8)`. Also, whenever either ``mvn clean verify`` or ``TrafficRouterStart`` is/are run, the location of the ``tomcat-native`` libraries will need to be made known to the :abbr:`JVM (Java Virtual Machine)` via command line arguments.
 
 .. code-block:: shell
 	:caption: Example Commands Specifying a Path to the tomcat-native Library
@@ -303,9 +303,9 @@ Once your IDE is listening for debugging connections, start the unit tests:
 
 	docker compose up
 
-RPM Packaging
+DEB Packaging
 =============
-Running ``mvn package`` on a Linux-based distribution will trigger the build process to create the Traffic Router RPM and the Traffic Router ``.war`` file, but will not run the integration tests, so it is a good way to update those artifacts quickly during development. But the preferred way to build the Traffic Router RPMs is by following the instructions in :ref:`dev-building`
+Running ``mvn package`` on a Linux-based distribution will trigger the build process to create the Traffic Router DEB and the Traffic Router ``.war`` file, but will not run the integration tests, so it is a good way to update those artifacts quickly during development. But the preferred way to build the Traffic Router DEBs is by following the instructions in :ref:`dev-building`
 
 API
 ===

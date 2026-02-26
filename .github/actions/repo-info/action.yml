@@ -16,7 +16,7 @@
 # under the License.
 
 name: 'repo-info'
-description: 'Fetches the most recent commit from a github repository branch'
+description: 'Fetches the most recent commit from a GitHub repository branch and computes expected Debian package names'
 inputs:
   owner:
     description: 'The owner of the github repository ie, "apache"'
@@ -28,9 +28,9 @@ inputs:
     description: 'The repository branch to query ie, "9.1.3-branch"'
     required: true
 outputs:
-  expected-rpm-name:
-    description: 'The name that an RPM with the fetched git tag and commit sha is expected to have'
-    value: ${{ steps.entrypoint.outputs.expected-rpm-name }}
+  expected-deb-name:
+    description: 'The name that a Debian package with the fetched git tag and commit sha is expected to have'
+    value: ${{ steps.entrypoint.outputs.expected-deb-name }}
 runs:
   using: 'composite'
   steps:

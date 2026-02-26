@@ -14,9 +14,9 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-ARG RHEL_VERSION=8
-FROM rockylinux:${RHEL_VERSION} as common-dependencies
-ARG RHEL_VERSION=8
+ARG ubuntu_VERSION=8
+FROM ubuntu:${ubuntu_VERSION} as common-dependencies
+ARG ubuntu_VERSION=8
 
 MAINTAINER dev@trafficcontrol.apache.org
 
@@ -25,20 +25,20 @@ MAINTAINER dev@trafficcontrol.apache.org
 VOLUME /trafficcontrol
 
 ### Common for all sub-component builds
-RUN rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-* && \
-	rpm --import "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-${RHEL_VERSION%%.*}" && \
-	yum -y update ca-certificates && \
-	yum -y install \
+RUN deb --import /etc/pki/deb-gpg/DEB-GPG-KEY-* && \
+	deb --import "https://dl.fedoraproject.org/pub/epel/DEB-GPG-KEY-EPEL-${ubuntu_VERSION%%.*}" && \
+	apt -y update ca-certificates && \
+	apt -y install \
 		git \
-		rpm-build \
+		deb-build \
 		rsync \
 		epel-release && \
-	yum -y clean all && \
+	apt -y clean all && \
 	# Add skip git's safe.directory check
 	git config --global --add safe.directory '*'
 
-RUN	curl -sL https://rpm.nodesource.com/setup_18.x | bash - && \
-	yum -y install nodejs
+RUN	curl -sL https://deb.nodesource.com/setup_18.x | bash - && \
+	apt -y install nodejs
 
 RUN npm -g install make sass
 CMD /trafficcontrol/build/clean_build.sh traffic_portal

@@ -24,7 +24,7 @@ fakeOrigin is a simple HLS video server, capable of simulating live video traffi
 * Serve HLS VOD video, from a static video file
 * Serve static video and other files
 
-# How to build an rpm
+# How to build an deb
 From the root of the trafficcontrol repository use the `pkg` script such as:
 ```
 ./pkg -o fakeorigin_build
@@ -35,10 +35,10 @@ Since this is considered an extra non-required component of the overall function
 Local build pre-requesites:
 * Go 1.9+
   * OSX: ```brew install go```
-  * CentOS: [Instructions]( https://www.itzgeek.com/how-tos/linux/centos-how-tos/install-go-1-7-ubuntu-16-04-14-04-centos-7-fedora-24.html)
+  * ubuntu: [Instructions]( https://www.itzgeek.com/how-tos/linux/ubuntu-how-tos/install-go-1-7-ubuntu-16-04-14-04-ubuntu-7-fedora-24.html)
 * FFMPEG 3.4+ (Optional)
   * OSX: ```brew install ffmpeg --with-rtmp-dump```
-  * CentOS: [Instructions](https://linuxadmin.io/install-ffmpeg-on-centos-7/)
+  * ubuntu: [Instructions](https://linuxadmin.io/install-ffmpeg-on-ubuntu-7/)
 
 and/or just a modern version of Docker & docker compose
 
@@ -65,7 +65,7 @@ On startup it will print any routes that are available after transcoding.  You s
 
 I'd *highly* recommend going and reading about the [Configuration](./docs/Configuration.md) to learn about what fakeOrigin can do.
 
-There is also another [set of instructions](build/README.md) if you're interested in building your own RPMs and binaries.
+There is also another [set of instructions](build/README.md) if you're interested in building your own DEBs and binaries.
 
 # Features
 * Transcoding on startup only if the source file or transcoder configuration changes

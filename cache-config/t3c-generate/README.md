@@ -107,7 +107,7 @@ The output is a JSON array of objects containing the file and its metadata.
 
 -r, -\-via-string-release
 
-    Whether to use the Release value from the RPM package as a
+    Whether to use the Release value from the DEB package as a
     replacement for the ATS version specified in the build that
     is returned in the Via and Server headers from ATS.
 

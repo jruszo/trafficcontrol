@@ -34,8 +34,8 @@ importFunctions() {
 }
 
 #----------------------------------------
-buildRpmTrafficRouter () {
-	echo "Building the rpm."
+builddebTrafficRouter () {
+	echo "Building the deb."
 
 	export STARTUP_SCRIPT_DIR="/lib/systemd/system"
 	export STARTUP_SCRIPT_LOC="../core/src/main/lib/systemd/system"
@@ -43,28 +43,28 @@ buildRpmTrafficRouter () {
 	export LOGROTATE_SCRIPT_LOC="../core/src/main/lib/logrotate"
 
 	cd "$TR_DIR" || { echo "Could not cd to $TR_DIR: $?"; return 1; }
-	mvn -P rpm-build -Dmaven.test.skip=true -DminimumTPS=1 clean package ||  \
-		{ echo "RPM BUILD FAILED: $?"; return 1; }
+	mvn -P deb-build -Dmaven.test.skip=true -DminimumTPS=1 clean package ||  \
+		{ echo "DEB BUILD FAILED: $?"; return 1; }
 
-	local rpm
-	rpm="$(find . -name \*.rpm | head -n1)"
-	if [ -z "$rpm" ]; then
-		echo "Could not find rpm file $RPM in $(pwd)"
+	local deb
+	deb="$(find . -name \*.deb | head -n1)"
+	if [ -z "$deb" ]; then
+		echo "Could not find deb file $DEB in $(pwd)"
 		return 1;
 	fi
 	echo "========================================================================================"
-	echo "RPM BUILD SUCCEEDED, See $DIST/$RPM for the newly built rpm."
+	echo "DEB BUILD SUCCEEDED, See $DIST/$DEB for the newly built deb."
 	echo "========================================================================================"
 	echo
 	mkdir -p "$DIST" || { echo "Could not create $DIST: $?"; return 1; }
 
-	rpmDest="."
+	debDest="."
 	if [[ "$SIMPLE" -eq 1 ]]; then
-		rpmDest="traffic_router.rpm";
+		debDest="traffic_router.deb";
 	fi
 
 
-	cp -f "$rpm" "$DIST/$rpmDest" || { echo "Could not copy $rpm to $DIST: $?"; return 1; }
+	cp -f "$deb" "$DIST/$debDest" || { echo "Could not copy $deb to $DIST: $?"; return 1; }
 
 }
 
@@ -72,34 +72,34 @@ buildRpmTrafficRouter () {
 #----------------------------------------
 adaptEnvironment() {
 	echo "Verifying the build configuration environment."
-	# get traffic_control src path -- relative to build_rpm.sh script
-	PACKAGE='' TC_VERSION='' RPMBUILD='' DIST='' RPM=''
+	# get traffic_control src path -- relative to build_deb.sh script
+	PACKAGE='' TC_VERSION='' debbuild='' DIST='' DEB=''
 	PACKAGE="traffic_router"
 	TC_VERSION=$(getVersion "$TC_DIR")
 	BUILD_NUMBER=${BUILD_NUMBER:-$(getBuildNumber)}
 	WORKSPACE=${WORKSPACE:-$TC_DIR}
-	RPMBUILD="$WORKSPACE/rpmbuild"
+	debbuild="$WORKSPACE/debbuild"
 	DIST="$WORKSPACE/dist"
-	RPM="${PACKAGE}-${TC_VERSION}-${BUILD_NUMBER}.noarch.rpm"
-	RPM_TARGET_OS="${RPM_TARGET_OS:-linux}"
+	DEB="${PACKAGE}-${TC_VERSION}-${BUILD_NUMBER}.noarch.deb"
+	deb_TARGET_OS="${deb_TARGET_OS:-linux}"
 	source "${TC_DIR}/.env" # contains TOMCAT_VERSION
-	export PACKAGE TC_VERSION BUILD_NUMBER WORKSPACE RPMBUILD DIST RPM RPM_TARGET_OS TOMCAT_VERSION
+	export PACKAGE TC_VERSION BUILD_NUMBER WORKSPACE debbuild DIST DEB deb_TARGET_OS TOMCAT_VERSION
 
 	echo "=================================================="
 	echo "WORKSPACE: $WORKSPACE"
 	echo "BUILD_NUMBER: $BUILD_NUMBER"
 	echo "TOMCAT_VERSION=$TOMCAT_VERSION"
 	echo "TC_VERSION: $TC_VERSION"
-	echo "RPM: $RPM"
+	echo "DEB: $DEB"
 	echo "--------------------------------------------------"
 }
 
 # ---------------------------------------
 initBuildArea() {
 	echo "Initializing the build area."
-	(mkdir -p "$RPMBUILD"
-	 cd "$RPMBUILD"
-	 mkdir -p SPECS SOURCES RPMS SRPMS BUILD BUILDROOT) || { echo "Could not create $RPMBUILD: $?"; return 1; }
+	(mkdir -p "$debbuild"
+	 cd "$debbuild"
+	 mkdir -p SPECS SOURCES debS SdebS BUILD BUILDROOT) || { echo "Could not create $debbuild: $?"; return 1; }
 
 	tr_dest=$(createSourceDir traffic_router)
 
@@ -110,17 +110,17 @@ initBuildArea() {
 	cp  "$TR_DIR"/pom.xml "$tr_dest" || { echo "Could not copy to $tr_dest: $?"; return 1; }
 
 	# tar/gzip the source
-	tar -czf "$tr_dest".tgz -C "$RPMBUILD/SOURCES" "$(basename "$tr_dest")" || { echo "Could not create tar archive $tr_dest: $?"; return 1; }
+	tar -czf "$tr_dest".tgz -C "$debbuild/SOURCES" "$(basename "$tr_dest")" || { echo "Could not create tar archive $tr_dest: $?"; return 1; }
 
 	echo "The build area has been initialized."
 }
 
 #----------------------------------------
-buildRpmTomcat () {
-	echo "Building the rpm for Tomcat."
+builddebTomcat () {
+	echo "Building the deb for Tomcat."
 
-	cd "$TR_DIR"/tomcat-rpm || { echo "Could not cd to $TR_DIR/tomcat-rpm: $?"; return 1; }
-				bash ./build_rpm.sh
+	cd "$TR_DIR"/tomcat-deb || { echo "Could not cd to $TR_DIR/tomcat-deb: $?"; return 1; }
+				bash ./build_deb.sh
 }
 
 # ---------------------------------------
@@ -129,5 +129,5 @@ importFunctions
 checkEnvironment -i mvn
 adaptEnvironment
 initBuildArea
-buildRpmTrafficRouter
-buildRpmTomcat
+builddebTrafficRouter
+builddebTomcat

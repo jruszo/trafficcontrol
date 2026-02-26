@@ -21,7 +21,7 @@ under the License.
 
 Traffic Control cache configuration is done via the `t3c` app and its ecosystem of sub-apps.
 
-These are provided in the RPM `trafficcontrol-cache-config`.
+These are provided in the DEB `trafficcontrol-cache-config`.
 
 To apply Traffic Control configuration and changes to caches, users will typically run `t3c` periodically via `cron` or some other system automation mechanism. See [t3c](./t3c/README.md).
 

@@ -667,9 +667,9 @@ Invalidate content includes the ability to (where applicable):
 
 Generate ISO
 ------------
-Generates a boot-able system image for any of the servers in the Servers table (or any server for that matter). Currently it only supports CentOS 7, but if you're brave and pure of heart you MIGHT be able to get it to work with other Unix-like Operating Systems. The interface is *mostly* self-explanatory, but here is a short explanation of the fields in that form.
+Generates a boot-able system image for any of the servers in the Servers table (or any server for that matter). Currently it only supports ubuntu 7, but if you're brave and pure of heart you MIGHT be able to get it to work with other Unix-like Operating Systems. The interface is *mostly* self-explanatory, but here is a short explanation of the fields in that form.
 
-.. seealso:: For instructions on setting up the Kickstart ISO generation files, see :ref:`Creating-CentOS-Kickstart`.
+.. seealso:: For instructions on setting up the Kickstart ISO generation files, see :ref:`Creating-ubuntu-Kickstart`.
 
 Copy Server Attributes From
 	Optional. This option lets the user choose a server from the Traffic Ops database and will auto-fill the other fields as much as possible based on that server's properties
@@ -720,7 +720,7 @@ Interface Name
 Stream ISO
 	If this is 'yes', then the download will start immediately as the ISO is written directly to the socket connection from Traffic Ops. If this is 'no', then the download will begin only *after* the ISO has finished being generated. For almost all use cases, this should be 'yes'.
 
-.. impl-detail:: Traffic Ops uses Red Hat's `Kickstart <https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/installation_guide/chap-kickstart-installations>` to create these ISOs, so many configuration options not available here can be tweaked in the :ref:`Kickstart configuration file <Creating-CentOS-Kickstart>`.
+.. impl-detail:: Traffic Ops uses Red Hat's `Kickstart <https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/installation_guide/chap-kickstart-installations>` to create these ISOs, so many configuration options not available here can be tweaked in the :ref:`Kickstart configuration file <Creating-ubuntu-Kickstart>`.
 
 User Admin
 ==========

@@ -27,8 +27,8 @@ NOTE: this test is similar to the TODB test found in traffic_ops_db/test/docker.
 
 ## Running the test
 
-1. Build a Traffic Ops rpm (from the project root): `./pkg traffic_ops_build`
-2. Copy the rpm to ./traffic_ops.rpm
+1. Build a Traffic Ops DEB (from the project root): `ATC_COMPONENT=traffic_ops ./.github/actions/build-packages/build-packages.sh`
+2. Copy the DEB to `./traffic_ops.deb`
 3. Optional: place a DB dump file in ./initdb.d (file name must end in "dump")
 4. `docker compose build`
 5. `docker compose up --exit-code-from trafficvault-db-admin`

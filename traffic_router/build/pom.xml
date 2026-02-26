@@ -16,7 +16,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>traffic_router_rpm</artifactId>
+	<artifactId>traffic_router_deb</artifactId>
 	<packaging>pom</packaging>
 
 	<parent>
@@ -31,7 +31,7 @@
 	</scm>
 
 	<dependencies>
-		<!-- RPM plugin will not package artifacts without these defined dependencies -->
+		<!-- DEB plugin will not package artifacts without these defined dependencies -->
 		<dependency>
 			<groupId>org.apache.traffic_control.traffic_router</groupId>
 			<artifactId>traffic_router_connector</artifactId>
@@ -89,8 +89,8 @@
 								<requireEnvironmentVariable>
 									<variableName>BUILD_NUMBER</variableName>
 									<variableName>TOMCAT_VERSION</variableName>
-									<variableName>RHEL_VERSION</variableName>
-									<variableName>RPM_TARGET_OS</variableName>
+									<variableName>ubuntu_VERSION</variableName>
+									<variableName>deb_TARGET_OS</variableName>
 									<variableName>STARTUP_SCRIPT_DIR</variableName>
 									<variableName>STARTUP_SCRIPT_LOC</variableName>
 									<variableName>LOGROTATE_SCRIPT_DIR</variableName>
@@ -107,7 +107,7 @@
 
 	<profiles>
 		<profile>
-			<id>rpm-build</id>
+			<id>deb-build</id>
 			<activation>
 				<os>
 					<name>linux</name>
@@ -118,23 +118,23 @@
 				<plugins>
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>rpm-maven-plugin</artifactId>
+						<artifactId>deb-maven-plugin</artifactId>
 						<version>2.2.0</version>
 						<extensions>true</extensions>
 						<executions>
 							<execution>
-								<id>package-rpm</id>
+								<id>package-deb</id>
 								<goals>
-									<goal>attached-rpm</goal>
+									<goal>attached-deb</goal>
 								</goals>
 							</execution>
 						</executions>
 						<configuration>
 							<group>Applications/Internet</group>
 							<name>${project.parent.artifactId}</name>
-							<release>${env.BUILD_NUMBER}.${env.RHEL_VERSION}</release>
+							<release>${env.BUILD_NUMBER}.${env.ubuntu_VERSION}</release>
 							<license>Apache License, Version 2.0</license>
-							<targetOS>${env.RPM_TARGET_OS}</targetOS>
+							<targetOS>${env.deb_TARGET_OS}</targetOS>
 							<defineStatements>
 								<defineStatement>_source_payload w2.xzdio</defineStatement>
 								<defineStatement>_binary_payload w2.xzdio</defineStatement>

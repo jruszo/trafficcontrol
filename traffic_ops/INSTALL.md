@@ -17,25 +17,25 @@
     under the License.
 -->
 
-# From new CentOS 7 install:
+# From new ubuntu 7 install:
 
 ## Disable selinux:
 ### change `/etc/selinux/config` to `SELINUX=disabled`
 
-## Add access to PostgreSQL yum repository 
+## Add access to PostgreSQL apt repository
 
-Instructions are here: https://yum.postgresql.org/
+Instructions are here: https://apt.postgresql.org/
 
-- From this page,  copy the link for CentOS 7 and install:
+- From this page,  copy the link for ubuntu 7 and install:
 
-    `$ sudo yum install https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm`
+    `$ sudo apt install https://download.postgresql.org/pub/repos/apt/repodebs/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.deb`
     
 ## Install Postgres 13.16 server (in a container or on the host)
 
 ### on the host:
 
     $ sudo su -
-    # yum install postgresql13-server
+    # apt install postgresql13-server
     $ su - postgres
     $ /usr/pgsql-13/bin/initdb -A md5 -W #-W forces the user to provide a superuser (postgres) password
     $ exit
@@ -48,14 +48,14 @@ NOTE: you do *not* need postgresql13-server if running postgres within a `docker
 
 Install `docker` and `docker compose` using instructions here:
 
-    https://docs.docker.com/engine/installation/linux/centos/
+    https://docs.docker.com/engine/installation/linux/ubuntu/
     
     https://docs.docker.com/compose/install/
 
 
 ## Install `traffic_ops`
 
-    $ sudo yum install traffic_ops
+    $ sudo apt install traffic_ops
 
 ## Install any extensions needed
 

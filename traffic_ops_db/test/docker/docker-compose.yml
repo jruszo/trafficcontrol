@@ -15,9 +15,9 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-# To use this compose you should first build Traffic Ops and then copy the RPM to:
+# To use this compose you should first build Traffic Ops and then copy the DEB to:
 #
-# ./traffic_ops.rpm
+# ./traffic_ops.deb
 #
 # To optionally run the test with a starter DB, put the DB dump file in ./initdb.d/
 #
@@ -42,7 +42,7 @@ services:
       dockerfile: Dockerfile-db-admin
       args:
         POSTGRES_VERSION: ${POSTGRES_VERSION}
-        TRAFFIC_OPS_RPM: traffic_ops.rpm
+        TRAFFIC_OPS_DEB: traffic_ops.deb
     depends_on:
       - db
 

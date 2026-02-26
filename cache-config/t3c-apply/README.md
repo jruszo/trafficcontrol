@@ -95,7 +95,7 @@ Typical usage is to install t3c on the cache machine, and then run it periodical
 -e, -\-omit-via-string-release
 
     Whether to set the records.config via header to the ATS
-    release from the RPM. Default true.
+    release from the DEB. Default true.
 
 -E, -\-version
 
@@ -295,15 +295,15 @@ When `t3c-apply` is run, it will:
 1. Determine if Updates have been Queued on the server (by checking the Server's Update Pending or Revalidate Pending flag in Traffic Ops).
     1. If Updates were not queued and the script is running in syncds mode (the normal mode), exit.
 1. Get the config files from Traffic Ops, via t3c-generate.
-1. Process CentOS Yum packages.
+1. Process ubuntu apt packages.
     1. These are specified via Parameters on the Server's Profile, with the Config File 'package', where the Parameter Name is the package name, and the Parameter Value is the package version.
     1. Uninstall any packages which are installed but whose version does not match.
     1. Install all packages in the Server Profile.
 1. Process chkconfig directives.
     1. These are specified via Parameters on the Server's Profile, with the Config File 'chkconfig', where the Parameter Name is the package name, and the Parameter Value is the chkconfig directive line.
-    1. All chkconfig directives in the Server's Profile are applied to the CentOS chkconfig.
+    1. All chkconfig directives in the Server's Profile are applied to the ubuntu chkconfig.
     1. **NOTE** the default profiles distributed by Traffic Control have an ATS chkconfig with a runlevel before networking is enabled, which is likely incorrect.
-    1. **NOTE** this is not used by CentOS 7+ and ATS 7+. SystemD does not use chkconfig, and ATS 7+ uses a SystemD script not an init script.
+    1. **NOTE** this is not used by ubuntu 7+ and ATS 7+. SystemD does not use chkconfig, and ATS 7+ uses a SystemD script not an init script.
 1. Process each config file
     1. If `t3c-apply` is in revalidate mode, this will only be regex_revalidate.config
     1. Perform any special processing. See [Special Processing](#special-processing).

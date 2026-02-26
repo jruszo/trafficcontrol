@@ -11,19 +11,19 @@
 # limitations under the License.
 
 # Example Build and Run:
-# docker build --rm --tag grove:0.1 --build-arg=RPM=grove-0.1.127-1.x86_64.rpm .
+# docker build --rm --tag grove:0.1 --build-arg=DEB=grove-0.1.127-1.x86_64.deb .
 #
 # docker run --name my-grove-cache --hostname my-grove-cache --net cdnet --env REMAP_PATH=/config/remap.json -v config:/config --detach grove:0.1
 #
 
 
-FROM centos/systemd
+FROM ubuntu/systemd
 
-RUN yum install -y initscripts epel-release openssl
+RUN apt install -y initscripts epel-release openssl
 
-ARG RPM=grove.rpm
-ADD $RPM /
-RUN yum install -y /$(basename $RPM)
+ARG DEB=grove.deb
+ADD $DEB /
+RUN apt install -y /$(basename $DEB)
 
 RUN setcap 'cap_net_bind_service=+ep' /usr/sbin/grove
 

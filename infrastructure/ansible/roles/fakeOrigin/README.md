@@ -24,16 +24,16 @@ Any webserver may be used as a fake origin inside a lab environment, this role d
 Requirements
 ------------
 
-A valid RPM in an available yum repository.
+A valid DEB in an available apt repository.
 
 Role Variables
 --------------
 
 Refer to the defaults/main.yml for most information.
 
-fakeOrigin_version: This is an optional string that can be provided to specify a particular version of fakeOrigin to install.  It should be something like `1.0.0_dev_11248-1`.  The absense of this variable entails automatically using the latest version available to yum at the time of initial installation.
+fakeOrigin_version: This is an optional string that can be provided to specify a particular version of fakeOrigin to install.  It should be something like `1.0.0_dev_11248-1`.  The absense of this variable entails automatically using the latest version available to apt at the time of initial installation.
 
-additional_yum_repos: An optional list of additional yum repositories to enable specifically when installing this component.  This could be used to enable non-production ready rpms in a separate repository and not supplying the specific RPM version to automatically use the latest available.
+additional_yum_repos: An optional list of additional apt repositories to enable specifically when installing this component.  This could be used to enable non-production ready debs in a separate repository and not supplying the specific DEB version to automatically use the latest available.
 
 Dependencies
 ------------

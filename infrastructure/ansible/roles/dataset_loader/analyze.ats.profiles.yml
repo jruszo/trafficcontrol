@@ -187,7 +187,7 @@
         when: override_target_host_fqdn is not defined
 
       - name: Find hosts that respond with TrafficServer installed - Target
-        command: "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o Loglevel=ERROR -o BatchMode=yes -o ConnectTimeout=5 {{ dl_to_user }}@{{ item }} (/usr/sbin/pidof trafficserver || /usr/sbin/pidof traffic_server) >/dev/null && rpm -q trafficserver"
+        command: "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o Loglevel=ERROR -o BatchMode=yes -o ConnectTimeout=5 {{ dl_to_user }}@{{ item }} (/usr/sbin/pidof trafficserver || /usr/sbin/pidof traffic_server) >/dev/null && deb -q trafficserver"
         with_items: "{{ (get_servers_with_target_profile.json.response|to_json|from_json|json_query('[].join(`.`,[hostName, domainName])')|default([])) if override_target_host_fqdn is not defined else [override_target_host_fqdn] }}"
         register: target_host_discovery
         changed_when: false
@@ -241,7 +241,7 @@
         when: override_base_host_fqdn is not defined
 
       - name: Find hosts that respond with TrafficServer installed - Base
-        command: "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o Loglevel=ERROR -o BatchMode=yes -o ConnectTimeout=5 {{ dl_to_user }}@{{ item }} (/usr/sbin/pidof trafficserver || /usr/sbin/pidof traffic_server) >/dev/null && rpm -q trafficserver"
+        command: "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o Loglevel=ERROR -o BatchMode=yes -o ConnectTimeout=5 {{ dl_to_user }}@{{ item }} (/usr/sbin/pidof trafficserver || /usr/sbin/pidof traffic_server) >/dev/null && deb -q trafficserver"
         with_items: "{{ (get_servers_with_base_profile.json.response|to_json|from_json|json_query('[].join(`.`,[hostName, domainName])')|default([])) if override_base_host_fqdn is not defined else [override_base_host_fqdn] }}"
         register: base_host_discovery
         changed_when: false

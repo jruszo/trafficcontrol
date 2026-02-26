@@ -13,7 +13,7 @@
 # limitations under the License.
 #
 #
-# RPM spec file for the Traffic Portal
+# DEB spec file for the Traffic Portal
 #
 %define   debug_package %{nil}
 Name:     traffic_portal
@@ -34,8 +34,8 @@ Installs Traffic Portal
 Built: @BUILT@
 
 %prep
-rm -rf $RPM_BUILD_DIR/traffic_portal-%{version}
-tar -xzvf $RPM_SOURCE_DIR/traffic_portal-%{version}.tgz
+rm -rf $deb_BUILD_DIR/traffic_portal-%{version}
+tar -xzvf $deb_SOURCE_DIR/traffic_portal-%{version}.tgz
 
 %setup
 
@@ -46,21 +46,21 @@ tar -xzvf $RPM_SOURCE_DIR/traffic_portal-%{version}.tgz
 		npm install --omit-dev
 
 %install
-		%__mkdir -p ${RPM_BUILD_ROOT}/etc/init.d
-		%__mkdir -p ${RPM_BUILD_ROOT}/etc/logrotate.d
-		%__mkdir -p ${RPM_BUILD_ROOT}/etc/traffic_portal/conf
-		%__mkdir -p ${RPM_BUILD_ROOT}%{traffic_portal_home}/public
-		%__mkdir -p ${RPM_BUILD_ROOT}%{traffic_portal_home}/server
-		%__mkdir -p ${RPM_BUILD_ROOT}/var/log/traffic_portal
+		%__mkdir -p ${deb_BUILD_ROOT}/etc/init.d
+		%__mkdir -p ${deb_BUILD_ROOT}/etc/logrotate.d
+		%__mkdir -p ${deb_BUILD_ROOT}/etc/traffic_portal/conf
+		%__mkdir -p ${deb_BUILD_ROOT}%{traffic_portal_home}/public
+		%__mkdir -p ${deb_BUILD_ROOT}%{traffic_portal_home}/server
+		%__mkdir -p ${deb_BUILD_ROOT}/var/log/traffic_portal
 
-		%__cp ${RPM_BUILD_DIR}/traffic_portal-%{version}/server.js ${RPM_BUILD_ROOT}%{traffic_portal_home}/.
-		%__rm -f ${RPM_BUILD_DIR}/traffic_portal-%{version}/conf/configDev.js
-		%__cp -r ${RPM_BUILD_DIR}/traffic_portal-%{version}/conf ${RPM_BUILD_ROOT}/etc/traffic_portal/.
-		%__cp ${RPM_BUILD_DIR}/traffic_portal-%{version}/build/etc/init.d/traffic_portal ${RPM_BUILD_ROOT}/etc/init.d/.
-		%__cp ${RPM_BUILD_DIR}/traffic_portal-%{version}/build/etc/logrotate.d/traffic_portal ${RPM_BUILD_ROOT}/etc/logrotate.d/.
-		%__cp ${RPM_BUILD_DIR}/traffic_portal-%{version}/build/etc/logrotate.d/traffic_portal-access ${RPM_BUILD_ROOT}/etc/logrotate.d/.
-		%__rm -f ${RPM_BUILD_DIR}/traffic_portal-%{version}/app/dist/package-lock.json
-		%__cp -r ${RPM_BUILD_DIR}/traffic_portal-%{version}/app/dist/* ${RPM_BUILD_ROOT}%{traffic_portal_home}/.
+		%__cp ${deb_BUILD_DIR}/traffic_portal-%{version}/server.js ${deb_BUILD_ROOT}%{traffic_portal_home}/.
+		%__rm -f ${deb_BUILD_DIR}/traffic_portal-%{version}/conf/configDev.js
+		%__cp -r ${deb_BUILD_DIR}/traffic_portal-%{version}/conf ${deb_BUILD_ROOT}/etc/traffic_portal/.
+		%__cp ${deb_BUILD_DIR}/traffic_portal-%{version}/build/etc/init.d/traffic_portal ${deb_BUILD_ROOT}/etc/init.d/.
+		%__cp ${deb_BUILD_DIR}/traffic_portal-%{version}/build/etc/logrotate.d/traffic_portal ${deb_BUILD_ROOT}/etc/logrotate.d/.
+		%__cp ${deb_BUILD_DIR}/traffic_portal-%{version}/build/etc/logrotate.d/traffic_portal-access ${deb_BUILD_ROOT}/etc/logrotate.d/.
+		%__rm -f ${deb_BUILD_DIR}/traffic_portal-%{version}/app/dist/package-lock.json
+		%__cp -r ${deb_BUILD_DIR}/traffic_portal-%{version}/app/dist/* ${deb_BUILD_ROOT}%{traffic_portal_home}/.
 
 	# creates dynamic json file needed at runtime for traffic portal to display release info
 	VERSION=%{version}-%{build_number}
@@ -68,7 +68,7 @@ tar -xzvf $RPM_SOURCE_DIR/traffic_portal-%{version}.tgz
 	VERSION="\"Version\":\"$VERSION\""
 	BUILD_DATE="\"Build Date\":\"$BUILD_DATE\""
 	JSON_VERSION="{\n$VERSION,\n$BUILD_DATE\n}"
-	echo -e $JSON_VERSION > ${RPM_BUILD_ROOT}%{traffic_portal_home}/public/traffic_portal_release.json
+	echo -e $JSON_VERSION > ${deb_BUILD_ROOT}%{traffic_portal_home}/public/traffic_portal_release.json
 
 %post
 		echo "Successfully installed the traffic_portal assets to " %{traffic_portal_home}

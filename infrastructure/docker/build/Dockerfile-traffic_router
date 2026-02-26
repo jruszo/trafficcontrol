@@ -14,11 +14,11 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-    # Change BASE_IMAGE to centos when RHEL_VERSION=7
-ARG BASE_IMAGE=rockylinux \
-    RHEL_VERSION=8
-FROM ${BASE_IMAGE}:${RHEL_VERSION} as common-dependencies
-ARG RHEL_VERSION=8
+    # Change BASE_IMAGE to ubuntu when ubuntu_VERSION=7
+ARG BASE_IMAGE=ubuntu \
+    ubuntu_VERSION=8
+FROM ${BASE_IMAGE}:${ubuntu_VERSION} as common-dependencies
+ARG ubuntu_VERSION=8
 
 MAINTAINER dev@trafficcontrol.apache.org
 
@@ -27,29 +27,29 @@ MAINTAINER dev@trafficcontrol.apache.org
 VOLUME /trafficcontrol
 
 ### Common for all sub-component builds
-RUN rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-* && \
-	rpm --import "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-${RHEL_VERSION%%.*}" && \
-	yum -y update ca-certificates && \
-	yum -y install \
+RUN deb --import /etc/pki/deb-gpg/DEB-GPG-KEY-* && \
+	deb --import "https://dl.fedoraproject.org/pub/epel/DEB-GPG-KEY-EPEL-${ubuntu_VERSION%%.*}" && \
+	apt -y update ca-certificates && \
+	apt -y install \
 		git \
-		rpm-build \
+		deb-build \
 		rsync \
 		epel-release && \
-	yum -y clean all && \
+	apt -y clean all && \
 	# Add skip git's safe.directory check
 	git config --global --add safe.directory '*'
 
 ### traffic_router specific requirements
 FROM common-dependencies AS traffic-router
 
-RUN	yum -y install \
+RUN	apt -y install \
 		which  \
 		curl \
 		java-11-openjdk \
 		# necessary in case tzdata-java is not already installed as a dependency of java-11-openjdk-headless
 		tzdata-java \
 		java-11-openjdk-devel && \
-	yum -y clean all
+	apt -y clean all
 
 ENV JAVA_HOME=/usr/lib/jvm/java
 WORKDIR /opt

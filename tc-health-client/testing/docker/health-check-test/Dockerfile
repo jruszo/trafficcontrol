@@ -15,53 +15,44 @@
 # specific language governing permissions and limitations
 # under the License.
 
-# For cache, you may either use (RAM or disk) block devices or disk directories
-# To use RAM block devices, pass them as /dev/ram0 and /dev/ram1 via `docker run --device`
-# To use disk directories, simply don't pass devices, and the container will configure Traffic Server for directories
-
-# Block devices may be created on the native machine with, for example, `modprobe brd`.
-# The recommended minimum size for each block devices is 1G.
-# For example, `sudo modprobe brd rd_size=1048576 rd_nr=2`
-
-ARG OS_DISTRO=rockylinux
-ARG OS_VERSION=8
-FROM ${OS_DISTRO}:${OS_VERSION}
-ARG OS_DISTRO
-ARG OS_VERSION
-# Makes OS_VERSION available in later layers without needing to specify it again
-ENV OS_VERSION=$OS_VERSION
-ENV OS_DISTRO=$OS_DISTRO
+FROM ubuntu:24.04
 MAINTAINER dev@trafficcontrol.apache.org
 EXPOSE 80 443
 
-# these packages load for both centos 7 and rockylinux 8
-# no checks required at this time.
-RUN yum install -y epel-release && yum repolist && \
-  yum install -y brotli initscripts jansson jansson-devel \
-    git gcc hwloc jq lua luajit man-db tcl \
-    # libmaxminddb is required by trafficserver
-    libmaxminddb \
-    && \
-  yum clean all
-
-RUN echo "Using Image ${OS_DISTRO}:${OS_VERSION}"
+RUN apt-get update && \
+	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+		brotli \
+		ca-certificates \
+		curl \
+		gcc \
+		git \
+		hwloc \
+		jq \
+		libjansson-dev \
+		libjansson4 \
+		libmaxminddb0 \
+		lua5.4 \
+		luajit \
+		man-db \
+		ncat \
+		tcl \
+		dpkg && \
+	rm -rf /var/lib/apt/lists/*
 
 ADD health-check-test/systemctl.sh /
-RUN cp /usr/bin/systemctl /usr/bin/systemctl.save
-RUN cp /systemctl.sh /usr/bin/systemctl && chmod 0755 /usr/bin/systemctl
+RUN if [[ -x /usr/bin/systemctl ]]; then cp /usr/bin/systemctl /usr/bin/systemctl.save; fi && \
+	cp /systemctl.sh /usr/bin/systemctl && chmod 0755 /usr/bin/systemctl
 
-# Note that if more than one t3c RPM matches this wildcard, this Dockerfile will
-# break because this will create a directory instead of an RPM file, which it
-# will then fail to install.
-ADD health-check-test/trafficserver-[0-9]*.rpm /trafficserver.rpm
-ADD health-check-test/trafficcontrol-health-client*x86_64.rpm /trafficcontrol-health-client.rpm
-RUN rpm -i /trafficserver.rpm /trafficcontrol-health-client.rpm 
+ADD health-check-test/trafficserver*.deb /trafficserver.deb
+ADD health-check-test/trafficcontrol-health-client*.deb /trafficcontrol-health-client.deb
+RUN dpkg -i --force-depends /trafficserver.deb /trafficcontrol-health-client.deb
+
 ADD health-check-test/tc-health-client.json /etc/trafficcontrol/
 
-RUN sed -i 's/HOME\/bin/HOME\/bin:\/usr\/local\/go\/bin:/g' /root/.bash_profile &&\
-  echo "GOPATH=/root/go; export GOPATH" >> /root/.bash_profile &&\
-  echo "StrictHostKeyChecking no" >> /etc/ssh/ssh_config &&\
-  mkdir /root/go
+RUN sed -i 's/HOME\/bin/HOME\/bin:\/usr\/local\/go\/bin:/g' /root/.bashrc &&\
+	echo "GOPATH=/root/go; export GOPATH" >> /root/.bashrc &&\
+	echo "StrictHostKeyChecking no" >> /etc/ssh/ssh_config &&\
+	mkdir -p /root/go
 
 ADD variables.env /
 ADD health-check-test/run.sh /

@@ -36,11 +36,11 @@ git clone https://github.com/jruszo/trafficcontrol/grove
 cd $GOPATH/src/github.com/jruszo/trafficcontrol/grove/grovetccfg
 go build
 ```
-5. Install and configure an RPM development environment
-   * See https://wiki.centos.org/HowTos/SetupRpmBuildEnvironment
-4. Build the RPM
+5. Install and configure an DEB development environment
+   * See https://wiki.ubuntu.org/HowTos/SetupdebbuildEnvironment
+4. Build the DEB
 ```bash
-./build/build_rpm.sh
+./build/build_deb.sh
 ```
 
 # Running
@@ -49,7 +49,7 @@ You may use a trafficserver profile with your grove deployment but `grovetccfg` 
 traffic server profile when constructing the remap_rules file.  A sample `grove_profile.traffic_ops` file is provided to get you started in creating  a GROVE_PROFILE
 type.  When you use a GROVE_PROFILE type, `grovetccfg` will read the settings from the profile and generate the `grove.cfg` file from the settings in that profile.
 
-The `grovetccfg` tool has an RPM, but no service or config files. It must be run manually, even after installing the RPM. Consider running the tool in a cron job.
+The `grovetccfg` tool has an DEB, but no service or config files. It must be run manually, even after installing the DEB. Consider running the tool in a cron job.
 
 Example:
 

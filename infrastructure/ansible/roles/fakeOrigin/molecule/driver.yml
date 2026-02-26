@@ -22,7 +22,7 @@
 
   tasks:
     - name: Install Optional Dependencies
-      yum:
+      apt:
         name:
           - "{{ ffmpeg_url[ansible_distribution_major_version] }}"
         update_cache: true
@@ -34,8 +34,8 @@
       delay: 5
       vars:
         ffmpeg_url:
-          "7": https://pkg.opencast.org/rpms/release/el/7/x86_64/ffmpeg/ffmpeg-4.3.git.20200616044012-1.el7.x86_64.rpm
-          "8": https://pkg.opencast.org/rpms/release/el/8/x86_64/ffmpeg/ffmpeg-4.3.git.20200616044012-1.el8.x86_64.rpm
+          "7": https://pkg.opencast.org/debs/release/el/7/x86_64/ffmpeg/ffmpeg-4.3.git.20200616044012-1.el7.x86_64.deb
+          "8": https://pkg.opencast.org/debs/release/el/8/x86_64/ffmpeg/ffmpeg-4.3.git.20200616044012-1.el8.x86_64.deb
 
     - name: Deploy fakeOrigin
       import_role:

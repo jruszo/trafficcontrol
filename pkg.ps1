@@ -15,7 +15,7 @@
 .SYNOPSIS
     Builds Traffic Control components.
 .DESCRIPTION
-	A convenience script for generating RPM packages using Docker.
+	A convenience script for generating DEB packages using Docker.
 	If no projects are listed, all projects will be built.
 .PARAMETER q
     Quiet mode. Supresses output.

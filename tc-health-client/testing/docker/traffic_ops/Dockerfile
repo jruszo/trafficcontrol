@@ -17,66 +17,53 @@
 
 ############################################################
 # Dockerfile to build Traffic Ops container images
-# Based on CentOS 8
+# Based on Ubuntu 24.04
 ############################################################
 
-ARG OS_DISTRO=rockylinux
-ARG OS_VERSION=8
-FROM ${OS_DISTRO}:${OS_VERSION}
-ARG OS_DISTRO
-ARG OS_VERSION
-ENV OS_DISTRO=${OS_DISTRO}
-ENV OS_VERSION=${OS_VERSION}
+FROM ubuntu:24.04
 
-RUN if [[ "${OS_VERSION%%.*}" -eq 7 ]]; then \
-		yum -y install dnf || exit 1; \
-	fi
-
-RUN set -o nounset -o errexit && \
-	mkdir -p /etc/cron.d; \
-	if [[ "${OS_VERSION%%.*}" -eq 7 ]]; then \
-		use_repo=''; \
-		enable_repo=''; \
-		# needed for llvm-toolset-7-clang, which is needed for postgresql13-devel-13.x-1PGDG, required by TO rpm
-		dnf -y install gcc centos-release-scl-rh; \
-	else \
-		use_repo='--repo=pgdg13'; \
-		enable_repo='--enablerepo=powertools'; \
-	fi; \
-	dnf -y install "https://download.postgresql.org/pub/repos/yum/reporpms/EL-${OS_VERSION%%.*}-x86_64/pgdg-redhat-repo-latest.noarch.rpm"; \
-	# libicu required by postgresql13
-	dnf -y install libicu; \
-	dnf -y $use_repo -- install postgresql13; \
-	dnf -y install epel-release; \
-	dnf -y $enable_repo install      \
-		bind-utils           \
-		gettext              \
-		# ip commands is used in set-to-ips-from-dns.sh
-		iproute              \
-		isomd5sum            \
-		jq                   \
-		libidn-devel         \
-		libpcap-devel        \
-		mkisofs              \
-		net-tools            \
-		nmap-ncat            \
-		openssl              \
-		perl-Crypt-ScryptKDF \
-		perl-Digest-SHA1     \
-		perl-JSON-PP         \
-		python3              \
-		# rsync is used to copy certs in "Shared SSL certificate generation" step
-		rsync;               \
-	dnf clean all
+RUN set -o nounset -o errexit -o xtrace && \
+	mkdir -p /etc/cron.d && \
+	apt-get update && \
+	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+		ca-certificates \
+		cpanminus \
+		curl \
+		dnsutils \
+		gettext \
+		iproute2 \
+		jq \
+		libcap2 \
+		libcurl4-openssl-dev \
+		libdbd-pg-perl \
+		libdbi-perl \
+		libdigest-sha-perl \
+		libexpat1-dev \
+		libicu-dev \
+		libidn2-dev \
+		libjson-perl \
+		libpcap-dev \
+		libssl-dev \
+		libterm-readkey-perl \
+		libwww-curl-perl \
+		libwww-perl \
+		ncat \
+		net-tools \
+		openssl \
+		perl \
+		postgresql-client \
+		procps \
+		python3 \
+		rsync && \
+	rm -rf /var/lib/apt/lists/*
 
 EXPOSE 443
-
 WORKDIR /opt/traffic_ops/app
 
-RUN yum -y install procps
-ADD traffic_ops/traffic_ops*x86_64.rpm /traffic_ops.rpm
-RUN yum -y install /traffic_ops.rpm && \
-	rm /traffic_ops.rpm
+ADD traffic_ops/traffic_ops*.deb /traffic_ops.deb
+RUN mkdir -p /etc/pki/tls/private /etc/pki/tls/certs && \
+	dpkg -i --force-depends /traffic_ops.deb && \
+	rm /traffic_ops.deb
 
 ADD traffic_ops/run.sh /
 

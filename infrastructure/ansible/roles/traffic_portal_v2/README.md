@@ -24,14 +24,14 @@ At the primary user interface of Apache Traffic Control is the component Traffic
 Requirements
 ------------
 
-* A valid RPM in an available yum repository.
+* A valid DEB in an available apt repository.
 
 Role Variables
 --------------
 
 Refer to the defaults/main.yml for most information.
 
-tpv2_version: This is an optional string that can be provided to specify a particular version of Traffic Portal to install.  It should be something like `3.0.0-10063.5db80eca.el7`.  The absence of this variable entails automatically using the latest version available to yum at the time of initial installation.
+tpv2_version: This is an optional string that can be provided to specify a particular version of Traffic Portal to install.  It should be something like `3.0.0-10063.5db80eca.el7`.  The absence of this variable entails automatically using the latest version available to apt at the time of initial installation.
 
 config.json: Dictionary to merge into/atop the default traffic portal configuration values to file
 

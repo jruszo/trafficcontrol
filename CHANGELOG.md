@@ -36,7 +36,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - [#7917](https://github.com/jruszo/trafficcontrol/pull/7917) *Traffic Ops* Removed `Alerts` field from struct `ProfileExportResponse`.
 - [#7918](https://github.com/jruszo/trafficcontrol/pull/7918) *Traffic Portal* Fixed topology link under DS-Servers tables page
 - [#7846](https://github.com/jruszo/trafficcontrol/pull/7846) *Traffic Portal* Increase State character limit
-- [#8010](https://github.com/jruszo/trafficcontrol/pull/8010) *Traffic Stats* Omit NPM dev dependencies from Traffic Stats RPM
+- [#8010](https://github.com/jruszo/trafficcontrol/pull/8010) *Traffic Stats* Omit NPM dev dependencies from Traffic Stats DEB
 - [#8071](https://github.com/jruszo/trafficcontrol/pull/8071) *Traffic Ops* Improve validation for the `id` field of the `PUT /deliveryservice_request_comments` endpoint.
 - [#8078](https://github.com/jruszo/trafficcontrol/pull/8078) *Traffic Ops DB* Update Postgres version to 13.16.
 
@@ -86,7 +86,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - [#7619](https://github.com/jruszo/trafficcontrol/pull/7619) *Traffic Ops*: added optional field `oauth_user_attribute` for OAuth login credentials.
 - [#7641](https://github.com/jruszo/trafficcontrol/pull/7641) *Traffic Router*: Added further optimization to TR's algorithm of figuring out the zone for an incoming request.
 - [#7646](https://github.com/jruszo/trafficcontrol/pull/7646) *Traffic Portal*: Add the ability to delete a cert.
-- [#7652](https://github.com/jruszo/trafficcontrol/pull/7652) *Traffic Control Cache Config (t3c)*: added rpmdb checks and use package data from t3c-apply-metadata.json if rpmdb is corrupt.
+- [#7652](https://github.com/jruszo/trafficcontrol/pull/7652) *Traffic Control Cache Config (t3c)*: added debdb checks and use package data from t3c-apply-metadata.json if debdb is corrupt.
 - [#7674](https://github.com/jruszo/trafficcontrol/issues/7674) *Traffic Ops*: Add the ability to indicate if a server failed its revalidate/config update.
 - [#7784](https://github.com/jruszo/trafficcontrol/pull/7784) *Traffic Portal*: Added revert certificate functionality to the ssl-keys page.
 - [#7719](https://github.com/jruszo/trafficcontrol/pull/7719) *t3c* self-healing will be added automatically when using the slice plugin.
@@ -229,7 +229,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - [#7688](https://github.com/jruszo/trafficcontrol/pull/7688) *Traffic Ops*: Fixed secured parameters being visible when role has proper permissions.
 - [#7697](https://github.com/jruszo/trafficcontrol/pull/7697) *Traffic Ops*: Fixed `iloPassword` and `xmppPassword` checking for priv-level instead of using permissions.
 - [#7817](https://github.com/jruszo/trafficcontrol/pull/7817) *Traffic Control Cache Config (t3c)* fixed issue that would cause null ptr panic on client fallback.
-- [#7866](https://github.com/jruszo/trafficcontrol/pull/7866) *Traffic Control Cache Config (t3c)* fixed rpm db check to work with rocky linux 9
+- [#7866](https://github.com/jruszo/trafficcontrol/pull/7866) *Traffic Control Cache Config (t3c)* fixed deb db check to work with ubuntu linux 9
 
 ### Removed
 - [#7808](https://github.com/jruszo/trafficcontrol/pull/7808) *Traffic Router*: Set SOA `minimum` field to a custom value defined in the `tld.soa.minimum` param, and remove the previously added `dns.negative.caching.ttl` property.
@@ -275,7 +275,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Fixed TO to default route ID to 0, if it is not present in the request context.
 - [#6291](https://github.com/jruszo/trafficcontrol/issues/6291) Prevent Traffic Ops from modifying and/or deleting reserved statuses.
 - Update traffic\_portal dependencies to mitigate `npm audit` issues.
-- Fixed a cdn-in-a-box build issue when using `RHEL_VERSION=7`
+- Fixed a cdn-in-a-box build issue when using `ubuntu_VERSION=7`
 - `dequeueing` server updates should not require checking for cdn locks.
 - Fixed Traffic Ops ignoring the configured database port value, which was prohibiting the use of anything other than port 5432 (the PostgreSQL default)
 - [#6580](https://github.com/jruszo/trafficcontrol/issues/6580) Fixed cache config generation remap.config targets for MID-type servers in a Topology with other caches as parents and HTTPS origins.
@@ -318,14 +318,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Remove traffic\_portal dependencies to mitigate `npm audit` issues, specifically `grunt-concurrent`, `grunt-contrib-concat`, `grunt-contrib-cssmin`, `grunt-contrib-jsmin`, `grunt-contrib-uglify`, `grunt-contrib-htmlmin`, `grunt-newer`, and `grunt-wiredep`
 - Replace `forever` with `pm2` for process management of the traffic portal node server to remediate security issues.
 - Removed the Traffic Monitor `peer_polling_protocol` option. Traffic Monitor now just uses hostnames to request peer states, which can be handled via IPv4 or IPv6 depending on the underlying IP version in use.
-- Dropped CentOS 8 support
+- Dropped ubuntu 8 support
 - The `/servers/details` endpoint of the Traffic Ops API has been dropped in version 4.0, and marked deprecated in earlier versions.
 - Remove Traffic Ops API version 2
 
 ### Changed
 - [#6694](https://github.com/jruszo/trafficcontrol/issues/6694) Traffic Stats now uses the TO API 3.0
 - [#6654](https://github.com/jruszo/trafficcontrol/issues/6654) Traffic Monitor now uses the TO API 4.0 by default and falls back to 3.1
-- Added Rocky Linux 8 support
+- Added ubuntu linux 8 support
 - Traffic Monitors now peer with other Traffic Monitors of the same status (e.g. ONLINE with ONLINE, OFFLINE with OFFLINE), instead of all peering with ONLINE.
 - Changed the Traffic Ops user last_authenticated update query to only update once per minute to avoid row-locking when the same user logs in frequently.
 - Added new fields to the monitoring.json snapshot and made Traffic Monitor prefer data in monitoring.json to the CRConfig snapshot
@@ -396,7 +396,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 - Updated `t3c` to request less unnecessary deliveryservice-server assignment and invalidation jobs data via new query params supported by Traffic Ops
-- [#6179](https://github.com/jruszo/trafficcontrol/issues/6179) Updated the Traffic Ops rpm to include the `ToDnssecRefresh` binary and make the `trafops_dnssec_refresh` cron job use it
+- [#6179](https://github.com/jruszo/trafficcontrol/issues/6179) Updated the Traffic Ops deb to include the `ToDnssecRefresh` binary and make the `trafops_dnssec_refresh` cron job use it
 - [#6382](https://github.com/jruszo/trafficcontrol/issues/6382) Accept Geo Limit Countries as strings and arrays.
 - Traffic Portal no longer uses `ruby compass` to compile sass and now uses `dart-sass`.
 - Changed Invalidation Jobs throughout (TO, TP, T3C, etc.) to account for the ability to do both REFRESH and REFETCH requests for resources.
@@ -426,7 +426,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 - [#6125](https://github.com/jruszo/trafficcontrol/issues/6125) - Fix `/cdns/{name}/federations?id=#` to search for CDN.
-- [#6285](https://github.com/jruszo/trafficcontrol/issues/6285) - The Traffic Ops Postinstall script will work in CentOS 7, even if Python 3 is installed
+- [#6285](https://github.com/jruszo/trafficcontrol/issues/6285) - The Traffic Ops Postinstall script will work in ubuntu 7, even if Python 3 is installed
 - [#5373](https://github.com/jruszo/trafficcontrol/issues/5373) - Traffic Monitor logs not consistent
 - [#6197](https://github.com/jruszo/trafficcontrol/issues/6197) - TO `/deliveryservices/:id/routing` makes requests to all TRs instead of by CDN.
 - Traffic Ops: Sanitize username before executing LDAP query
@@ -448,7 +448,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Ported the Postinstall script to Python. The Perl version has been moved to `install/bin/_postinstall.pl` and has been deprecated, pending removal in a future release.
 - CDN-in-a-Box: Generate config files using the Postinstall script
 - CDN-in-a-Box: Add Federation with CNAME foo.kabletown.net.
-- Apache Traffic Server: [#5627](https://github.com/jruszo/trafficcontrol/pull/5627) - Added the creation of Centos8 RPMs for Apache Traffic Server
+- Apache Traffic Server: [#5627](https://github.com/jruszo/trafficcontrol/pull/5627) - Added the creation of ubuntu8 DEBs for Apache Traffic Server
 - Traffic Ops/Traffic Portal: [#5479](https://github.com/jruszo/trafficcontrol/issues/5479) - Added the ability to change a server capability name
 - Traffic Ops: [#3577](https://github.com/jruszo/trafficcontrol/issues/3577) - Added a query param (server host_name or ID) for servercheck API
 - Traffic Portal: [#5318](https://github.com/jruszo/trafficcontrol/issues/5318) - Rename server columns for IPv4 address fields.
@@ -480,7 +480,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Added headers to Traffic Portal, Traffic Ops, and Traffic Monitor to opt out of tracking users via Google FLoC.
 - Add logging scope for logging.yaml generation for ATS 9 support
 - `DELETE` request method for `deliveryservices/xmlId/{name}/urlkeys` and `deliveryservices/{id}/urlkeys`.
-- t3c now uses separate apps, full run syntax changed to `t3c apply ...`, moved to cache-config and RPM changed to trafficcontrol-cache-config. See cache-config README.md.
+- t3c now uses separate apps, full run syntax changed to `t3c apply ...`, moved to cache-config and DEB changed to trafficcontrol-cache-config. See cache-config README.md.
 - t3c: bug fix to consider plugin config files for reloading remap.config
 - t3c: add flag to wait for parents in syncds mode
 - t3c: Change syncds so that it only warns on package version mismatch.
@@ -623,7 +623,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Traffic Ops: Added validation to ensure that the cachegroups of a delivery services' assigned ORG servers are present in the topology
 - Traffic Ops: Added validation to ensure that the `weight` parameter of `parent.config` is a float
 - Traffic Ops Client: New Login function with more options, including falling back to previous minor versions. See traffic_ops/v3-client documentation for details.
-- Added license files to the RPMs
+- Added license files to the DEBs
 
 ### Fixed
 - [#5288](https://github.com/jruszo/trafficcontrol/issues/5288) - Fixed the ability to create and update a server with MTU value >= 1280.
@@ -673,7 +673,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [5.0.0] - 2020-10-20
 ### Added
-- Traffic Ops Ort: Disabled ntpd verification (ntpd is deprecated in CentOS)
+- Traffic Ops Ort: Disabled ntpd verification (ntpd is deprecated in ubuntu)
 - Traffic Ops Ort: Adds a transliteration of the traffic_ops_ort.pl perl script to the go language. See traffic_ops_ort/t3c/README.md.
 - Traffic Ops API v3
 - Added an optional readiness check service to cdn-in-a-box that exits successfully when it is able to get a `200 OK` from all delivery services
@@ -708,7 +708,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
     - Traffic Ops: Added validation to ensure assigned ORG server cachegroups are in the topology when updating a delivery service
 - Updated /servers/details to use multiple interfaces in API v3
 - Added [Edge Traffic Routing](https://traffic-control-cdn.readthedocs.io/en/latest/admin/traffic_router.html#edge-traffic-routing) feature which allows Traffic Router to localize more DNS record types than just the routing name for DNS delivery services
-- Added the ability to speedily build development RPMs from any OS without needing Docker
+- Added the ability to speedily build development DEBs from any OS without needing Docker
 - Added the ability to perform a quick search, override default pagination size and clear column filters on the Traffic Portal servers table.
 - Astats csv support - astats will now respond to `Accept: text/csv` and return a csv formatted stats list
 - Updated /deliveryservices/{{ID}}/servers to use multiple interfaces in API v3
@@ -722,7 +722,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Added If-Match and If-Unmodified-Since Support in Server and Clients.
 - Added debugging functionality to the Traffic Router unit tests runner at [`/traffic_router/tests`](https://github.com/jruszo/trafficcontrol/tree/master/traffic_router/tests)
 - Made the Traffic Router unit tests runner at [`/traffic_router/tests`](https://github.com/jruszo/trafficcontrol/tree/master/traffic_router/tests) run in Alpine Linux
-- Added GitHub Actions workflow for building RPMs and running the CDN-in-a-Box readiness check
+- Added GitHub Actions workflow for building DEBs and running the CDN-in-a-Box readiness check
 - Added the `Status Last Updated` field to servers, and the UI, so that we can see when the last status change took place for a server.
 - Added functionality in TR, so that it uses the default miss location of the DS, in case the location(for the  client IP) returned was the default location of the country.
 - Added ability to set DNS Listening IPs in dns.properties
@@ -741,7 +741,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Traffic Ops: added a feature to get delivery services filtered by the `active` flag
 - Traffic Portal: upgraded change log UI table to use more powerful/performant ag-grid component
 - Traffic Portal: change log days are now configurable in traffic_portal_properties.json (default is 7 days) and can be overridden by the user in TP
-- [#5319](https://github.com/jruszo/trafficcontrol/issues/5319) - Added support for building RPMs that target CentOS 8
+- [#5319](https://github.com/jruszo/trafficcontrol/issues/5319) - Added support for building DEBs that target ubuntu 8
 - [#5360](https://github.com/jruszo/trafficcontrol/issues/5360) - Adds the ability to clone a topology
 
 ### Fixed
@@ -776,7 +776,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Fixed `POST /api/x/steering` and `PUT /api/x/steering` so that a steering target with an invalid `type` is no longer accepted. [Related github issue](https://github.com/jruszo/trafficcontrol/issues/3531)
 - Fixed `cachegroups` READ endpoint, so that if a request is made with the `type` specified as a non integer value, you get back a `400` with error details, instead of a `500`. [Related github issue](https://github.com/jruszo/trafficcontrol/issues/4703)
 - Fixed ORT bug miscalculating Mid Max Origin Connections as all servers, usually resulting in 1.
-- Fixed ORT atstccfg helper log to append and not overwrite old logs. Also changed to log to /var/log/ort and added a logrotate to the RPM. See the ORT README.md for details.
+- Fixed ORT atstccfg helper log to append and not overwrite old logs. Also changed to log to /var/log/ort and added a logrotate to the DEB. See the ORT README.md for details.
 - Added Delivery Service Raw Remap `__RANGE_DIRECTIVE__` directive to allow inserting the Range Directive after the Raw Remap text. This allows Raw Remaps which manipulate the Range.
 - Added an option for `coordinateRange` in the RGB configuration file, so that in case a client doesn't have a postal code, we can still determine if it should be allowed or not, based on whether or not the latitude/ longitude of the client falls within the supplied ranges. [Related github issue](https://github.com/jruszo/trafficcontrol/issues/4372)
 - Fixed TR build configuration (pom.xml) to invoke preinstall.sh. [Related github issue](https://github.com/jruszo/trafficcontrol/issues/4882)
@@ -838,7 +838,7 @@ will be returned indicating that overlap exists.
 - Changed deprecated AsyncHttpClient Java dependency to use new active mirror and updated to version 2.12.1.
 - Changed Traffic Portal to use the more performant and powerful ag-grid for the delivery service request (DSR) table.
 - Traffic Ops: removed change log entry created during server update/revalidation unqueue
-- Updated CDN in a Box to CentOS 8 and added `RHEL_VERSION` Docker build arg so CDN in a Box can be built for CentOS 7, if desired
+- Updated CDN in a Box to ubuntu 8 and added `ubuntu_VERSION` Docker build arg so CDN in a Box can be built for ubuntu 7, if desired
 - Added Delivery Service Raw Remap `__CACHEKEY_DIRECTIVE__` directive to allow inserting the cachekey directive into the Raw Remap text. This allows Raw Remaps which manipulate the cachekey.
 
 ### Deprecated
@@ -1165,8 +1165,8 @@ will be returned indicating that overlap exists.
   - /api/1.3/statuses `(GET,POST,PUT,DELETE)`
   - /api/1.3/system/info `(GET)`
   - /api/1.3/types `(GET,POST,PUT,DELETE)`
-- Fair Queuing Pacing: Using the FQ Pacing Rate parameter in Delivery Services allows operators to limit the rate of individual sessions to the edge cache. This feature requires a Trafficserver RPM containing the fq_pacing experimental plugin AND setting 'fq' as the default Linux qdisc in sysctl.
-- Traffic Ops rpm changed to remove world-read permission from configuration files.
+- Fair Queuing Pacing: Using the FQ Pacing Rate parameter in Delivery Services allows operators to limit the rate of individual sessions to the edge cache. This feature requires a Trafficserver DEB containing the fq_pacing experimental plugin AND setting 'fq' as the default Linux qdisc in sysctl.
+- Traffic Ops deb changed to remove world-read permission from configuration files.
 
 ### Changed
 - Reformatted this CHANGELOG file to the keep-a-changelog format

@@ -13,7 +13,7 @@
 # limitations under the License.
 #
 #
-# RPM spec file for the Go version of Traffic Monitor (tm).
+# DEB spec file for the Go version of Traffic Monitor (tm).
 #
 %define   debug_package %{nil}
 Name:     traffic_monitor
@@ -42,28 +42,28 @@ godir=src/github.com/jruszo/trafficcontrol/traffic_monitor
 ) || { echo "Could not copy go program at $(pwd): $!"; exit 1; }
 
 %install
-mkdir -p "${RPM_BUILD_ROOT}"/opt/traffic_monitor
-mkdir -p "${RPM_BUILD_ROOT}"/opt/traffic_monitor/bin
-mkdir -p "${RPM_BUILD_ROOT}"/opt/traffic_monitor/conf
-mkdir -p "${RPM_BUILD_ROOT}"/opt/traffic_monitor/backup
-mkdir -p "${RPM_BUILD_ROOT}"/opt/traffic_monitor/static
-mkdir -p "${RPM_BUILD_ROOT}"/opt/traffic_monitor/var/run
-mkdir -p "${RPM_BUILD_ROOT}"/var/log/traffic_monitor
+mkdir -p "${deb_BUILD_ROOT}"/opt/traffic_monitor
+mkdir -p "${deb_BUILD_ROOT}"/opt/traffic_monitor/bin
+mkdir -p "${deb_BUILD_ROOT}"/opt/traffic_monitor/conf
+mkdir -p "${deb_BUILD_ROOT}"/opt/traffic_monitor/backup
+mkdir -p "${deb_BUILD_ROOT}"/opt/traffic_monitor/static
+mkdir -p "${deb_BUILD_ROOT}"/opt/traffic_monitor/var/run
+mkdir -p "${deb_BUILD_ROOT}"/var/log/traffic_monitor
 
 # TODO: The /opt/traffic_monitor/var/log symlink is deprecated and should be removed for ATC 9.0.0.
-ln -sfT /var/log/traffic_monitor "${RPM_BUILD_ROOT}"/opt/traffic_monitor/var/log
-mkdir -p "${RPM_BUILD_ROOT}"/etc/init.d
-mkdir -p "${RPM_BUILD_ROOT}"/etc/logrotate.d
+ln -sfT /var/log/traffic_monitor "${deb_BUILD_ROOT}"/opt/traffic_monitor/var/log
+mkdir -p "${deb_BUILD_ROOT}"/etc/init.d
+mkdir -p "${deb_BUILD_ROOT}"/etc/logrotate.d
 
 src=src/github.com/jruszo/trafficcontrol/traffic_monitor
-cp -p "$src"/traffic_monitor               "${RPM_BUILD_ROOT}"/opt/traffic_monitor/bin/traffic_monitor
-cp "$src"/static/index.html                "${RPM_BUILD_ROOT}"/opt/traffic_monitor/static/index.html
-cp "$src"/static/script.js                 "${RPM_BUILD_ROOT}"/opt/traffic_monitor/static/script.js
-cp "$src"/static/style.css                 "${RPM_BUILD_ROOT}"/opt/traffic_monitor/static/style.css
-cp "$src"/conf/traffic_ops.cfg             "${RPM_BUILD_ROOT}"/opt/traffic_monitor/conf/traffic_ops.cfg
-cp "$src"/conf/traffic_monitor.cfg         "${RPM_BUILD_ROOT}"/opt/traffic_monitor/conf/traffic_monitor.cfg
-cp "$src"/build/traffic_monitor.init       "${RPM_BUILD_ROOT}"/etc/init.d/traffic_monitor
-cp "$src"/build/traffic_monitor.logrotate  "${RPM_BUILD_ROOT}"/etc/logrotate.d/traffic_monitor
+cp -p "$src"/traffic_monitor               "${deb_BUILD_ROOT}"/opt/traffic_monitor/bin/traffic_monitor
+cp "$src"/static/index.html                "${deb_BUILD_ROOT}"/opt/traffic_monitor/static/index.html
+cp "$src"/static/script.js                 "${deb_BUILD_ROOT}"/opt/traffic_monitor/static/script.js
+cp "$src"/static/style.css                 "${deb_BUILD_ROOT}"/opt/traffic_monitor/static/style.css
+cp "$src"/conf/traffic_ops.cfg             "${deb_BUILD_ROOT}"/opt/traffic_monitor/conf/traffic_ops.cfg
+cp "$src"/conf/traffic_monitor.cfg         "${deb_BUILD_ROOT}"/opt/traffic_monitor/conf/traffic_monitor.cfg
+cp "$src"/build/traffic_monitor.init       "${deb_BUILD_ROOT}"/etc/init.d/traffic_monitor
+cp "$src"/build/traffic_monitor.logrotate  "${deb_BUILD_ROOT}"/etc/logrotate.d/traffic_monitor
 
 %pre
 old_log_dir=/opt/traffic_monitor/var/log
@@ -100,8 +100,8 @@ if [ -e /etc/init.d/traffic_monitor ]; then
 	/sbin/service traffic_monitor stop
 fi
 
-#don't install over the top of java TM.  This is a workaround since yum doesn't respect the Conflicts tag.
-if [[ $(rpm -q traffic_monitor --qf "%{VERSION}-%{RELEASE}") < 1.9.0 ]]
+#don't install over the top of java TM.  This is a workaround since apt doesn't respect the Conflicts tag.
+if [[ $(deb -q traffic_monitor --qf "%{VERSION}-%{RELEASE}") < 1.9.0 ]]
 then
 		echo -e "\n****************\n"
 		echo "A java version of traffic_monitor is installed.  Please backup/remove that version before installing the golang version of traffic_monitor."
@@ -139,7 +139,7 @@ fi
 %attr(755, traffic_monitor, traffic_monitor) /etc/init.d/traffic_monitor
 
 %preun
-# args for hooks: https://www.ibm.com/developerworks/library/l-rpm2/
+# args for hooks: https://www.ibm.com/developerworks/library/l-deb2/
 # if $1 = 0, this is an uninstallation, if $1 = 1, this is an upgrade (don't do anything)
 if [ "$1" = "0" ]; then
 	/sbin/chkconfig traffic_monitor off

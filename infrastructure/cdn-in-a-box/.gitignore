@@ -15,7 +15,7 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-*.rpm
+*.deb
 /cache/ATS_VERSION
 /optional/vpn/vpnca
 /traffic_ops/ca

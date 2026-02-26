@@ -30,9 +30,9 @@ var testSet = map[string][5]string{
 	"test2":                               [5]string{"test2", "", "", ""},
 }
 
-func TestSplitRPMVersion(t *testing.T) {
+func TestSplitdebVersion(t *testing.T) {
 	for s, e := range testSet {
-		n, v, c, h, a := splitRPMVersion(s)
+		n, v, c, h, a := splitdebVersion(s)
 
 		if n != e[0] {
 			t.Errorf("expected name '%s', got '%s'", n, e[0])

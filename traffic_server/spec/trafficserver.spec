@@ -45,15 +45,15 @@ autoreconf -vfi
 make %{?_smp_mflags}
 
 %install
-make DESTDIR=$RPM_BUILD_ROOT install
+make DESTDIR=$deb_BUILD_ROOT install
 
-mkdir -p $RPM_BUILD_ROOT%{install_prefix}/trafficserver/etc/trafficserver/snapshots
-mkdir -p $RPM_BUILD_ROOT/etc/init.d
-mkdir -p $RPM_BUILD_ROOT/var/log/trafficserver
-cp $RPM_BUILD_DIR/%{name}-%{version}/rc/trafficserver $RPM_BUILD_ROOT/etc/init.d/
+mkdir -p $deb_BUILD_ROOT%{install_prefix}/trafficserver/etc/trafficserver/snapshots
+mkdir -p $deb_BUILD_ROOT/etc/init.d
+mkdir -p $deb_BUILD_ROOT/var/log/trafficserver
+cp $deb_BUILD_DIR/%{name}-%{version}/rc/trafficserver $deb_BUILD_ROOT/etc/init.d/
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf $deb_BUILD_ROOT
 
 %pre
 id ats &>/dev/null || /usr/sbin/useradd -u 176 -r ats -s /sbin/nologin -d /
@@ -71,7 +71,7 @@ fi
 
 %postun
 # Helpful in understanding order of operations in relation to install/uninstall/upgrade:
-#     http://www.ibm.com/developerworks/library/l-rpm2/
+#     http://www.ibm.com/developerworks/library/l-deb2/
 # if 0 uninstall, if 1 upgrade
 if [ "$1" = "0" ]; then
 	id ats &>/dev/null && /usr/sbin/userdel ats

@@ -44,7 +44,7 @@ const (
 )
 
 // the BuildTimestamp and Version are set via ld flags
-// when the RPM is built, see build/build_rpm.sh
+// when the DEB is built, see build/build_deb.sh
 var (
 	BuildTimestamp = ""
 	Version        = ""

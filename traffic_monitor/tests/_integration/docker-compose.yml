@@ -16,14 +16,14 @@
 # under the License.
 #
 # To run the integration test:
-# 1. build Traffic Monitor and then copy the RPM to this directory as traffic_monitor.rpm.
+# 1. build Traffic Monitor and then copy the DEB to this directory as traffic_monitor.deb.
 # 2. build traffic_monitor/tools/testcaches and place the binary in this directory.
 # 3. build traffic_monitor/tools/testto and place the binary in this directory.
 # 4. Run this compose
 #
 # Commands are, from the root trafficcontrol directory:
 # ./pkg -v traffic_monitor_build
-# cp ./dist/traffic_monitor*.rpm ./traffic_monitor/
+# cp ./dist/traffic_monitor*.deb ./traffic_monitor/
 # ./build_tests.sh
 #
 # To run the integration tests, your current working directory must be trafficcontrol/traffic_monitor.
@@ -64,7 +64,7 @@ services:
       context: ./tm
       dockerfile: ./Dockerfile
       args:
-        RPM: ./traffic_monitor.rpm
+        DEB: ./traffic_monitor.deb
     depends_on:
       - testto
     domainname: traffic-monitor-integration.test

@@ -18,10 +18,9 @@
 # under the License.
 #
 
-#
-# this seems to wake up the to container.
-#
-function ping_to {
+set -o errexit -o nounset -o pipefail
+
+ping_to() {
 	t3c \
 		"apply" \
 		"--traffic-ops-insecure=true" \
@@ -34,85 +33,94 @@ function ping_to {
 		"--run-mode=badass"
 }
 
-GOPATH=/root/go; export GOPATH
-PATH=$PATH:/usr/local/go/bin:; export PATH
-TERM=xterm; export TERM
+export GOPATH=/root/go
+export PATH=$PATH:/usr/local/go/bin
+export TERM=xterm
 
-# setup some convienient links
-/bin/ln -s /root/go/src/github.com/jruszo/trafficcontrol /trafficcontrol
-/bin/ln -s /trafficcontrol/cache-config/testing/ort-tests /ort-tests
+/bin/ln -sf /root/go/src/github.com/jruszo/trafficcontrol /trafficcontrol
+/bin/ln -sf /trafficcontrol/cache-config/testing/ort-tests /ort-tests
 
 if [ -f /trafficcontrol/GO_VERSION ]; then
-  go_version=$(cat /trafficcontrol/GO_VERSION) && \
-      curl -Lo go.tar.gz https://dl.google.com/go/go${go_version}.linux-amd64.tar.gz && \
-        tar -C /usr/local -xzf go.tar.gz && \
-        ln -s /usr/local/go/bin/go /usr/bin/go && \
-        rm go.tar.gz
+	go_version=$(cat /trafficcontrol/GO_VERSION)
+	curl -Lo go.tar.gz "https://dl.google.com/go/go${go_version}.linux-amd64.tar.gz"
+	tar -C /usr/local -xzf go.tar.gz
+	ln -sf /usr/local/go/bin/go /usr/bin/go
+	rm go.tar.gz
 else
-  echo "no GO_VERSION file, unable to install go"
-  exit 1
+	echo "no GO_VERSION file, unable to install go"
+	exit 1
 fi
 
 if [[ -f /systemctl.sh ]]; then
-  mv /bin/systemctl /bin/systemctl.save
-  cp /systemctl.sh /bin/systemctl
-  chmod 0755 /bin/systemctl
+	if [[ -x /bin/systemctl ]]; then
+		mv /bin/systemctl /bin/systemctl.save
+	elif [[ -x /usr/bin/systemctl ]]; then
+		mv /usr/bin/systemctl /usr/bin/systemctl.save
+	fi
+	cp /systemctl.sh /bin/systemctl
+	chmod 0755 /bin/systemctl
 fi
 
-cd "$(realpath /ort-tests)"
+# Wait for the local test package repo to be up, then refresh apt metadata.
+until curl --silent --fail http://yumserver/Packages.gz >/dev/null; do
+	echo "waiting for yumserver apt index"
+	sleep 2
+done
+apt-get update
 
-# fetch dependent packages for tests
+cd "$(realpath /ort-tests)"
 go mod vendor
 
 cp /ort-tests/tc-fixtures.json /tc-fixtures.json
-ATS_RPM=`basename /yumserver/test-rpms/trafficserver-[0-9]*.rpm |
-  gawk 'match($0, /trafficserver\-(.+)\.rpm$/, arr) {print arr[1]}'`
 
-echo "ATS_RPM: $ATS_RPM"
-
-if [[ -z $ATS_RPM ]]; then
-  echo "ERROR: No ATS RPM was found"
-  exit 2
-else
-  echo "$(</ort-tests/tc-fixtures.json jq --arg ATS_RPM "$ATS_RPM" '.profiles[] |= (
-    select(.params != null).params[] |= (
-      select(.configFile == "package" and .name == "trafficserver").value = $ATS_RPM
-    ))')" >/ort-tests/tc-fixtures.json.tmp
-  if ! </ort-tests/tc-fixtures.json.tmp jq -r --arg ATS_RPM "$ATS_RPM" '.profiles[] |
-    select(.params != null).params[] |
-    select(.configFile == "package" and .name == "trafficserver")
-    .value' |
-      grep -qF "$ATS_RPM";
-  then
-    echo "ATS RPM version ${ATS_RPM} was not set"
-    exit 2
-  fi
+ats_deb_file="$(ls /yumserver/test-debs/trafficserver*.deb | head -n1 || true)"
+if [[ -z "${ats_deb_file}" ]]; then
+	echo "ERROR: No Traffic Server DEB was found"
+	exit 2
 fi
 
-# wake up the to_server
+ats_deb_version="$(dpkg-deb -f "${ats_deb_file}" Version)"
+if [[ -z "${ats_deb_version}" ]]; then
+	echo "ERROR: Unable to read Traffic Server DEB version"
+	exit 2
+fi
+
+cat /ort-tests/tc-fixtures.json | jq --arg ATS_VER "${ats_deb_version}" '.profiles[] |= (
+	select(.params != null).params[] |= (
+		select(.configFile == "package" and .name == "trafficserver").value = $ATS_VER
+	)
+)' > /ort-tests/tc-fixtures.json.tmp
+
+if ! jq -r --arg ATS_VER "${ats_deb_version}" '.profiles[] |
+	select(.params != null).params[] |
+	select(.configFile == "package" and .name == "trafficserver").value' /ort-tests/tc-fixtures.json.tmp | grep -qF "${ats_deb_version}"; then
+	echo "Traffic Server package version ${ats_deb_version} was not set"
+	exit 2
+fi
+
 ping_to
 
 echo "waiting for all the to_server container to initialize."
 i=0
 sleep_time=3
-while ! nc $TO_HOSTNAME $TO_PORT </dev/null; do
-  echo "$waiting for $TO_HOSTNAME:$TO_PORT"
-  sleep $sleep_time
-  let i=i+1
-  if [ $i -gt 10 ]; then
-    let d=i*sleep_time
-    echo "$TO_HOSTNAME:$TO_PORT is unavailable after $d seconds, giving up"
-    exit 1
-  fi
+while ! nc "$TO_HOSTNAME" "$TO_PORT" </dev/null; do
+	echo "waiting for $TO_HOSTNAME:$TO_PORT"
+	sleep "$sleep_time"
+	((i+=1))
+	if [ "$i" -gt 10 ]; then
+		d=$((i * sleep_time))
+		echo "$TO_HOSTNAME:$TO_PORT is unavailable after $d seconds, giving up"
+		exit 1
+	fi
 done
 
 mv /ort-tests/tc-fixtures.json.tmp /tc-fixtures.json
-(touch test.log && chmod a+rw test.log && tail -f test.log)&
+(touch test.log && chmod a+rw test.log && tail -f test.log) &
 
 go test --cfg=conf/docker-edge-cache.conf 2>&1 >> test.log
 if [[ $? != 0 ]]; then
-  echo "ERROR: ORT tests failure"
-  exit 3
+	echo "ERROR: ORT tests failure"
+	exit 3
 fi
 
 exit 0

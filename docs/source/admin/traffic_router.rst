@@ -21,7 +21,7 @@ Traffic Router Administration
 
 Requirements
 ============
-* CentOS 7 or later
+* ubuntu 7 or later
 * 4 CPUs
 * 8GB of RAM
 * Successful install of Traffic Ops (usually on another machine)
@@ -38,10 +38,10 @@ Installing Traffic Router
 
 #. Enter the Traffic Router server into Traffic Portal on the :ref:`tp-configure-servers` page (or via the :ref:`to-api`), assign to it a Traffic Router :term:`Profile`, and ensure that its status is set to ``ONLINE``.
 #. Ensure the :abbr:`FQDN (Fully Qualified Domain Name)` of the Traffic Router is resolvable in DNS. This :abbr:`FQDN (Fully Qualified Domain Name)` must be resolvable by the clients expected to use this CDN.
-#. Install a Traffic Router server package, either from source or using a :file:`traffic_router-{version string}.rpm` package generated using the instructions in :ref:`dev-building`.
+#. Install a Traffic Router server package, either from source or using a :file:`traffic_router-{version string}.deb` package generated using the instructions in :ref:`dev-building`.
 
 	.. versionchanged:: 3.0
-		As of version 3.0, Traffic Router depends upon a package called ``tomcat``. This package should have been created when Traffic Router was built. If installing the ``traffic_router`` produces a depenedency error, make sure that the ``tomcat`` package is available in an accessible :manpage:`yum(8)` repository.
+		As of version 3.0, Traffic Router depends upon a package called ``tomcat``. This package should have been created when Traffic Router was built. If installing the ``traffic_router`` produces a depenedency error, make sure that the ``tomcat`` package is available in an accessible :manpage:`apt(8)` repository.
 
 #. Edit :file:`/opt/traffic_router/conf/traffic_monitor.properties` and specify the correct online Traffic Monitor(s) for your CDN.
 

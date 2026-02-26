@@ -16,29 +16,24 @@
 # under the License.
 
 ############################################################
-# Dockerfile to initialized Traffic Ops Database container 
-# Based on CentOS 7.2
+# Dockerfile to initialize Traffic Ops Database container
+# Based on Ubuntu 24.04
 ############################################################
 
-FROM rockylinux:8
+FROM ubuntu:24.04
 
-RUN dnf install -y \
-	epel-release \
-    libicu \
-	"https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-$(rpm --eval %_arch)/pgdg-redhat-repo-latest.noarch.rpm" && \
-    dnf -y --repo=pgdg13 install postgresql13 && \
-	dnf -y remove pgdg-redhat-repo
-
-RUN dnf -y install \
-  nmap-ncat \
-  cpanminus && \
-  dnf clean all
+RUN apt-get update && \
+	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+		cpanminus \
+		ncat \
+		postgresql-client && \
+	rm -rf /var/lib/apt/lists/*
 
 ENV POSTGRES_HOME $POSTGRES_HOME
-ENV PGPASSWORD $PGPASSWORD 
+ENV PGPASSWORD $PGPASSWORD
 ENV DB_USERNAME $DB_USERNAME
 ENV DB_NAME $DB_NAME
-ENV DB_USER_PASS $DB_USER_PASS 
+ENV DB_USER_PASS $DB_USER_PASS
 ENV DB_SERVER $DB_SERVER
 ENV DB_PORT $DB_PORT
 

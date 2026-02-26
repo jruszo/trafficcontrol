@@ -33,19 +33,19 @@ type about struct {
 	GoVersion  string `json:"goVersion,omitempty"`
 	Release    string `json:"release"`
 	Name       string `json:"name,omitempty"`
-	RPMVersion string `json:"RPMVersion,omitempty"`
+	debVersion string `json:"debVersion,omitempty"`
 	Version    string `json:"Version,omitempty"`
 }
 
 // About contains version info to be exposed by `api/.../about.json` endpoint
 var About about
 
-func splitRPMVersion(v string) (string, string, string, string, string) {
+func splitdebVersion(v string) (string, string, string, string, string) {
 
 	if v == "" {
 		return "UnknownVersion", "", "", "", ""
 	}
-	// RPM version is something like traffic_ops-2.3.0-8765.a0b1c3d4.el7
+	// DEB version is something like traffic_ops-2.3.0-8765.a0b1c3d4.el7
 	//  -- if not of that form, Name, Version, Commits, CommitHash, Release may be missing
 	s := strings.SplitN(v, "-", 3)
 	if len(s) >= 3 {
@@ -61,15 +61,15 @@ func splitRPMVersion(v string) (string, string, string, string, string) {
 
 // SetAbout is called by main.main to store the static info for the .../about endpoint
 func SetAbout(s string) {
-	// name, version, commits, hash, Release -- parts of rpm version string
-	n, v, c, h, r := splitRPMVersion(s)
+	// name, version, commits, hash, Release -- parts of deb version string
+	n, v, c, h, r := splitdebVersion(s)
 	About = about{
 		CommitHash: h,
 		Commits:    c,
 		GoVersion:  runtime.Version(),
 		Release:    r,
 		Name:       n,
-		RPMVersion: s,
+		debVersion: s,
 		Version:    v,
 	}
 }

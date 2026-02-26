@@ -18,10 +18,9 @@
 name: Traffic Router Tests
 
 env:
-  # environment variables for traffic_router_rpm
+  # environment variables for traffic_router tests
   BUILD_LOCK: build_lock
   BUILD_NUMBER: build_number
-  RHEL_VERSION: rhel_version
   STARTUP_SCRIPT_DIR: /startup-dir
   STARTUP_SCRIPT_LOC: ../core/src/main/lib/systemd/system
   LOGROTATE_SCRIPT_DIR: /etc/logrotate.d

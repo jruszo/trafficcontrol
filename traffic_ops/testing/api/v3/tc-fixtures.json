@@ -1830,7 +1830,7 @@
             "lastUpdated": "2018-01-19T19:01:21.499423+00:00",
             "name": "trafficserver",
             "secure": false,
-            "value": "5.3.2-765.f4354b9.el7.centos.x86_64"
+            "value": "5.3.2-765.f4354b9.el7.ubuntu.x86_64"
         },
         {
             "configFile": "global",

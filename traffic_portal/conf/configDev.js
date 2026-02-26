@@ -36,7 +36,7 @@ module.exports = {
     api: {
         base_url: 'https://localhost:6443/api/'
     },
-    // default static files location (this is where the traffic portal html, css and javascript was installed. rpm installs these files at /opt/traffic_portal/public
+    // default static files location (this is where the traffic portal html, css and javascript was installed. deb installs these files at /opt/traffic_portal/public
     files: {
         static: './app/dist/public'
     },

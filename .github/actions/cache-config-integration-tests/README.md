@@ -23,8 +23,8 @@ This action runs the Traffic Ops ORT integration tests with the Traffic Ops API.
 
 ## Inputs
 
-### `Trafficserver RPM`
-**Required** A trafficserver RPM used to install on the Edge server.
+### `Trafficserver DEB`
+**Required** A trafficserver DEB used to install on the Edge server.
 
 ## Outputs
 

@@ -31,7 +31,7 @@ Role Variables
 
 Refer to the defaults/main.yml for most information.
 
-additional_yum_repos: An optional list of additional yum repositories to enable specifically when installing this component.  This could be used to enable non-production ready rpms in a separate repository and not supplying the specific RPM version to automatically use the latest available.
+additional_yum_repos: An optional list of additional apt repositories to enable specifically when installing this component.  This could be used to enable non-production ready debs in a separate repository and not supplying the specific DEB version to automatically use the latest available.
 
 Dependencies
 ------------

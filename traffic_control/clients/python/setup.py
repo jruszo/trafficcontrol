@@ -92,7 +92,7 @@ with open(os.path.join(HERE, "README.rst")) as fd:
 	           ]
 	       },
 	       # This will only be enforced by pip versions >=9.0 (18.1 being current at the time of
-	       # this writing) - i.e. not the pip installed as python34-pip from elrepo on CentOS
+	       # this writing) - i.e. not the pip installed as python34-pip from elrepo on ubuntu
 	       python_requires='>=3.6'
 	)
 

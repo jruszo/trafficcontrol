@@ -36,9 +36,9 @@ importFunctions() {
 # ---------------------------------------
 initBuildArea() {
 	echo "Initializing the build area."
-	(mkdir -p "$RPMBUILD"
-	 cd "$RPMBUILD"
-	 mkdir -p SPECS SOURCES RPMS SRPMS BUILD BUILDROOT) || { echo "Could not create $RPMBUILD: $?"; return 1; }
+	(mkdir -p "$debbuild"
+	 cd "$debbuild"
+	 mkdir -p SPECS SOURCES debS SdebS BUILD BUILDROOT) || { echo "Could not create $debbuild: $?"; return 1; }
 
 	# tar/gzip the source
 	local tp_dest
@@ -52,8 +52,8 @@ initBuildArea() {
 	# include LICENSE in the tarball
 	cp "${TC_DIR}/LICENSE" "$tp_dest"
 
-	tar -czvf "$tp_dest".tgz -C "$RPMBUILD"/SOURCES "$(basename "$tp_dest")" || { echo "Could not create tar archive ${tp_dest}.tgz: $?"; return 1; }
-	cp "$TP_DIR"/build/*.spec "$RPMBUILD"/SPECS/. || { echo "Could not copy spec files: $?"; return 1; }
+	tar -czvf "$tp_dest".tgz -C "$debbuild"/SOURCES "$(basename "$tp_dest")" || { echo "Could not create tar archive ${tp_dest}.tgz: $?"; return 1; }
+	cp "$TP_DIR"/build/*.spec "$debbuild"/SPECS/. || { echo "Could not copy spec files: $?"; return 1; }
 
 	echo "The build area has been initialized."
 }
@@ -63,4 +63,4 @@ initBuildArea() {
 importFunctions
 checkEnvironment -i npm,grunt,rsync,sass
 initBuildArea
-buildRpm traffic_portal
+builddeb traffic_portal

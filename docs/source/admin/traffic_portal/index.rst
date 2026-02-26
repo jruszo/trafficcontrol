@@ -16,20 +16,20 @@
 **************
 Traffic Portal
 **************
-Traffic Portal is only supported on CentOS Linux distributions version 7.x and 8.x. It runs on `NodeJS <https://nodejs.org/>`_ and requires version 16 or higher.
+Traffic Portal is only supported on ubuntu Linux distributions version 7.x and 8.x. It runs on `NodeJS <https://nodejs.org/>`_ and requires version 16 or higher.
 
 Installing
 ==========
-#. Build the Traffic Portal RPM using the instructions in :ref:`dev-building`.
-#. Copy the Traffic Portal RPM to your server
-#. Install NodeJS. This can be done by building it from source, installing with :manpage:`yum(8)` if it happens to be in your available repositories (at version 16+), or using the NodeSource setup script.
+#. Build the Traffic Portal DEB using the instructions in :ref:`dev-building`.
+#. Copy the Traffic Portal DEB to your server
+#. Install NodeJS. This can be done by building it from source, installing with :manpage:`apt(8)` if it happens to be in your available repositories (at version 16+), or using the NodeSource setup script.
 
 	.. code-block:: bash
 		:caption: Installing NodeJS using the NodeSource Setup Script
 
-		curl --silent --location https://rpm.nodesource.com/setup_16.x | sudo bash -
+		curl --silent --location https://deb.nodesource.com/setup_16.x | sudo bash -
 
-#. Install the Traffic Portal RPM with :manpage:`yum(8)` or :manpage:`rpm(8)` e.g. by running ``yum install path/to/traffic_portal.rpm`` as the root user or with :manpage:`sudo(8)`.
+#. Install the Traffic Portal DEB with :manpage:`apt(8)` or :manpage:`deb(8)` e.g. by running ``apt install path/to/traffic_portal.deb`` as the root user or with :manpage:`sudo(8)`.
 
 
 Configuring
@@ -40,7 +40,7 @@ Traffic Portal is primarily configured through three different files that affect
 --------------------------------------
 This file controls the behavior of the Traffic Portal server. It is a JavaScript source file which **MUST** set ``module.exports`` to the value of a configuration object. Configuration objects have the following allowed properties.
 
-.. tip:: If Traffic Portal is being upgraded, reconcile ``config.js`` with ``config.js.rpmnew`` and then delete ``config.js.rpmnew``.
+.. tip:: If Traffic Portal is being upgraded, reconcile ``config.js`` with ``config.js.debnew`` and then delete ``config.js.debnew``.
 
 :api: The properties of this object control Traffic Portal's interactions with the :ref:`to-api`.
 
@@ -76,7 +76,7 @@ This file controls the behavior of the Traffic Portal server. It is a JavaScript
 
 ``/opt/traffic_portal/public/traffic_portal_properties.json``
 -------------------------------------------------------------
-- update :file:`/opt/traffic_portal/public/traffic_portal_properties.json` (if Traffic Portal is being upgraded, reconcile :file:`traffic_portal_properties.json` with :file:`traffic_portal_properties.json.rpmnew` and then delete :file:`traffic_portal_properties.json.rpmnew`)
+- update :file:`/opt/traffic_portal/public/traffic_portal_properties.json` (if Traffic Portal is being upgraded, reconcile :file:`traffic_portal_properties.json` with :file:`traffic_portal_properties.json.debnew` and then delete :file:`traffic_portal_properties.json.debnew`)
 
 ``/opt/traffic_portal/public/resources/assets/css/custom.css``
 --------------------------------------------------------------
@@ -89,7 +89,7 @@ See :ref:`oauth_login`.
 
 Starting Traffic Portal
 =======================
-The Traffic Portal RPM comes with a :manpage:`systemd(1)` unit file, so under normal circumstances Traffic Portal may be started with :manpage:`systemctl(1)`.
+The Traffic Portal DEB comes with a :manpage:`systemd(1)` unit file, so under normal circumstances Traffic Portal may be started with :manpage:`systemctl(1)`.
 
 .. code-block:: bash
 	:caption: Starting Traffic Portal
@@ -98,7 +98,7 @@ The Traffic Portal RPM comes with a :manpage:`systemd(1)` unit file, so under no
 
 Stopping Traffic Portal
 =======================
-The Traffic Portal RPM comes with a :manpage:`systemd(1)` unit file, so under normal circumstances Traffic Portal may be stopped with :manpage:`systemctl(1)`.
+The Traffic Portal DEB comes with a :manpage:`systemd(1)` unit file, so under normal circumstances Traffic Portal may be stopped with :manpage:`systemctl(1)`.
 
 .. code-block:: bash
 	:caption: Stopping Traffic Portal

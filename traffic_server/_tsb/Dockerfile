@@ -16,40 +16,40 @@
 # under the License.
 #
 # SPDX-License-Identifier: Apache-2.0
-    # Change BASE_IMAGE to centos when RHEL_VERSION=7
-ARG BASE_IMAGE=rockylinux \
-    RHEL_VERSION=8
-FROM ${BASE_IMAGE}:${RHEL_VERSION} as ats-common-dependencies
-ARG RHEL_VERSION=8
+    # Change BASE_IMAGE to ubuntu when ubuntu_VERSION=7
+ARG BASE_IMAGE=ubuntu \
+    ubuntu_VERSION=8
+FROM ${BASE_IMAGE}:${ubuntu_VERSION} as ats-common-dependencies
+ARG ubuntu_VERSION=8
 
 MAINTAINER dev@trafficcontrol.apache.org
 
 ### Common for all sub-component builds
-RUN if [[ ${RHEL_VERSION%%.*} -ge 8 ]]; then \
-		yum install -y 'dnf-command(config-manager)'; \
-		yum config-manager --set-enabled powertools; \
+RUN if [[ ${ubuntu_VERSION%%.*} -ge 8 ]]; then \
+		apt install -y 'apt-command(config-manager)'; \
+		apt config-manager --set-enabled powertools; \
 	else \
-		yum install -y deltarpm centos-release-scl-rh; \
-		yum-config-manager --enable rhel-server-rhscl-7-rpms; \
+		apt install -y deltadeb ubuntu-release-scl-rh; \
+		apt-config-manager --enable ubuntu-server-rhscl-7-debs; \
 	fi && \
-	rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-* && \
-	rpm --import "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-${RHEL_VERSION%%.*}" && \
-	yum -y clean all && \
-	yum -y update ca-certificates && \
-	yum -y install \
+	deb --import /etc/pki/deb-gpg/DEB-GPG-KEY-* && \
+	deb --import "https://dl.fedoraproject.org/pub/epel/DEB-GPG-KEY-EPEL-${ubuntu_VERSION%%.*}" && \
+	apt -y clean all && \
+	apt -y update ca-certificates && \
+	apt -y install \
 		git \
-		rpm-build \
+		deb-build \
 		rsync \
 		epel-release && \
-	yum -y clean all
+	apt -y clean all
 
 ### ats specific requirements
 FROM ats-common-dependencies AS build-ats-specific
-ARG RHEL_VERSION=8
-# Makes RHEL_VERSION accessible to CMD
-ENV RHEL_VERSION="$RHEL_VERSION"
+ARG ubuntu_VERSION=8
+# Makes ubuntu_VERSION accessible to CMD
+ENV ubuntu_VERSION="$ubuntu_VERSION"
 
-RUN if [[ ${RHEL_VERSION%%.*} -ge 8 ]]; then \
+RUN if [[ ${ubuntu_VERSION%%.*} -ge 8 ]]; then \
 		os_pkgs=( \
 			brotli \
 			brotli-devel \
@@ -65,7 +65,7 @@ RUN if [[ ${RHEL_VERSION%%.*} -ge 8 ]]; then \
 		os_pkgs=(devtoolset-11); \
 		os_toolset="devtoolset-11"; \
 	fi \
-	&& yum install -y \
+	&& apt install -y \
 		${os_pkgs[*]} \
 		autoconf \
 		automake \
@@ -100,20 +100,20 @@ RUN if [[ ${RHEL_VERSION%%.*} -ge 8 ]]; then \
 		tcl-devel \
 		zlib \
 		zlib-devel \
-	&& yum clean all
+	&& apt clean all
 COPY	jansson.pic.patch /opt/src/
 COPY	cjose.pic.patch /opt/src/
 RUN	pip3 install --user Sphinx
 COPY	run.sh /run.sh
-COPY	trafficserver.spec /rpmbuilddir/SPECS/trafficserver.spec
-COPY	traffic_server_jemalloc /rpmbuilddir/SOURCES/traffic_server_jemalloc
-COPY	trafficserver.env /rpmbuilddir/SOURCES/trafficserver.env
+COPY	trafficserver.spec /debbuilddir/SPECS/trafficserver.spec
+COPY	traffic_server_jemalloc /debbuilddir/SOURCES/traffic_server_jemalloc
+COPY	trafficserver.env /debbuilddir/SOURCES/trafficserver.env
 RUN	/usr/sbin/useradd -u 176 -r ats -s /sbin/nologin -d /
-CMD if [[ ${RHEL_VERSION%%.*} -ge 8 ]]; then \
+CMD if [[ ${ubuntu_VERSION%%.*} -ge 8 ]]; then \
 		os_toolset=gcc-toolset-11; \
 		openssl_included='--without_openssl'; \
 	else \
 		os_toolset=devtoolset-7; \
 		openssl_included='--with_openssl'; \
 	fi \
-	&& set -o pipefail; scl enable ${os_toolset} "./run.sh ${openssl_included}" 2>&1 | tee /rpmbuilddir/RPMS/build-trafficserver.log
+	&& set -o pipefail; scl enable ${os_toolset} "./run.sh ${openssl_included}" 2>&1 | tee /debbuilddir/debS/build-trafficserver.log

@@ -25,7 +25,7 @@ Requires:   java-11-openjdk-headless
 %define tomcat_home /opt/tomcat
 
 %description
-This rpm is a minimal install of the Tomcat servlet container version 9.0.
+This deb is a minimal install of the Tomcat servlet container version 9.0.
 It gets installed to /opt/tomcat and contains no webapps of its own.
 To use it create your own CATALINA_BASE directory and place your application
 specific webapps and server.xml there.
@@ -40,20 +40,20 @@ Built:@BUILT@
 %build
 
 %install
-install -d -m 755 ${RPM_BUILD_ROOT}/%{tomcat_home}/
+install -d -m 755 ${deb_BUILD_ROOT}/%{tomcat_home}/
 rmdir logs
-mkdir -p "${RPM_BUILD_ROOT}"/var/log/tomcat
-cp -R * ${RPM_BUILD_ROOT}/%{tomcat_home}/
-ln -sfT /var/log/tomcat "${RPM_BUILD_ROOT}"%{tomcat_home}/logs
+mkdir -p "${deb_BUILD_ROOT}"/var/log/tomcat
+cp -R * ${deb_BUILD_ROOT}/%{tomcat_home}/
+ln -sfT /var/log/tomcat "${deb_BUILD_ROOT}"%{tomcat_home}/logs
 
 # Remove all webapps.
-rm -rf ${RPM_BUILD_ROOT}/%{tomcat_home}/webapps/*
+rm -rf ${deb_BUILD_ROOT}/%{tomcat_home}/webapps/*
 
 # Remove *.bat
-rm -f ${RPM_BUILD_ROOT}/%{tomcat_home}/bin/*.bat
+rm -f ${deb_BUILD_ROOT}/%{tomcat_home}/bin/*.bat
 
 %clean
-rm -rf ${RPM_BUILD_ROOT}
+rm -rf ${deb_BUILD_ROOT}
 
 # This here takes care of stopping and removing tomcat before installing new files
 %pretrans

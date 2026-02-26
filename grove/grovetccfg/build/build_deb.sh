@@ -17,7 +17,7 @@ set -o errexit -o nounset -o pipefail;
 
 #----------------------------------------
 importFunctions() {
-	[ -n "$TC_DIR" ] || { echo "Cannot find repository root." >&2 ; return 1; }
+	[ -n "$TC_DIR" ] || { echo "Cannot find repository root." >&2 ; exit 1; }
 	export TC_DIR
 	functions_sh="$TC_DIR/build/functions.sh"
 	if [ ! -r "$functions_sh" ]; then
@@ -30,71 +30,72 @@ importFunctions() {
 #----------------------------------------
 checkGroveEnvironment() {
 	echo "Verifying the build configuration environment."
-
 	local script scriptdir
-	script="$(realpath "$0")"
-	scriptdir="$(dirname "$script")"
+	script=$(realpath "$0")
+	scriptdir=$(dirname "$script")
 
-	GROVE_DIR='' GROVE_VERSION='' PACKAGE='' RPMBUILD='' DIST='' RPM=''
-	GROVE_DIR=$(dirname "$scriptdir")
+	GROVETC_DIR='' GROVE_DIR='' GROVE_VERSION='' PACKAGE='' debbuild='' DIST='' DEB=''
+	GROVETC_DIR=$(dirname "$scriptdir")
+	GROVE_DIR=$(dirname "$GROVETC_DIR")
 	GROVE_VERSION="$(cat "${GROVE_DIR}/VERSION")"
-	PACKAGE="grove"
+	PACKAGE="grovetccfg"
 	BUILD_NUMBER=${BUILD_NUMBER:-$(getBuildNumber)}
-	RPMBUILD="${GROVE_DIR}/rpmbuild"
+	debbuild="${GROVE_DIR}/debbuild"
 	DIST="${TC_DIR}/dist"
-	RPM="${PACKAGE}-${GROVE_VERSION}-${BUILD_NUMBER}.${RHEL_VERSION}.$(rpm --eval %_arch).rpm"
-	SRPM="${PACKAGE}-${GROVE_VERSION}-${BUILD_NUMBER}.${RHEL_VERSION}.src.rpm"
+	DEB="${PACKAGE}-${GROVE_VERSION}-${BUILD_NUMBER}.${ubuntu_VERSION}.$(deb --eval %_arch).deb"
+	SDEB="${PACKAGE}-${GROVE_VERSION}-${BUILD_NUMBER}.${ubuntu_VERSION}.src.deb"
 	GOOS="${GOOS:-linux}"
-	RPM_TARGET_OS="${RPM_TARGET_OS:-$GOOS}"
-	export GROVE_DIR GROVE_VERSION PACKAGE BUILD_NUMBER RPMBUILD DIST RPM GOOS RPM_TARGET_OS
+	deb_TARGET_OS="${deb_TARGET_OS:-$GOOS}"
+	export GROVETC_DIR GROVE_DIR GROVE_VERSION PACKAGE BUILD_NUMBER debbuild DIST DEB GOOS deb_TARGET_OS
 
 	echo "=================================================="
 	echo "GO_VERSION: $GO_VERSION"
 	echo "TC_DIR: $TC_DIR"
 	echo "PACKAGE: $PACKAGE"
 	echo "GROVE_DIR: $GROVE_DIR"
+	echo "GROVETC_DIR: $GROVETC_DIR"
 	echo "GROVE_VERSION: $GROVE_VERSION"
 	echo "BUILD_NUMBER: $BUILD_NUMBER"
 	echo "DIST: $DIST"
-	echo "RPM: $RPM"
-	echo "RPMBUILD: $RPMBUILD"
+	echo "DEB: $DEB"
+	echo "debbuild: $debbuild"
 	echo "--------------------------------------------------"
 }
 
 # ---------------------------------------
 initBuildArea() {
-	cd "$GROVE_DIR"
+	cd "$GROVETC_DIR"
 
 	# prep build environment
-	[ -e "$RPMBUILD" ] && rm -rf "$RPMBUILD"
-	[ ! -e "$RPMBUILD" ] || { echo "Failed to clean up rpm build directory '$RPMBUILD': $?" >&2; return 1; }
-	(mkdir -p "$RPMBUILD"
-	 cd "$RPMBUILD"
-	 mkdir -p BUILD RPMS SOURCES) || { echo "Failed to create build directory '$RPMBUILD': $?" >&2; return 1; }
+	[ -e "$debbuild" ] && rm -rf "$debbuild"
+	[ ! -e "$debbuild" ] || { echo "Failed to clean up deb build directory '$debbuild': $?" >&2; return 1; }
+	(mkdir -p "$debbuild"
+	 cd "$debbuild"
+	 mkdir -p BUILD debS SOURCES) || { echo "Failed to create build directory '$debbuild': $?" >&2; return 1; }
 }
 
 # ---------------------------------------
-buildRpmGrove() {
+builddebGrove() {
 	# build
 	ldflags='-s -w'
 	export CGO_ENABLED=0
 	go mod vendor -v || { echo "Failed to vendor go dependencies: $?" >&2; return 1; }
-	go build -v -ldflags "${ldflags} -X main.Version=$GROVE_VERSION" || { echo "Failed to build grove: $?" >&2; return 1; }
+	go build -v -ldflags "${ldflags} -X main.Version=$GROVE_VERSION" || { echo "Failed to build $PACKAGE: $?" >&2; return 1; }
 
 	# tar
-	tar -cvzf "${RPMBUILD}/SOURCES/grove-${GROVE_VERSION}.tgz" grove conf/grove.cfg build/grove.init build/grove.logrotate || { echo "Failed to create archive for rpmbuild: $?" >&2; return 1; }
+	tar -cvzf "${debbuild}/SOURCES/${PACKAGE}-${GROVE_VERSION}.tgz" ${PACKAGE}|| { echo "Failed to create archive for debbuild: $?" >&2; return 1; }
 
-	# Work around bug in rpmbuild. Fixed in rpmbuild 4.13.
-	# See: https://github.com/rpm-software-management/rpm/commit/916d528b0bfcb33747e81a57021e01586aa82139
+	# Work around bug in debbuild. Fixed in debbuild 4.13.
+	# See: https://github.com/deb-software-management/deb/commit/916d528b0bfcb33747e81a57021e01586aa82139
 	# Takes ownership of the spec file.
-	spec=build/grove.spec
+	spec=build/${PACKAGE}.spec
 	spec_owner=$(stat -c%u $spec)
 	spec_group=$(stat -c%g $spec)
 	if ! id "$spec_owner" >/dev/null 2>&1; then
-		chown "$(id -u):$(id -g)" build/grove.spec
+		chown "$(id -u):$(id -g)" build/${PACKAGE}.spec
 
 		give_spec_back() {
-		chown "${spec_owner}:${spec_group}" build/grove.spec
+		chown "${spec_owner}:${spec_group}" build/${PACKAGE}.spec
 		}
 		trap give_spec_back EXIT
 	fi
@@ -105,31 +106,32 @@ buildRpmGrove() {
 	fi
 
 
-	# build RPM with xz level 2 compression
-	rpmbuild \
-		--define "_topdir $RPMBUILD" \
+	# build DEB with xz level 2 compression
+	debbuild \
+		--define "_topdir $debbuild" \
 		--define "version ${GROVE_VERSION}" \
-		--define "build_number ${BUILD_NUMBER}.${RHEL_VERSION}" \
-		--define "_target_os ${RPM_TARGET_OS}" \
+		--define "build_number ${BUILD_NUMBER}.${ubuntu_VERSION}" \
+		--define "_target_os ${deb_TARGET_OS}" \
 		--define '%_source_payload w2.xzdio' \
 		--define '%_binary_payload w2.xzdio' \
-		$build_flags build/grove.spec ||
-		{ echo "rpmbuild failed: $?" >&2; return 1; }
+		$build_flags build/${PACKAGE}.spec ||
+		{ echo "debbuild failed: $?" >&2; return 1; }
 
-	rpmDest=".";
-	srcRPMDest=".";
+
+	debDest=".";
+	srcdebDest=".";
 	if [[ "$SIMPLE" -eq 1 ]]; then
-		rpmDest="grove.rpm";
-		srcRPMDest="grove.src.rpm";
+		debDest="grovetccfg.deb";
+		srcdebDest="grovetccfg.src.deb";
 	fi
 
-	# copy build RPM to .
+	# copy build DEB to .
 	[ -d "$DIST" ] || mkdir -p "$DIST";
 
-	cp -f "$RPMBUILD/RPMS/$(rpm --eval %_arch)/${RPM}" "$DIST/$rpmDest";
+	cp -f "$debbuild/debS/$(deb --eval %_arch)/${DEB}" "$DIST/$debDest";
 	code="$?";
 	if [[ "$code" -ne 0 ]]; then
-		echo "Could not copy $rpm to $DIST: $code" >&2;
+		echo "Could not copy $deb to $DIST: $code" >&2;
 		return "$code";
 	fi
 
@@ -137,10 +139,10 @@ buildRpmGrove() {
 		return 0;
 	fi
 
-	cp -f "$RPMBUILD/SRPMS/${SRPM}" "$DIST/$srcRPMDest";
+	cp -f "$debbuild/SdebS/${SDEB}" "$DIST/$srcdebDest";
 	code="$?";
 	if [[ "$code" -ne 0 ]]; then
-		echo "Could not copy $srpm to $DIST: $code" >&2;
+		echo "Could not copy $sdeb to $DIST: $code" >&2;
 		return "$code";
 	fi
 }
@@ -149,4 +151,4 @@ importFunctions
 checkEnvironment -i go
 checkGroveEnvironment
 initBuildArea
-buildRpmGrove
+builddebGrove

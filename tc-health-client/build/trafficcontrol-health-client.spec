@@ -13,7 +13,7 @@
 # limitations under the License.
 #
 #
-# RPM spec file for Trafficcontrol health client.
+# DEB spec file for Trafficcontrol health client.
 #
 %define debug_package %{nil}
 Name:     trafficcontrol-health-client
@@ -32,7 +32,7 @@ Requires: git
 Installs Traffic Control cache health client. See the `tc-health-client` application.
 
 %prep
-tar xvf %{SOURCE0} -C $RPM_SOURCE_DIR
+tar xvf %{SOURCE0} -C $deb_SOURCE_DIR
 
 
 %build
@@ -67,25 +67,25 @@ installdir="/usr/bin"
 mandir="/usr/share/man"
 man1dir="man1"
 
-mkdir -p ${RPM_BUILD_ROOT}/${installdir}
-mkdir -p ${RPM_BUILD_ROOT}/etc/logrotate.d
-mkdir -p ${RPM_BUILD_ROOT}/${mandir}/${man1dir}
-mkdir -p ${RPM_BUILD_ROOT}/etc/trafficcontrol
-mkdir -p ${RPM_BUILD_ROOT}/usr/lib/systemd/system
+mkdir -p ${deb_BUILD_ROOT}/${installdir}
+mkdir -p ${deb_BUILD_ROOT}/etc/logrotate.d
+mkdir -p ${deb_BUILD_ROOT}/${mandir}/${man1dir}
+mkdir -p ${deb_BUILD_ROOT}/etc/trafficcontrol
+mkdir -p ${deb_BUILD_ROOT}/usr/lib/systemd/system
 
-cp -p ${RPM_SOURCE_DIR}/trafficcontrol-health-client-%{version}/tc-health-client.logrotate ${RPM_BUILD_ROOT}/etc/logrotate.d/tc-health-client.logrotate
+cp -p ${deb_SOURCE_DIR}/trafficcontrol-health-client-%{version}/tc-health-client.logrotate ${deb_BUILD_ROOT}/etc/logrotate.d/tc-health-client.logrotate
 
 src="trafficcontrol-health-client-%{version}"
-cp -p ${RPM_SOURCE_DIR}/${src}/tc-health-client ${RPM_BUILD_ROOT}/${installdir}
-cp -p ${RPM_SOURCE_DIR}/${src}/tc-health-client.sample.json ${RPM_BUILD_ROOT}/etc/trafficcontrol
-cp -p ${RPM_SOURCE_DIR}/${src}/tc-health-client.logrotate ${RPM_BUILD_ROOT}/etc/logrotate.d
-cp -p ${RPM_SOURCE_DIR}/${src}/tc-health-client.service ${RPM_BUILD_ROOT}/usr/lib/systemd/system
-gzip -c -9 ${RPM_SOURCE_DIR}/${src}/tc-health-client.1 > ${RPM_BUILD_ROOT}/${mandir}/${man1dir}/tc-health-client.1.gz
+cp -p ${deb_SOURCE_DIR}/${src}/tc-health-client ${deb_BUILD_ROOT}/${installdir}
+cp -p ${deb_SOURCE_DIR}/${src}/tc-health-client.sample.json ${deb_BUILD_ROOT}/etc/trafficcontrol
+cp -p ${deb_SOURCE_DIR}/${src}/tc-health-client.logrotate ${deb_BUILD_ROOT}/etc/logrotate.d
+cp -p ${deb_SOURCE_DIR}/${src}/tc-health-client.service ${deb_BUILD_ROOT}/usr/lib/systemd/system
+gzip -c -9 ${deb_SOURCE_DIR}/${src}/tc-health-client.1 > ${deb_BUILD_ROOT}/${mandir}/${man1dir}/tc-health-client.1.gz
 
-ls ${RPM_BUILD_ROOT}/${mandir}/${man1dir}/
+ls ${deb_BUILD_ROOT}/${mandir}/${man1dir}/
 
 %clean
-rm -rf ${RPM_BUILD_ROOT}
+rm -rf ${deb_BUILD_ROOT}
 
 %post
 

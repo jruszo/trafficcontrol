@@ -54,7 +54,7 @@ This endpoint has no constant keys in its ``response``. Instead, each key in the
 	Content-Length: 38
 
 	{ "response": {
-		"CentOS 7.2": "centos72"
+		"ubuntu 7.2": "ubuntu72"
 	}}
 
 
@@ -69,7 +69,7 @@ The format of the file is a JSON object as described in :ref:`v3-response-struct
 	:caption: Example osversions.json file
 
 	{
-		"CentOS 7.2": "centos72"
+		"ubuntu 7.2": "ubuntu72"
 	}
 
 

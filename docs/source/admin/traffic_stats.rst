@@ -26,9 +26,9 @@ Installation
 Installing Traffic Stats
 ------------------------
 - See the `downloads <https://trafficcontrol.apache.org/downloads/index.html>`_ page for Traffic Control to get the latest release.
-- Follow the instructions in :ref:`dev-building` to generate an RPM.
-- Copy the RPM to your server
-- Install the generated Traffic Stats RPM with :manpage:`yum(8)` or :manpage:`rpm(8)`
+- Follow the instructions in :ref:`dev-building` to generate an DEB.
+- Copy the DEB to your server
+- Install the generated Traffic Stats DEB with :manpage:`apt(8)` or :manpage:`deb(8)`
 
 Installing InfluxDB
 -------------------
@@ -113,7 +113,7 @@ To create a graph in Grafana, you can follow these basic steps:
 #. Once you have the graph the way you want it, click the :guilabel:`Save Dashboard` button at the top
 #. You should now have a new saved graph
 
-Grafana uses Grafana Scenes to display information about individual :term:`Delivery Services` or :term:`Cache Groups`. In order for the custom graphs to display correctly, the built files of :atc-file:`traffic_stats/trafficcontrol-scenes/`  need to be placed in the :file:`/var/lib/grafana/plugins/trafficcontrol-scenes-app` directory on the Grafana server. If your Grafana server is the same as your Traffic Stats server the RPM install process will take care of putting the files in place. If your Grafana server is different from your Traffic Stats server, you will need to manually copy the files to the correct directory.
+Grafana uses Grafana Scenes to display information about individual :term:`Delivery Services` or :term:`Cache Groups`. In order for the custom graphs to display correctly, the built files of :atc-file:`traffic_stats/trafficcontrol-scenes/`  need to be placed in the :file:`/var/lib/grafana/plugins/trafficcontrol-scenes-app` directory on the Grafana server. If your Grafana server is the same as your Traffic Stats server the DEB install process will take care of putting the files in place. If your Grafana server is different from your Traffic Stats server, you will need to manually copy the files to the correct directory.
 
 To view dynamic dashboards from Grafana Scenes, visit: ``https://grafanaHost/a/trafficcontrol-scenes-app``
 

@@ -71,24 +71,24 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 make %{?_smp_mflags} check || ( cat ./test-suite.log; exit 1 )
 
 %install
-make DESTDIR=$RPM_BUILD_ROOT install
+make DESTDIR=$deb_BUILD_ROOT install
 
-mkdir -p $RPM_BUILD_ROOT/opt/trafficserver/etc/trafficserver/snapshots
-mkdir -p $RPM_BUILD_ROOT/usr/lib/systemd/system
-mkdir -p $RPM_BUILD_ROOT/etc/sysconfig
-cp rc/trafficserver.service $RPM_BUILD_ROOT/usr/lib/systemd/system/
-cp ../traffic_server_jemalloc $RPM_BUILD_ROOT/opt/trafficserver/bin/
-touch $RPM_BUILD_ROOT/etc/sysconfig/trafficserver
-cp ../trafficserver.env $RPM_BUILD_ROOT/etc/sysconfig/trafficserver
-mkdir -p $RPM_BUILD_ROOT/var/log/trafficserver
+mkdir -p $deb_BUILD_ROOT/opt/trafficserver/etc/trafficserver/snapshots
+mkdir -p $deb_BUILD_ROOT/usr/lib/systemd/system
+mkdir -p $deb_BUILD_ROOT/etc/sysconfig
+cp rc/trafficserver.service $deb_BUILD_ROOT/usr/lib/systemd/system/
+cp ../traffic_server_jemalloc $deb_BUILD_ROOT/opt/trafficserver/bin/
+touch $deb_BUILD_ROOT/etc/sysconfig/trafficserver
+cp ../trafficserver.env $deb_BUILD_ROOT/etc/sysconfig/trafficserver
+mkdir -p $deb_BUILD_ROOT/var/log/trafficserver
 
 %if %{?_with_openssl_included:1}%{!?_with_openssl_included:0}
-mkdir -p $RPM_BUILD_ROOT/opt/trafficserver/openssl
-cp -r /opt/trafficserver/openssl/lib $RPM_BUILD_ROOT/opt/trafficserver/openssl/lib
+mkdir -p $deb_BUILD_ROOT/opt/trafficserver/openssl
+cp -r /opt/trafficserver/openssl/lib $deb_BUILD_ROOT/opt/trafficserver/openssl/lib
 %endif
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf $deb_BUILD_ROOT
 
 %pre
 id ats &>/dev/null || /usr/sbin/useradd -u 176 -r ats -s /sbin/nologin -d /
@@ -169,13 +169,13 @@ fi
 * Wed Aug 26 2020 Chris Lemmons <alficles(at)gmail.com>
 - Updated to incorporate new tooling and Apache Traffic Control patches
 * Wed Jun 8 2016 John Rushford <john_rushford(at)cable.comcast.com>
-- Added tools/rc_admin.pl to complete rpm tasks under both Enterprise Linux 6 or 7 using either chkconfig or systemd commands.
+- Added tools/rc_admin.pl to complete deb tasks under both Enterprise Linux 6 or 7 using either chkconfig or systemd commands.
 - Modified this spec file to use rc_admin.pl
 * Wed Aug 7 2013 Jeff Elsloo <jeffrey_elsloo(at)cable.comcast.com>
 - Modified to support building 3.3.x
 - Modified to support upgrades
 * Sun Aug 12 2012 John Benton <john_benton(at)cable.comcast.com>
-- Initial RPM build based on SVN version 2376
+- Initial DEB build based on SVN version 2376
 - Rev for ATS 3.2.0 based on SVN version 2470
 - Rev for ATS 3.2.0 based on SVN version 2555
 - Rev for ATS 3.2.0 based on SVN version 4812

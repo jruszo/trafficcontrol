@@ -1,10 +1,10 @@
 {"description": "Upgrade profile from ATS6 to ATS7 based on https://cwiki.apache.org/confluence/display/TS/Upgrading+to+v7.0",
  "replace_name": {"old": "621", "new": "713"},
  "replace_description": {"old": "v6.2.1", "new": "v7.1.3"},
- "validate_parameters": [{"name": "trafficserver", "config_file": "package",  "value": "6.2.1-62.3f63b3a.el7.centos.x86_64"}],
+ "validate_parameters": [{"name": "trafficserver", "config_file": "package",  "value": "6.2.1-62.3f63b3a.el7.ubuntu.x86_64"}],
  "conversion_actions": [
-     {"match_parameter": {"name": "trafficserver", "config_file": "package", "value": "6.2.1-62.3f63b3a.el7.centos.x86_64"}, "new_value": "<PLACE TRAFFICSERVER7 VERSION STRING HERE>"},
-     {"match_parameter": {"name": "trafficserver-debuginfo", "config_file": "package", "value": "6.2.1-62.3f63b3a.el7.centos.x86_64"}, "new_value": "<PLACE TRAFFICSERVER7 VERSION STRING HERE>"},
+     {"match_parameter": {"name": "trafficserver", "config_file": "package", "value": "6.2.1-62.3f63b3a.el7.ubuntu.x86_64"}, "new_value": "<PLACE TRAFFICSERVER7 VERSION STRING HERE>"},
+     {"match_parameter": {"name": "trafficserver-debuginfo", "config_file": "package", "value": "6.2.1-62.3f63b3a.el7.ubuntu.x86_64"}, "new_value": "<PLACE TRAFFICSERVER7 VERSION STRING HERE>"},
      {"match_parameter": {"name": "location", "config_file": "logs_xml\\.config", "value": ".*"}, "new_config_file": "logging.config"},
      {"match_parameter": {"name": "LogFormat\\.*", "config_file": "logs_xml\\.config", "value": ".*"}, "new_config_file": "logging.config"},
      {"match_parameter": {"name": "CONFIG proxy\\.config\\.log\\.xml_config_file",

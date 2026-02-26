@@ -20,7 +20,7 @@ Building Traffic Control
 ************************
 The build steps for Traffic Control components are all pretty much the same, despite that they are written in a variety of different languages and frameworks. This is accomplished by using Docker.
 
-.. note:: Currently, both listed methods of building Traffic Control components will produce ``*.rpm`` files, meaning that the support of these components is limited to RedHat-based distributions - and none of them are currently tested (or guaranteed to work) outside of Rocky Linux 8 and CentOS 7, specifically.
+.. note:: Currently, both listed methods of building Traffic Control components will produce ``*.deb`` files, meaning that the support of these components is limited to RedHat-based distributions - and none of them are currently tested (or guaranteed to work) outside of ubuntu linux 8 and ubuntu 7, specifically.
 
 Downloading Traffic Control
 ===========================
@@ -49,7 +49,7 @@ Options
 
 .. option:: -7
 
-	Build RPMs targeting CentOS 7.
+	Build DEBs targeting ubuntu 7.
 
 	.. versionchanged:: ATCv6.0.0
 
@@ -57,7 +57,7 @@ Options
 
 .. option:: -8
 
-	Build RPMs targeting Rocky Linux 8 (default).
+	Build DEBs targeting ubuntu linux 8 (default).
 
 	.. versionchanged:: ATCv6.0.0
 
@@ -109,13 +109,13 @@ Options
 
 .. option:: -s
 
-	Simple output filenames - e.g. ``traffic_ops.rpm`` instead of ``traffic_ops-6.1.0-11637.ec9ff6a6.el8.x86_64.rpm``.
+	Simple output filenames - e.g. ``traffic_ops.deb`` instead of ``traffic_ops-6.1.0-11637.ec9ff6a6.el8.x86_64.deb``.
 
 	.. versionadded:: ATCv6.1.0
 
 .. option:: -S
 
-	Skip building "source RPMs".
+	Skip building "source DEBs".
 
 	.. versionadded:: ATCv6.1.0
 
@@ -142,7 +142,7 @@ If present, ``projects`` should be one or more project names. When no specific p
 - traffic_stats_build\ [#default-project]_
 - weasel\ [#default-project]_
 
-Output :file:`{component}-{version}.rpm` files, build logs and source tarballs will be output to the ``dist/`` directory at the root of the Traffic Control repository directory.
+Output :file:`{component}-{version}.deb` files, build logs and source tarballs will be output to the ``dist/`` directory at the root of the Traffic Control repository directory.
 
 .. _build-with-dc:
 
@@ -156,9 +156,9 @@ If the ``pkg`` script fails, ``docker compose`` can still be used to build the p
 
 .. _dev-building-natively:
 
-Build the RPMs Natively
+Build the DEBs Natively
 =======================
-A developer may end up building the RPMs several times to test or :ref:`debug <dev-debugging-ciab>` code changes, so it can be desirable to build the RPMs quickly for this purpose. Natively building the RPMs has the lowest build time of any building method.
+A developer may end up building the DEBs several times to test or :ref:`debug <dev-debugging-ciab>` code changes, so it can be desirable to build the DEBs quickly for this purpose. Natively building the DEBs has the lowest build time of any building method.
 
 Install the Dependencies
 ------------------------
@@ -169,20 +169,20 @@ Install the Dependencies
 	| OS/Package Manager              | Common dependencies | :ref:`dev-traffic-monitor` | :ref:`dev-traffic-ops` | :ref:`dev-traffic-portal` | :ref:`dev-traffic-router` | :ref:`dev-traffic-stats` | Grove    | Grove TC Config (grovetccfg) | :ref:`Docs <docs-guide>` |
 	+=================================+=====================+============================+========================+===========================+===========================+==========================+==========+==============================+==========================+
 	| macOS\ [#mac-jdk]_              | - coreutils         | - go                       | - go                   | - npm                     | - maven                   | - go                     | - go     | - go                         | - python3                |
-	| (homebrew_)                     | - rpm               |                            |                        | - grunt-cli               |                           |                          |          |                              |                          |
+	| (homebrew_)                     | - deb               |                            |                        | - grunt-cli               |                           |                          |          |                              |                          |
 	+---------------------------------+---------------------+----------------------------+------------------------+---------------------------+---------------------------+--------------------------+----------+------------------------------+--------------------------+
-	| Rocky\ Linux\ [#rocky-go]_,     | - git               |                            |                        | - epel-release            | - java-11-openjdk         |                          |          |                              | - python3-devel          |
-	| Red Hat,                        | - rpm-build         |                            |                        | - npm                     | - maven                   |                          |          |                              | - gcc                    |
+	| ubuntu\ Linux\ [#ubuntu-go]_,     | - git               |                            |                        | - epel-release            | - java-11-openjdk         |                          |          |                              | - python3-devel          |
+	| Red Hat,                        | - deb-build         |                            |                        | - npm                     | - maven                   |                          |          |                              | - gcc                    |
 	| Fedora,                         | - rsync             |                            |                        | - nodejs-grunt-cli        |                           |                          |          |                              | - make                   |
-	| CentOS                          |                     |                            |                        |                           |                           |                          |          |                              |                          |
+	| ubuntu                          |                     |                            |                        |                           |                           |                          |          |                              |                          |
 	| (yum_)                          |                     |                            |                        |                           |                           |                          |          |                              |                          |
 	+---------------------------------+---------------------+----------------------------+------------------------+---------------------------+---------------------------+--------------------------+----------+------------------------------+--------------------------+
 	| Arch Linux,                     | - git               | - go                       | - go                   | - npm                     | - jdk11-openjdk           | - go                     | - go     | - go                         | - python-pip             |
-	| Manjaro                         | - rpm-tools         |                            |                        | - grunt-cli               | - maven                   |                          |          |                              | - python-sphinx          |
+	| Manjaro                         | - deb-tools         |                            |                        | - grunt-cli               | - maven                   |                          |          |                              | - python-sphinx          |
 	| (pacman_)                       | - diff              |                            |                        |                           |                           |                          |          |                              | - make                   |
 	+---------------------------------+---------------------+----------------------------+------------------------+---------------------------+---------------------------+--------------------------+----------+------------------------------+--------------------------+
 	| Windows                         | - git               |                            |                        |                           | - curl                    |                          |          |                              |                          |
-	| (cygwin_)\ [#windeps]_          | - rpm-build         |                            |                        |                           |                           |                          |          |                              |                          |
+	| (cygwin_)\ [#windeps]_          | - deb-build         |                            |                        |                           |                           |                          |          |                              |                          |
 	|                                 | - rsync             |                            |                        |                           |                           |                          |          |                              |                          |
 	+---------------------------------+---------------------+----------------------------+------------------------+---------------------------+---------------------------+--------------------------+----------+------------------------------+--------------------------+
 	| Windows                         |                     | - golang                   | - golang               | - nodejs                  | - openjdk11               | - golang                 | - golang | - golang                     | - python                 |
@@ -191,7 +191,7 @@ Install the Dependencies
 	+---------------------------------+---------------------+----------------------------+------------------------+---------------------------+---------------------------+--------------------------+----------+------------------------------+--------------------------+
 
 .. _homebrew:   https://brew.sh/
-.. _yum:        https://wiki.centos.org/PackageManagement/Yum
+.. _yum:        https://wiki.ubuntu.org/PackageManagement/apt
 .. _pacman:     https://www.archlinux.org/pacman/
 .. _cygwin:     https://cygwin.com/
 .. _chocolatey: https://chocolatey.org/
@@ -220,14 +220,14 @@ This is the equivalent of running
 
 If any component fails to build, no further component builds will be attempted.
 
-By default, the RPMs will be built targeting Rocky Linux 8. CentOS 7 is also a supported build target. You can choose which RHEL version to build for (8, 7, etc.) by setting the ``RHEL_VERSION`` environment variable:
+By default, the DEBs will be built targeting ubuntu linux 8. ubuntu 7 is also a supported build target. You can choose which ubuntu version to build for (8, 7, etc.) by setting the ``ubuntu_VERSION`` environment variable:
 
 .. code-block:: shell
-	:caption: Building RPMs that target CentOS 7 without the build host needing to be CentOS 7
+	:caption: Building DEBs that target ubuntu 7 without the build host needing to be ubuntu 7
 
-	export RHEL_VERSION=7
+	export ubuntu_VERSION=7
 
-.. warning:: Although there are no known issues with natively-built RPMs, the official, supported method of building the RPMs is by using :ref:`pkg <pkg>` or :ref:`docker compose <build-with-dc>`. Use natively-built RPMs at your own risk.
+.. warning:: Although there are no known issues with natively-built DEBs, the official, supported method of building the DEBs is by using :ref:`pkg <pkg>` or :ref:`docker compose <build-with-dc>`. Use natively-built DEBs at your own risk.
 
 Building Individual Components
 ==============================
@@ -241,5 +241,5 @@ See instructions for :ref:`building the documentation <docs-build>`.
 .. [#optional-project] This project is "optional", which means that it cannot be built unless :option:`-o` is given.
 .. [#default-project] This is a default project, which will be built if ``pkg`` is run with no ``projects`` argument
 .. [#mac-jdk] If you are on macOS, you additionally need to :ref:`dev-tr-mac-jdk`.
-.. [#rocky-go] If you are on Rocky Linux, you need to `download Go directly <https://golang.org/dl/>`_ instead of using a package manager in order to get the latest Go version. For most users, the desired architecture is AMD64/x86_64.
-.. [#windeps] If you are on Windows, you need to install **both** the Cygwin packages and the Chocolatey packages in order to build the Apache Traffic Control RPMs natively.
+.. [#ubuntu-go] If you are on ubuntu linux, you need to `download Go directly <https://golang.org/dl/>`_ instead of using a package manager in order to get the latest Go version. For most users, the desired architecture is AMD64/x86_64.
+.. [#windeps] If you are on Windows, you need to install **both** the Cygwin packages and the Chocolatey packages in order to build the Apache Traffic Control DEBs natively.

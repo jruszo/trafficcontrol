@@ -33,8 +33,8 @@ fi;
 if [ $# -gt 0 ]; then
 	projects="$*"
 else
-	# get all subdirs containing build/build_rpm.sh
-	projects_to_build='*/build/build_rpm.sh'
+	# get all subdirs containing build/build_deb.sh
+	projects_to_build='*/build/build_deb.sh'
 	# Always build tarball when building everything..
 	projects=tarball
 	for p in ${projects_to_build}; do
@@ -51,7 +51,7 @@ for p in ${projects}; do
 	if [ "$p" = tarball ]; then
 		if isInGitTree; then
 			echo "-----  Building tarball ..."
-			checkEnvironment -e rpmbuild
+			checkEnvironment -e debbuild
 			tarball="$(createTarball "$TC_DIR")"
 			ls -l "$tarball"
 		else
@@ -65,7 +65,7 @@ for p in ${projects}; do
 	if [ "$p" = docs ]; then
 		if isInGitTree; then
 			echo "-----  Building docs ..."
-			checkEnvironment -i python3,make, -e rpmbuild
+			checkEnvironment -i python3,make, -e debbuild
 			( cd docs
 			make html
 			)
@@ -78,7 +78,7 @@ for p in ${projects}; do
 	fi
 	# strip trailing /
 	p="${p%/}"
-	bldscript="${p}/build/build_rpm.sh"
+	bldscript="${p}/build/build_deb.sh"
 	if [ ! -x "$bldscript" ]; then
 		echo "$bldscript not found"
 		badproj="${badproj} ${p}"

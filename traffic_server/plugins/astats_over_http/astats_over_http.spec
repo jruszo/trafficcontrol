@@ -41,11 +41,11 @@ Apache Traffic Server plugin
 %{install_prefix}/trafficserver/bin/tsxs -v -c %{name}.c -o %{name}.so
 
 %install
-mkdir -p $RPM_BUILD_ROOT%{install_prefix}/trafficserver/libexec/trafficserver
-DESTDIR=$RPM_BUILD_ROOT %{install_prefix}/trafficserver/bin/tsxs -v -o %{name}.so -i
+mkdir -p $deb_BUILD_ROOT%{install_prefix}/trafficserver/libexec/trafficserver
+DESTDIR=$deb_BUILD_ROOT %{install_prefix}/trafficserver/bin/tsxs -v -o %{name}.so -i
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf $deb_BUILD_ROOT
 
 %post
 

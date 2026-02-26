@@ -47,7 +47,7 @@ const LineCommentRecordsDotConfig = LineCommentHash
 // affect generation of the records.config ATS configuration file.
 type RecordsConfigOpts struct {
 	// ReleaseViaStr is whether or not we replace the via and server strings in ATS
-	// responses to be the Release value from the rpm package. This can be a user
+	// responses to be the Release value from the deb package. This can be a user
 	// defined build hash (or whatever the user wants) type value to give more
 	// specific info as well as obfuscating the real ATS version from prying eyes
 	ReleaseViaStr bool
@@ -167,11 +167,11 @@ func addRecordsDotConfigViaStr(txt string) (string, []string) {
 	responseViaStr := `proxy.config.http.response_via_str`
 	responseServerStr := `proxy.config.http.response_server_str`
 
-	cmd := "yum info installed trafficserver | grep Release"
+	cmd := "apt info installed trafficserver | grep Release"
 	yumOutput, err := exec.Command("sh", "-c", cmd).Output()
 
 	if err != nil {
-		warnings = append(warnings, "could not read trafficserver release information from yum! Not setting via strings")
+		warnings = append(warnings, "could not read trafficserver release information from apt! Not setting via strings")
 		return txt, warnings
 	}
 

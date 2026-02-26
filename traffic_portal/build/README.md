@@ -19,7 +19,7 @@
 
 # Traffic Portal Installation / Configuration
 
-### 1. Build Traffic Portal RPM w/ Docker
+### 1. Build Traffic Portal DEB w/ Docker
 
 * Build instructions: https://github.com/jruszo/trafficcontrol/blob/master/BUILD.md
 
@@ -28,14 +28,14 @@
 * Install the Node.js JavaScript runtime
 
     ```
-    $ curl --silent --location https://rpm.nodesource.com/setup_16.x | sudo bash -
-    $ sudo yum install -y nodejs
+    $ curl --silent --location https://deb.nodesource.com/setup_16.x | sudo bash -
+    $ sudo apt install -y nodejs
     ```
 
-* Install the Traffic Portal RPM
+* Install the Traffic Portal DEB
 
     ```
-    $ sudo yum install -y traffic_portal-[version]-[commits].[sha].x86_64.rpm
+    $ sudo apt install -y traffic_portal-[version]-[commits].[sha].x86_64.deb
     ```
 
 ### 3. Configure
@@ -62,4 +62,4 @@
 
 ### Notes
 - Traffic Portal consumes the Traffic Ops API, therefore, an instance of Traffic Ops must be running.
-- This is known to work with CentOS 7 and Centos 8 as the host environment.
+- This is known to work with ubuntu 7 and ubuntu 8 as the host environment.

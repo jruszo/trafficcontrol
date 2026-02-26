@@ -22,11 +22,11 @@ This action runs the Traffic Control Health client  integration tests.
 
 ## Inputs
 
-### `Trafficserver RPM`
-**Required** A trafficserver RPM used to install on the Edge server.
+### `Trafficserver DEB`
+**Required** A trafficserver DEB used to install on the Edge server.
 
-### `Trafficcontrol Health cliet RPM`
-**Required** A trafficserver RPM used to install on the Edge server.
+### `Trafficcontrol Health client DEB`
+**Required** A Traffic Control Health Client DEB used to install on the Edge server.
 
 ## Outputs
 

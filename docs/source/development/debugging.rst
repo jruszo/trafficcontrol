@@ -80,15 +80,15 @@ t3c on Caches
 
 t3c on Edge Cache
 -----------------
-* Navigate to the ``infrastructure/cdn-in-a-box`` directory. Remove ``infrastructure/cdn-in-a-box/cache/trafficcontrol-cache-config.rpm`` because it contains release Go binaries that do not include useful debugging information. Rebuild the RPM with no optimization, for debugging:
+* Navigate to the ``infrastructure/cdn-in-a-box`` directory. Remove ``infrastructure/cdn-in-a-box/cache/trafficcontrol-cache-config.deb`` because it contains release Go binaries that do not include useful debugging information. Rebuild the DEB with no optimization, for debugging:
 
 	.. code-block:: shell
-		:caption: Remove release RPMs, then build debug RPMs
+		:caption: Remove release DEBs, then build debug DEBs
 
 		make very-clean
-		make debug cache/trafficcontrol-cache-config.rpm
+		make debug cache/trafficcontrol-cache-config.deb
 
-	.. tip:: If you have gone through the steps to :ref:`dev-building-natively`, you can run ``make debug native cache/trafficcontrol-cache-config.rpm`` instead of ``make debug cache/trafficcontrol-cache-config.rpm`` to build the RPM quickly.
+	.. tip:: If you have gone through the steps to :ref:`dev-building-natively`, you can run ``make debug native cache/trafficcontrol-cache-config.deb`` instead of ``make debug cache/trafficcontrol-cache-config.deb`` to build the DEB quickly.
 
 * Still in ``infrastructure/cdn-in-a-box``, open ``variables.env`` and set ``T3C_DEBUG_COMPONENT_EDGE`` to ``t3c-apply`` (used for this example). A list of valid values for ``T3C_DEBUG_COMPONENT_EDGE``:
 	- t3c-apply
@@ -100,7 +100,7 @@ t3c on Edge Cache
 	- t3c-request
 	- t3c-update
 
-* Stop CDN-in-a-Box if it is running and remove any existing volumes. Build the ``edge-debug`` image to make sure it uses our fresh ``trafficcontrol-cache-config.rpm``. Then, start CDN-in-a-Box:
+* Stop CDN-in-a-Box if it is running and remove any existing volumes. Build the ``edge-debug`` image to make sure it uses our fresh ``trafficcontrol-cache-config.deb``. Then, start CDN-in-a-Box:
 
 	.. code-block:: shell
 		:caption: docker compose command for debugging ``t3c`` running on the Edge Cache
@@ -147,15 +147,15 @@ Use the debugging configuration you created to connect to ``dlv`` and start debu
 
 t3c on Mid 01 Cache
 -------------------
-* Navigate to the ``infrastructure/cdn-in-a-box`` directory. Remove ``infrastructure/cdn-in-a-box/cache/trafficcontrol-cache-config.rpm`` because it contains release Go binaries that do not include useful debugging information. Rebuild the RPM with no optimization, for debugging:
+* Navigate to the ``infrastructure/cdn-in-a-box`` directory. Remove ``infrastructure/cdn-in-a-box/cache/trafficcontrol-cache-config.deb`` because it contains release Go binaries that do not include useful debugging information. Rebuild the DEB with no optimization, for debugging:
 
 	.. code-block:: shell
-		:caption: Remove release RPMs, then build debug RPMs
+		:caption: Remove release DEBs, then build debug DEBs
 
 		make very-clean
-		make debug cache/trafficcontrol-cache-config.rpm
+		make debug cache/trafficcontrol-cache-config.deb
 
-	.. tip:: If you have gone through the steps to :ref:`dev-building-natively`, you can run ``make debug native cache/trafficcontrol-cache-config.rpm`` instead of ``make debug cache/trafficcontrol-cache-config.rpm`` to build the RPM quickly.
+	.. tip:: If you have gone through the steps to :ref:`dev-building-natively`, you can run ``make debug native cache/trafficcontrol-cache-config.deb`` instead of ``make debug cache/trafficcontrol-cache-config.deb`` to build the DEB quickly.
 
 * Still in ``infrastructure/cdn-in-a-box``, open ``variables.env`` and set ``T3C_DEBUG_COMPONENT_MID_01`` to ``t3c-apply`` (used for this example). A list of valid values for ``T3C_DEBUG_COMPONENT_MID_01``:
 	- t3c-apply
@@ -167,7 +167,7 @@ t3c on Mid 01 Cache
 	- t3c-request
 	- t3c-update
 
-* Stop CDN-in-a-Box if it is running and remove any existing volumes. Build the ``mid-debug`` image to make sure it uses our fresh ``trafficcontrol-cache-config.rpm``. Then, start CDN-in-a-Box:
+* Stop CDN-in-a-Box if it is running and remove any existing volumes. Build the ``mid-debug`` image to make sure it uses our fresh ``trafficcontrol-cache-config.deb``. Then, start CDN-in-a-Box:
 
 	.. code-block:: shell
 		:caption: docker compose command for debugging ``t3c`` running on the Mid 01 Cache
@@ -214,15 +214,15 @@ Use the debugging configuration you created to connect to ``dlv`` and start debu
 
 t3c on Mid 02 Cache
 -------------------
-* Navigate to the ``infrastructure/cdn-in-a-box`` directory. Remove ``infrastructure/cdn-in-a-box/cache/trafficcontrol-cache-config.rpm`` because it contains release Go binaries that do not include useful debugging information. Rebuild the RPM with no optimization, for debugging:
+* Navigate to the ``infrastructure/cdn-in-a-box`` directory. Remove ``infrastructure/cdn-in-a-box/cache/trafficcontrol-cache-config.deb`` because it contains release Go binaries that do not include useful debugging information. Rebuild the DEB with no optimization, for debugging:
 
 	.. code-block:: shell
-		:caption: Remove release RPMs, then build debug RPMs
+		:caption: Remove release DEBs, then build debug DEBs
 
 		make very-clean
-		make debug cache/trafficcontrol-cache-config.rpm
+		make debug cache/trafficcontrol-cache-config.deb
 
-	.. tip:: If you have gone through the steps to :ref:`dev-building-natively`, you can run ``make debug native cache/trafficcontrol-cache-config.rpm`` instead of ``make debug cache/trafficcontrol-cache-config.rpm`` to build the RPM quickly.
+	.. tip:: If you have gone through the steps to :ref:`dev-building-natively`, you can run ``make debug native cache/trafficcontrol-cache-config.deb`` instead of ``make debug cache/trafficcontrol-cache-config.deb`` to build the DEB quickly.
 
 * Still in ``infrastructure/cdn-in-a-box``, open ``variables.env`` and set ``T3C_DEBUG_COMPONENT_MID_02`` to ``t3c-apply`` (used for this example). A list of valid values for ``T3C_DEBUG_COMPONENT_MID_02``:
 	- t3c-apply
@@ -234,7 +234,7 @@ t3c on Mid 02 Cache
 	- t3c-request
 	- t3c-update
 
-* Stop CDN-in-a-Box if it is running and remove any existing volumes. Build the ``mid-debug`` image to make sure it uses our fresh ``trafficcontrol-cache-config.rpm``. Then, start CDN-in-a-Box:
+* Stop CDN-in-a-Box if it is running and remove any existing volumes. Build the ``mid-debug`` image to make sure it uses our fresh ``trafficcontrol-cache-config.deb``. Then, start CDN-in-a-Box:
 
 	.. code-block:: shell
 		:caption: docker compose command for debugging ``t3c`` running on the Mid 02 Cache
@@ -282,19 +282,19 @@ Use the debugging configuration you created to connect to ``dlv`` and start debu
 Traffic Monitor
 ===============
 
-* Navigate to the ``infrastructure/cdn-in-a-box`` directory. Remove the existing RPMs because they contain release Go binaries do not include useful debugging information. Rebuild the RPMs with no optimization, for debugging:
+* Navigate to the ``infrastructure/cdn-in-a-box`` directory. Remove the existing DEBs because they contain release Go binaries do not include useful debugging information. Rebuild the DEBs with no optimization, for debugging:
 
 	.. code-block:: shell
-		:caption: Remove release RPMs, then build debug RPMs
+		:caption: Remove release DEBs, then build debug DEBs
 
 		make very-clean
-		make debug traffic_monitor/traffic_monitor.rpm
+		make debug traffic_monitor/traffic_monitor.deb
 
-	.. tip:: If you have gone through the steps to :ref:`dev-building-natively`, you can run ``make debug native traffic_monitor/traffic_monitor.rpm`` instead of ``make debug traffic_monitor/traffic_monitor.rpm`` to build the RPM quickly.
+	.. tip:: If you have gone through the steps to :ref:`dev-building-natively`, you can run ``make debug native traffic_monitor/traffic_monitor.deb`` instead of ``make debug traffic_monitor/traffic_monitor.deb`` to build the DEB quickly.
 
 * Still in ``infrastructure/cdn-in-a-box``, open ``variables.env`` and set ``TM_DEBUG_ENABLE`` to ``true``.
 
-* Stop CDN-in-a-Box if it is running and remove any existing volumes. Build the ``trafficmonitor-debug`` image to make sure it uses our fresh ``traffic_monitor.rpm``. Then, start CDN-in-a-Box:
+* Stop CDN-in-a-Box if it is running and remove any existing volumes. Build the ``trafficmonitor-debug`` image to make sure it uses our fresh ``traffic_monitor.deb``. Then, start CDN-in-a-Box:
 
 	.. code-block:: shell
 		:caption: docker compose command for debugging Traffic Monitor
@@ -331,19 +331,19 @@ For an example of usage, set a breakpoint at `the o.m.RLock() call in Threadsafe
 Traffic Ops
 ===========
 
-* Navigate to the ``infrastructure/cdn-in-a-box`` directory. Remove the existing RPMs because they contain release Go binaries do not include useful debugging information. Rebuild the RPMs with no optimization, for debugging:
+* Navigate to the ``infrastructure/cdn-in-a-box`` directory. Remove the existing DEBs because they contain release Go binaries do not include useful debugging information. Rebuild the DEBs with no optimization, for debugging:
 
 	.. code-block:: shell
-		:caption: Remove release RPMs, then build debug RPMs
+		:caption: Remove release DEBs, then build debug DEBs
 
 		make very-clean
-		make debug traffic_ops/traffic_ops.rpm
+		make debug traffic_ops/traffic_ops.deb
 
-	.. tip:: If you have gone through the steps to :ref:`dev-building-natively`, you can run ``make debug native traffic_ops/traffic_ops.rpm`` instead of ``make debug traffic_ops/traffic_ops.rpm`` to build the RPM quickly.
+	.. tip:: If you have gone through the steps to :ref:`dev-building-natively`, you can run ``make debug native traffic_ops/traffic_ops.deb`` instead of ``make debug traffic_ops/traffic_ops.deb`` to build the DEB quickly.
 
 * Still in ``infrastructure/cdn-in-a-box``, open ``variables.env`` and set ``TO_DEBUG_ENABLE`` to ``true``.
 
-* Stop CDN-in-a-Box if it is running and remove any existing volumes. Build the ``trafficops-debug`` image to make sure it uses our fresh ``traffic_ops.rpm``. Then, start CDN-in-a-Box:
+* Stop CDN-in-a-Box if it is running and remove any existing volumes. Build the ``trafficops-debug`` image to make sure it uses our fresh ``traffic_ops.deb``. Then, start CDN-in-a-Box:
 
 	.. code-block:: shell
 		:caption: docker compose command for debugging Traffic Ops
@@ -479,19 +479,19 @@ Traffic Router
 Traffic Stats
 ===============
 
-* Navigate to the ``infrastructure/cdn-in-a-box`` directory. Remove the existing RPMs because they contain release Go binaries do not include useful debugging information. Rebuild the RPMs with no optimization, for debugging:
+* Navigate to the ``infrastructure/cdn-in-a-box`` directory. Remove the existing DEBs because they contain release Go binaries do not include useful debugging information. Rebuild the DEBs with no optimization, for debugging:
 
 	.. code-block:: shell
-		:caption: Remove release RPMs, then build debug RPMs
+		:caption: Remove release DEBs, then build debug DEBs
 
 		make very-clean
-		make debug traffic_stats/traffic_stats.rpm
+		make debug traffic_stats/traffic_stats.deb
 
-	.. tip:: If you have gone through the steps to :ref:`dev-building-natively`, you can run ``make debug native traffic_stats/traffic_stats.rpm`` instead of ``make debug traffic_stats/traffic_stats.rpm`` to build the RPMs quickly.
+	.. tip:: If you have gone through the steps to :ref:`dev-building-natively`, you can run ``make debug native traffic_stats/traffic_stats.deb`` instead of ``make debug traffic_stats/traffic_stats.deb`` to build the DEBs quickly.
 
 * Still in ``infrastructure/cdn-in-a-box``, open ``variables.env`` and set ``TS_DEBUG_ENABLE`` to ``true``.
 
-* Stop CDN-in-a-Box if it is running and remove any existing volumes. Build the ``trafficstats-debug`` image to make sure it uses our fresh ``traffic_stats.rpm``. Then, start CDN-in-a-Box:
+* Stop CDN-in-a-Box if it is running and remove any existing volumes. Build the ``trafficstats-debug`` image to make sure it uses our fresh ``traffic_stats.deb``. Then, start CDN-in-a-Box:
 
 	.. code-block:: shell
 		:caption: docker compose command for debugging Traffic Stats
@@ -528,4 +528,4 @@ For an example of usage, set a breakpoint at `the http.Get() call in main.getURL
 Troubleshooting
 ===============
 
-* If you are debugging a Golang project and you don't see the values of all variables, or stepping to the next line puts you several lines ahead, rebuild the Docker image with an RPM built using :bash:`make debug`.
+* If you are debugging a Golang project and you don't see the values of all variables, or stepping to the next line puts you several lines ahead, rebuild the Docker image with an DEB built using :bash:`make debug`.

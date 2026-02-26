@@ -33,12 +33,9 @@ if [[ ! -r /db-config.sh ]]; then
 fi
 . /db-config.sh
 
-postgresql_package="$(<<<"postgresql${POSTGRES_VERSION}" sed 's/\.//g' |
-	sed -E 's/([0-9]{2})[0-9]+/\1/g'
-)"
-pg_isready=$(rpm -ql "$postgresql_package" | grep bin/pg_isready)
+pg_isready="$(command -v pg_isready || true)"
 if [[ ! -x "$pg_isready" ]] ; then
-	echo "Can't find pg_ready in ${postgresql_package}"
+	echo "Can't find pg_isready in PATH"
 	exit 1
 fi
 

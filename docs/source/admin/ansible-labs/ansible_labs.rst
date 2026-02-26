@@ -93,7 +93,7 @@ Generic Core Playbook
 
 This is the important piece for collaboration as it's based on the question, "Is this task/feature/function something all ATC implementations would benefit from?".
 Typically, the yes answers involve exposing or simplifying application functionality on the part of the lab environment maintainer or developer.
-Generally, the default values of a generic core role match or improve upon those present inside the RPM of the software.
+Generally, the default values of a generic core role match or improve upon those present inside the DEB of the software.
 
 Lab Implementation Layout
 =========================

@@ -14,17 +14,6 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-#
-# Build trafficcontrol:  
-#   Copy the traffic_ops rpm to traffic_ops/traffic_ops.rpm
-#   Copy the trafficcontrol-cache-config rpm to ort_test/trafficcontrol-cache-config.rpm
-#   Copy an ATS rpm to yumserver/test-rpms (the ort_tests
-#     container updates ../ort-tests/tc-fixtures.json with
-#     the corresponding version string)
-#
-#   Run: docker compose build
-#   Run: docker compose run ort_test
-#
 
 ---
 
@@ -38,7 +27,7 @@ services:
     image: postgres:${POSTGRES_VERSION}
     env_file:
       - variables.env
-    ports: 
+    ports:
       - "5432:5432"
 
   db_init:
@@ -47,7 +36,7 @@ services:
     build:
       context: .
       dockerfile: db_init/Dockerfile
-    depends_on: 
+    depends_on:
       - db
 
   health-check-test:
@@ -56,10 +45,7 @@ services:
     build:
       context: .
       dockerfile: health-check-test/Dockerfile
-      args:
-        - OS_DISTRO=${OS_DISTRO:-rockylinux}
-        - OS_VERSION=${OS_VERSION:-8}
-    depends_on: 
+    depends_on:
       - to_server
     volumes:
       - ../../..:/root/go/src/github.com/jruszo/trafficcontrol
@@ -67,16 +53,12 @@ services:
   to_server:
     env_file:
       - variables.env
-    ports: 
+    ports:
       - "443:443"
     build:
       context: .
       dockerfile: traffic_ops/Dockerfile
-      args:
-        - OS_DISTRO=${OS_DISTRO:-rockylinux}
-        - OS_VERSION=${OS_VERSION:-8}
     volumes:
       - ../../../GO_VERSION:/GO_VERSION
     depends_on:
       - db_init
-

@@ -273,10 +273,10 @@
         minutes: 5
 
     - name: Ensure CA tools are installed
-      yum:
+      apt:
         name: ca-certificates
         state: present
-        use_backend: yum
+        use_backend: apt
         enablerepo: "{{ additional_yum_repos | default([]) }}"
 
     - name: Deploy the Trusted Root SSL CA Certificates

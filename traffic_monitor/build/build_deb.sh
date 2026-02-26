@@ -35,9 +35,9 @@ importFunctions() {
 #----------------------------------------
 initBuildArea() {
 	echo "Initializing the build area."
-	(mkdir -p "$RPMBUILD"
-	 cd "$RPMBUILD"
-	 mkdir -p SPECS SOURCES RPMS SRPMS BUILD BUILDROOT) || { echo "Could not create $RPMBUILD: $?"; return 1; }
+	(mkdir -p "$debbuild"
+	 cd "$debbuild"
+	 mkdir -p SPECS SOURCES debS SdebS BUILD BUILDROOT) || { echo "Could not create $debbuild: $?"; return 1; }
 
 	# tar/gzip the source
 	local tm_dest
@@ -71,14 +71,14 @@ initBuildArea() {
 
 	cp -av ./ "$tm_dest"/ || \
 		 { echo "Could not copy to $tm_dest: $?"; return 1; }
-	cp -av "$TM_DIR"/build/*.spec "$RPMBUILD"/SPECS/. || \
+	cp -av "$TM_DIR"/build/*.spec "$debbuild"/SPECS/. || \
 		 { echo "Could not copy spec files: $?"; return 1; }
 
-	# include LICENSE in the source RPM
+	# include LICENSE in the source DEB
 	cp "${TC_DIR}/LICENSE" "$tm_dest"
 
-	tar -czvf "$tm_dest".tgz -C "$RPMBUILD"/SOURCES "$(basename "$tm_dest")" || { echo "Could not create tar archive $tm_dest.tgz: $?"; return 1; }
-	cp "$TM_DIR"/build/*.spec "$RPMBUILD"/SPECS/. || { echo "Could not copy spec files: $?"; return 1; }
+	tar -czvf "$tm_dest".tgz -C "$debbuild"/SOURCES "$(basename "$tm_dest")" || { echo "Could not create tar archive $tm_dest.tgz: $?"; return 1; }
+	cp "$TM_DIR"/build/*.spec "$debbuild"/SPECS/. || { echo "Could not copy spec files: $?"; return 1; }
 
 	echo "The build area has been initialized."
 }
@@ -96,4 +96,4 @@ importFunctions
 preBuildChecks
 checkEnvironment -i go,rsync
 initBuildArea
-buildRpm traffic_monitor
+builddeb traffic_monitor

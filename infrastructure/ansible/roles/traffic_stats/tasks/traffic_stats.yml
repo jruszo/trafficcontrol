@@ -13,7 +13,7 @@
 # limitations under the License.
 #
 - name: Install Traffic Stats
-  yum:
+  apt:
     state: present
     name: "{{ ts_pkg_name }}"
     lock_timeout: 300

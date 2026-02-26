@@ -31,7 +31,6 @@ services:
       context: ../../..
       dockerfile: cache-config/testing/docker/trafficserver/Dockerfile
       args:
-        - OS_VERSION=${OS_VERSION:-8}
-        - OS_DISTRO=${OS_DISTRO:-rockylinux}
+        - UBUNTU_VERSION=${UBUNTU_VERSION:-24.04}
     volumes:
       - ../../..:/trafficcontrol:z

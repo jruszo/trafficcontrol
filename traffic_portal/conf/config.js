@@ -33,7 +33,7 @@ module.exports = {
     api: {
         base_url: 'https://trafficops.CHANGEME.domain.com/api/'
     },
-    // default static files location (this is where the traffic portal html, css and javascript was installed. rpm installs these files at /opt/traffic_portal/public
+    // default static files location (this is where the traffic portal html, css and javascript was installed. deb installs these files at /opt/traffic_portal/public
     files: {
         static: '/opt/traffic_portal/public'
     },

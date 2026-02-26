@@ -15,18 +15,18 @@
 # specific language governing permissions and limitations
 # under the License.
 ############################################################
-# Dockerfile to build Traffic Server container images
-#   as Edges for Traffic Control 1.4
-# Based on CentOS 6.6
+# Minimal APT repo server for ORT integration tests
 ############################################################
 
-FROM rockylinux:8
-MAINTAINER dev@trafficcontrol.apache.org
+FROM ubuntu:24.04
 
-RUN dnf install -y httpd createrepo yum-utils
+RUN apt-get update && \
+	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+		dpkg-dev \
+		python3 && \
+	rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p /var/www/html/traffic-control/7/x86_64/Packages
-RUN sed -i -e 's/#ServerName www.example.com:80/ServerName www.example.com:80/g' /etc/httpd/conf/httpd.conf
+RUN mkdir -p /var/www/html
 
 EXPOSE 80
 ADD yumserver/run.sh /

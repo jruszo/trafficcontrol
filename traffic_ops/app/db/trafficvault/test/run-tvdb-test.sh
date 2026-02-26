@@ -42,9 +42,9 @@ fi
 postgresql_package="$(<<<"postgresql${POSTGRES_VERSION}" sed 's/\.//g' |
 	sed -E 's/([0-9]{2})[0-9]+/\1/g'
 )"
-pg_isready=$(rpm -ql "$postgresql_package" | grep bin/pg_isready)
+pg_isready="$(command -v pg_isready || true)"
 if [[ ! -x "$pg_isready" ]] ; then
-    echo "Can't find pg_ready in ${postgresql_package}"
+    echo "Can't find pg_isready in PATH"
     exit 1
 fi
 
@@ -155,4 +155,3 @@ for d in $(get_db_dumps); do
     createdb --echo < "$d" > /dev/null || echo "Creating DB ${DB_NAME} failed: $d"
     pg_restore --verbose --clean --if-exists --exit-on-error -d "$DB_NAME" < "$d" > /dev/null || { echo "DB restoration failed: $d"; exit 1; }
 done
-

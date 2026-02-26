@@ -159,10 +159,10 @@ The primary output to help process key information.  There are several important
 ###### Basic info
 This is included so looking at the outputs later have enough information to explain where it came from and was comparing.
 
-* base_ats_version : ATS RPM version as determined by probing an associated or overridden directly
+* base_ats_version : ATS DEB version as determined by probing an associated or overridden directly
 * base_host : The host selected for use either by override or just being the first to respond that is attached to the base profile
 * base_profile : The original (older) ATS version
-* target_ats_version : ATS RPM version as determined by probing an associated or overridden directly
+* target_ats_version : ATS DEB version as determined by probing an associated or overridden directly
 * target_host : The host selected for use either by override or just being the first to respond that is attached to the target profile
 * target_profile : The target (newer) ATS version
 

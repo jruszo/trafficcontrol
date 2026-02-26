@@ -36,7 +36,7 @@ if [[ "$(id -u)" != "$uid" ]]; then
 	exec su "$user" -- "$0"
 fi
 
-mvn -Dmaven.test.skip=true compile package -P \!rpm-build
+mvn -Dmaven.test.skip=true compile package -P \!deb-build
 
 cd "$TC/dev/traffic_router"
 exec /opt/tomcat/bin/catalina.sh jpda run

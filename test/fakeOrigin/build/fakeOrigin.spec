@@ -13,7 +13,7 @@
 # limitations under the License.
 #
 #
-# RPM spec file for the test origin fakeOrigin
+# DEB spec file for the test origin fakeOrigin
 #
 %define   debug_package %{nil}
 Name: fakeOrigin

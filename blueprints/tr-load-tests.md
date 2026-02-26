@@ -130,7 +130,7 @@ Will old Traffic Routers remain forwards-compatible with new CRConfigs?
 -->
 The addition of the TR Ultimate Test Harness themselves will not change Traffic Router functionality in any way. For visibility, however, the TR Ultimate Test Harness should reside in a directory within the `traffic_router` directory. This will be the first time since 545929f7cc that Golang sources will exist in the `traffic_router` directory, so any assumption that all sources within the `traffic_router` directory directly impact Traffic Router's ability to compile should be abandoned.
 
-The TR Ultimate Test Harness should not be included in the Traffic Router RPM, as it is meant to be run on a host separate from Traffic Routers.
+The TR Ultimate Test Harness should not be included in the Traffic Router DEB, as it is meant to be run on a host separate from Traffic Routers.
 
 ### Traffic Stats Impact
 <!--

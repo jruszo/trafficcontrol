@@ -34,9 +34,9 @@ importFunctions() {
 #----------------------------------------
 initBuildArea() {
 	echo "Initializing the build area for t3c";
-	(mkdir -p "$RPMBUILD"
-	 cd "$RPMBUILD"
-	 mkdir -p SPECS SOURCES RPMS SRPMS BUILD BUILDROOT) || { echo "Could not create $RPMBUILD: $?"; return 1; }
+	(mkdir -p "$debbuild"
+	 cd "$debbuild"
+	 mkdir -p SPECS SOURCES debS SdebS BUILD BUILDROOT) || { echo "Could not create $debbuild: $?"; return 1; }
 
 	local dest;
 	dest=$(createSourceDir trafficcontrol-cache-config);
@@ -129,7 +129,7 @@ initBuildArea() {
 
 	mkdir -p "${dest}/build";
 
-	echo "build_rpm.sh lsing for logrotate";
+	echo "build_deb.sh lsing for logrotate";
 	ls -lah .;
 	ls -lah ./build;
 
@@ -138,9 +138,9 @@ initBuildArea() {
 	# include LICENSE in the tarball
 	cp "${TC_DIR}/LICENSE" "$dest"
 
-	tar -czvf "$dest".tgz -C "$RPMBUILD"/SOURCES "$(basename "$dest")";
-	cp build/trafficcontrol-cache-config.spec "$RPMBUILD"/SPECS/.;
-	cp build/atstccfg.logrotate "$RPMBUILD"/.;
+	tar -czvf "$dest".tgz -C "$debbuild"/SOURCES "$(basename "$dest")";
+	cp build/trafficcontrol-cache-config.spec "$debbuild"/SPECS/.;
+	cp build/atstccfg.logrotate "$debbuild"/.;
 
 	echo "The build area has been initialized.";
 }
@@ -166,4 +166,4 @@ buildManpage() {
 importFunctions;
 checkEnvironment go;
 initBuildArea;
-buildRpm trafficcontrol-cache-config;
+builddeb trafficcontrol-cache-config;
