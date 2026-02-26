@@ -119,12 +119,15 @@ create_deb() {
 	local desc="$4"
 	local depends="$5"
 	local root="$6"
+	local deb_pkg
 
 	local debian_dir="${root}/DEBIAN"
 	mkdir -p "${debian_dir}"
+	# Debian package names cannot contain underscores; keep artifact filenames unchanged.
+	deb_pkg="${pkg//_/-}"
 
 	cat > "${debian_dir}/control" <<CONTROL
-Package: ${pkg}
+Package: ${deb_pkg}
 Version: ${ver}
 Section: misc
 Priority: optional
