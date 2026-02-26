@@ -30,6 +30,19 @@ colored_text() {
 vendor_dependencies() {
 	go mod tidy
 	go mod vendor
+	normalize_vendored_metadata
+}
+
+normalize_vendored_metadata() {
+	goreleaser_file='vendor/github.com/klauspost/compress/.goreleaser.yml'
+	if [[ ! -f "${goreleaser_file}" ]]; then
+		return
+	fi
+	local tmp_file
+	tmp_file="$(mktemp)"
+	# Keep vendored metadata aligned with the repo's Debian-only policy.
+	sed 's/^\([[:space:]]*-\)[[:space:]]*rpm$/\1 deb/' "${goreleaser_file}" > "${tmp_file}"
+	mv "${tmp_file}" "${goreleaser_file}"
 }
 
 check_vendored_deps() {

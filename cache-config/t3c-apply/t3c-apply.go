@@ -260,7 +260,7 @@ func Main() int {
 		// make sure we got the data necessary to check packages
 		log.Infoln("======== Didn't get all files, no package processing needed or possible ========")
 		metaData.InstalledPackages = oldMetaData.InstalledPackages
-	} else if cfg.debDBOk {
+	} else if cfg.DebDBOk {
 		log.Infoln("======== Start processing packages  ========")
 		err = trops.ProcessPackages()
 		if err != nil {

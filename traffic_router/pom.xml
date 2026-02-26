@@ -134,11 +134,6 @@
 	<profiles>
 		<profile>
 			<id>deb-build</id>
-			<activation>
-				<os>
-					<name>linux</name>
-				</os>
-			</activation>
 			<modules>
 				<module>build</module>
 			</modules>

@@ -33,14 +33,14 @@ type about struct {
 	GoVersion  string `json:"goVersion,omitempty"`
 	Release    string `json:"release"`
 	Name       string `json:"name,omitempty"`
-	debVersion string `json:"debVersion,omitempty"`
+	DebVersion string `json:"debVersion,omitempty"`
 	Version    string `json:"Version,omitempty"`
 }
 
 // About contains version info to be exposed by `api/.../about.json` endpoint
 var About about
 
-func splitdebVersion(v string) (string, string, string, string, string) {
+func splitDebVersion(v string) (string, string, string, string, string) {
 
 	if v == "" {
 		return "UnknownVersion", "", "", "", ""
@@ -62,14 +62,14 @@ func splitdebVersion(v string) (string, string, string, string, string) {
 // SetAbout is called by main.main to store the static info for the .../about endpoint
 func SetAbout(s string) {
 	// name, version, commits, hash, Release -- parts of deb version string
-	n, v, c, h, r := splitdebVersion(s)
+	n, v, c, h, r := splitDebVersion(s)
 	About = about{
 		CommitHash: h,
 		Commits:    c,
 		GoVersion:  runtime.Version(),
 		Release:    r,
 		Name:       n,
-		debVersion: s,
+		DebVersion: s,
 		Version:    v,
 	}
 }

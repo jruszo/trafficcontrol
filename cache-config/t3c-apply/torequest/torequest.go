@@ -603,7 +603,7 @@ func (r *TrafficOpsReq) IsPackageInstalled(name string) bool {
 			return v
 		}
 	}
-	if !r.Cfg.debDBOk {
+	if !r.Cfg.DebDBOk {
 		log.Warnf("DEB DB is corrupted cannot run IsPackageInstalled for '%s' and package metadata is unavailable", name)
 		return false
 	}

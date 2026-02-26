@@ -70,7 +70,7 @@ func main() {
 	flag.Parse()
 
 	if *showVersion {
-		fmt.Println(about.About.debVersion)
+		fmt.Println(about.About.DebVersion)
 		os.Exit(0)
 	}
 	if *showPlugins {

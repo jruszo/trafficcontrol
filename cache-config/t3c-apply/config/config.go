@@ -82,7 +82,7 @@ type Cfg struct {
 	SvcManagement       SvcManagement
 	Retries             int
 	ReverseProxyDisable bool
-	debDBOk             bool
+	DebDBOk             bool
 	SkipOSCheck         bool
 	UseStrategies       t3cutil.UseStrategiesFlag
 	TOInsecure          bool
@@ -642,7 +642,7 @@ If any of the related flags are also set, they override the mode's default behav
 		CacheHostName:               cacheHostName,
 		SvcManagement:               svcManagement,
 		Retries:                     retries,
-		debDBOk:                     debDBisOk,
+		DebDBOk:                     debDBisOk,
 		ReverseProxyDisable:         reverseProxyDisable,
 		SkipOSCheck:                 skipOsCheck,
 		UseStrategies:               useStrategies,
