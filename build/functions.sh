@@ -161,9 +161,18 @@ getVersion() {
 
 # ---------------------------------------
 getRhelVersion() {
-	local releasever=${PACKAGE_OS_VERSION:-${RHEL_VERSION:-}}
+	local releasever=''
+	if [ -n "${PACKAGE_OS_VERSION:-}" ]; then
+		echo "${PACKAGE_OS_VERSION}"
+		return
+	fi
+	releasever="${RHEL_VERSION:-}"
 	if [ -n "$releasever" ]; then
-		echo "el${releasever}"
+		if [[ "$releasever" == el* ]]; then
+			echo "${releasever}"
+		else
+			echo "el${releasever}"
+		fi
 		return
 	fi
 
@@ -238,7 +247,7 @@ checkEnvironment() {
 	echo "=================================================="
 	echo "WORKSPACE: $WORKSPACE"
 	echo "BUILD_NUMBER: $BUILD_NUMBER"
-	echo "PACKAGE_OS_VERSION: ${RHEL_VERSION#el}"
+	echo "PACKAGE_RELEASE_TAG: $RHEL_VERSION"
 	echo "TC_VERSION: $TC_VERSION"
 	echo "--------------------------------------------------"
 }
