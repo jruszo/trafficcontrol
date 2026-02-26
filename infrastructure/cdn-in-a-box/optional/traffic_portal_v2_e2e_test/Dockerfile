@@ -39,8 +39,7 @@ RUN apt-get update && \
 
 FROM os-dependencies AS node-dependencies
 # Download and install node
-RUN set -o pipefail; \
-    curl -sLf https://deb.nodesource.com/setup_20.x | bash -
+RUN bash -o pipefail -c 'curl -sLf https://deb.nodesource.com/setup_20.x | bash -'
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends nodejs && \
     rm -rf /var/lib/apt/lists/*

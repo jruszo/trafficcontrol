@@ -24,8 +24,7 @@ ARG BASE_IMAGE=ubuntu \
     ubuntu_version=24.04
 FROM ${BASE_IMAGE}:${ubuntu_version}
 
-RUN set -o pipefail && \
-    curl -sLf https://deb.nodesource.com/setup_20.x | bash -
+RUN bash -o pipefail -c 'curl -sLf https://deb.nodesource.com/setup_20.x | bash -'
 
 # Override TRAFFIC_PORTAL_DEB arg to use a different one using --build-arg TRAFFIC_PORTAL_DEB=...  Can be local file or http://...
 ARG TRAFFIC_PORTAL_DEB=optional/traffic_portal_v2/traffic_portal_v2.deb

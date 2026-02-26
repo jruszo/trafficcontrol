@@ -38,8 +38,7 @@ RUN apt-get update && \
 
 FROM os-dependencies AS node-dependencies
 # Download and install node
-RUN set -o pipefail; \
-    curl -sLf https://deb.nodesource.com/setup_16.x | bash -
+RUN bash -o pipefail -c 'curl -sLf https://deb.nodesource.com/setup_16.x | bash -'
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends nodejs && \
     rm -rf /var/lib/apt/lists/*
@@ -68,11 +67,7 @@ RUN jq ' \
         config.json > conf.json.tmp && \
     mv conf.json.tmp config.json
 
-RUN set -o pipefail && \
-    webdriver-manager clean && \
-    google-chrome --version | \
-        grep -o '[0-9.]\+' | \
-        xargs webdriver-manager update --gecko false --versions.chrome
+RUN bash -o pipefail -c 'webdriver-manager clean && google-chrome --version | grep -o "[0-9.]\\+" | xargs webdriver-manager update --gecko false --versions.chrome'
 
 COPY infrastructure/cdn-in-a-box/traffic_ops/to-access.sh \
      infrastructure/cdn-in-a-box/traffic_portal_integration_test/run.sh \
