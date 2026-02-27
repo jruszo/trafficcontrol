@@ -68,8 +68,9 @@ jobs:
           dir: ./traffic_monitor/...
           test_name: traffic_monitor
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v5
         with:
+          token: ${{ secrets.CODECOV_TOKEN }}
           files: traffic_monitor-coverage.out
           flags: traffic_monitor_unit,unit_tests
       - name: Save Alpine Docker image

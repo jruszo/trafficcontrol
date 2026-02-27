@@ -117,8 +117,9 @@ jobs:
         version: 3
         smtp_address: 172.17.0.1
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v5
       with:
+        token: ${{ secrets.CODECOV_TOKEN }}
         files: v3-coverage.out
         flags: traffic_ops_integration,v3
     - name: Upload v3 Vault logs
@@ -194,8 +195,9 @@ jobs:
         version: 4
         smtp_address: 172.17.0.1
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v5
       with:
+        token: ${{ secrets.CODECOV_TOKEN }}
         files: v4-coverage.out
         flags: traffic_ops_integration,v4
     - name: Upload v4 Vault logs
@@ -273,8 +275,9 @@ jobs:
         version: 5
         smtp_address: 172.17.0.1
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v5
       with:
+        token: ${{ secrets.CODECOV_TOKEN }}
         files: v5-coverage.out
         flags: traffic_ops_integration,v5
     - name: Upload v5 Vault logs

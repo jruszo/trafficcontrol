@@ -68,8 +68,9 @@ jobs:
           dir: ./cache-config/...
           test_name: cache-config
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v5
         with:
+          token: ${{ secrets.CODECOV_TOKEN }}
           files: cache-config-coverage.out
           flags: t3c_unit,unit_tests
       - name: Save Alpine Docker image

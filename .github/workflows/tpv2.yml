@@ -145,8 +145,9 @@ jobs:
           cd experimental/traffic-portal/
           npm run coverage:ci
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v5
         with:
+          token: ${{ secrets.CODECOV_TOKEN }}
           files: ${{ github.workspace }}/experimental/traffic-portal/coverage/traffic-portal/cobertura-coverage.xml
           flags: traffic_portal_v2,unit_tests
   end-to-end-tests:
