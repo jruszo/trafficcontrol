@@ -41,10 +41,16 @@ RUN rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-* && \
 
 ### traffic_router specific requirements
 FROM common-dependencies AS traffic-router
+ARG RHEL_VERSION=8
 
-RUN	yum -y install \
+RUN	if [[ ${RHEL_VERSION%%.*} -ge 9 ]]; then \
+		curl_pkg='curl-minimal'; \
+	else \
+		curl_pkg='curl'; \
+	fi && \
+	yum -y install \
 		which  \
-		curl \
+		${curl_pkg} \
 		java-11-openjdk \
 		# necessary in case tzdata-java is not already installed as a dependency of java-11-openjdk-headless
 		tzdata-java \

@@ -60,7 +60,17 @@ RUN set -o errexit; \
 		epel-release && \
 	yum -y clean all
 
-RUN if [[ ${OS_VERSION%%.*} -ge 8 ]]; then \
+RUN if [[ ${OS_VERSION%%.*} -ge 9 ]]; then \
+		os_pkgs=( \
+			brotli \
+			brotli-devel \
+			curl-minimal \
+			jansson \
+			jansson-devel \
+			libmaxminddb \
+			libmaxminddb-devel \
+			libuuid ); \
+	elif [[ ${OS_VERSION%%.*} -ge 8 ]]; then \
 		os_pkgs=( \
 			brotli \
 			brotli-devel \

@@ -46,17 +46,22 @@ RUN if [[ "${RHEL_VERSION%%.*}" -eq 7 ]]; then \
     dnf -y clean all
 
 FROM os-dependencies AS node-dependencies
+ARG RHEL_VERSION=8
 # Download and install node
-RUN set -o pipefail; \
-    curl -sLf https://rpm.nodesource.com/setup_16.x | bash
-RUN dnf -y install nodejs || ( \
-        # rpm --rebuilddb after installing the nodejs is necessary on docker 20.10.8,
-        # build 3967b7d as of 2023-01-19, though that was not always the case for that
-        # docker version
-        rpm --rebuilddb && \
-        echo 'RPM DB rebuilt' && \
-        dnf -y install nodejs \
-    )
+RUN if [[ "${RHEL_VERSION%%.*}" -ge 9 ]]; then \
+        dnf -y install nodejs; \
+    else \
+        set -o pipefail; \
+        curl -sLf https://rpm.nodesource.com/setup_16.x | bash && \
+        dnf -y install nodejs || ( \
+            # rpm --rebuilddb after installing the nodejs is necessary on docker 20.10.8,
+            # build 3967b7d as of 2023-01-19, though that was not always the case for that
+            # docker version
+            rpm --rebuilddb && \
+            echo 'RPM DB rebuilt' && \
+            dnf -y install nodejs \
+        ); \
+    fi
 RUN npm i -g webdriver-manager
 
 FROM node-dependencies

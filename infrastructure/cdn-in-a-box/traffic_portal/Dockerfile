@@ -30,16 +30,17 @@ RUN if [[ "${RHEL_VERSION%%.*}" -eq 7 ]]; then \
         yum -y install dnf || exit 1; \
     fi
 
-RUN set -o pipefail && \
-    curl -sLf https://rpm.nodesource.com/setup_16.x | bash
-
 # Override TRAFFIC_PORTAL_RPM arg to use a different one using --build-arg TRAFFIC_PORTAL_RPM=...  Can be local file or http://...
 ARG TRAFFIC_PORTAL_RPM=traffic_portal/traffic_portal.rpm
 
 ARG TO_HOST=$TO_HOST
 
 # Install and delete the TRAFFIC_PORTAL_RPM when finished
-RUN dnf install -y epel-release && \
+RUN set -o pipefail && \
+    if [[ "${RHEL_VERSION%%.*}" -lt 9 ]]; then \
+        curl -sLf https://rpm.nodesource.com/setup_16.x | bash; \
+    fi && \
+    dnf install -y epel-release && \
     dnf install -y \
       jq \
       nodejs \
