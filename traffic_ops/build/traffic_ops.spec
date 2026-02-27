@@ -34,7 +34,11 @@ Source:           %{_sourcedir}/traffic_ops-%{version}.tgz
 URL:              https://github.com/jruszo/trafficcontrol/
 Vendor:           Apache Software Foundation
 AutoReqProv:      no
+%if 0%{?rhel} >= 9
+Requires:         cpanminus, expat-devel, libcurl, libpcap-devel, genisoimage, tar
+%else
 Requires:         cpanminus, expat-devel, libcurl, libpcap-devel, mkisofs, tar
+%endif
 Requires:         openssl-devel, perl, perl-core, perl-DBD-Pg, perl-DBI, perl-Digest-SHA1
 %if 0%{?rhel} >= 9
 Requires:         libidn2-devel, libcurl-devel, libcap
