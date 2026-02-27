@@ -41,6 +41,9 @@ RUN set -o nounset -o errexit && \
 		enable_repo=''; \
 		# needed for llvm-toolset-7-clang, which is needed for postgresql13-devel-13.X-1PGDG, required by TO rpm
 		dnf -y install gcc centos-release-scl-rh; \
+	elif [[ "${OS_VERSION%%.*}" -ge 9 ]]; then \
+		use_repo='--repo=pgdg13'; \
+		enable_repo='--enablerepo=crb'; \
 	else \
 		use_repo='--repo=pgdg13'; \
 		enable_repo='--enablerepo=powertools'; \
@@ -86,4 +89,3 @@ RUN chmod +x /run.sh
 
 EXPOSE 443
 ENTRYPOINT /run.sh
-

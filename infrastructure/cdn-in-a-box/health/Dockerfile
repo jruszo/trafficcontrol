@@ -30,10 +30,14 @@ MAINTAINER dev@trafficcontrol.apache.org
 # docker run --volume /trafficcontrol:$(pwd) ...
 VOLUME /trafficcontrol
 
-# CentOS 7 has pandoc in epel (which we installed above), 8 has it in [pP]ower[tT]ools
+# CentOS 7 has pandoc in epel, EL8 in [pP]ower[tT]ools, EL9 in CRB
 RUN if [[ ${RHEL_VERSION%%.*} -ge 8 ]]; then \
         yum -y install dnf-plugins-core && \
-        (yum -y config-manager --set-enabled PowerTools || yum -y config-manager --set-enabled powertools) \
+        if [[ ${RHEL_VERSION%%.*} -ge 9 ]]; then \
+            yum -y config-manager --set-enabled crb; \
+        else \
+            (yum -y config-manager --set-enabled PowerTools || yum -y config-manager --set-enabled powertools); \
+        fi; \
     fi && \
     yum -y install pandoc
 

@@ -39,6 +39,9 @@ RUN set -o nounset -o errexit -o xtrace && \
 	if [[ "${RHEL_VERSION%%.*}" -eq 7 ]]; then \
 		use_repo=''; \
 		enable_repo=''; \
+	elif [[ "${RHEL_VERSION%%.*}" -ge 9 ]]; then \
+		use_repo='--repo=pgdg13'; \
+		enable_repo='--enablerepo=crb'; \
 	else \
 		use_repo='--repo=pgdg13'; \
 		enable_repo='--enablerepo=powertools'; \

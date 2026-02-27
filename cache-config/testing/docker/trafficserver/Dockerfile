@@ -39,7 +39,11 @@ RUN set -o errexit; \
     if [[ ${OS_VERSION%%.*} -ge 8 ]]; then \
 		rpm_gpg_key=RPM-GPG-KEY-rockyofficial; \
 		yum install -y 'dnf-command(config-manager)'; \
-		yum config-manager --set-enabled powertools; \
+		if [[ ${OS_VERSION%%.*} -ge 9 ]]; then \
+			yum config-manager --set-enabled crb; \
+		else \
+			yum config-manager --set-enabled powertools; \
+		fi; \
 	else \
 		rpm_gpg_key="RPM-GPG-KEY-CentOS-${OS_VERSION%%.*}"; \
 		yum install -y deltarpm centos-release-scl-rh; \
