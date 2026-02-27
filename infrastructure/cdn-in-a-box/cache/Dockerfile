@@ -40,24 +40,22 @@ EXPOSE 80
 
 RUN dnf -y install epel-release && \
     if [[ "${RHEL_VERSION%%.*}" -lt 8 ]]; then \
-        additional_packages='perl(URI)' || \
-        exit 1; \
+        additional_packages='perl(URI) GeoIP kyotocabinet-libs'; \
+    elif [[ "${RHEL_VERSION%%.*}" -ge 9 ]]; then \
+        additional_packages='cjose'; \
     else \
         # cjose is required by the ATS TSB RPM
-        additional_packages='cjose' || \
-        exit 1; \
+        additional_packages='cjose GeoIP kyotocabinet-libs'; \
     fi && \
     dnf -y install              \
         brotli                  \
         # find is required by to-access.sh
         findutils               \
-        GeoIP                   \
         git                     \
         groff-base              \
         hwloc                   \
         # jansson is required by the ATS TSB RPM
         jansson                 \
-        kyotocabinet-libs       \
         libmaxminddb            \
         libtool-ltdl            \
         libunwind               \
@@ -74,7 +72,12 @@ RUN dnf -y install epel-release && \
         xz                      \
         $additional_packages
 
-RUN dnf install -y bind-utils kyotocabinet-libs initscripts iproute net-tools nmap-ncat gettext autoconf automake libtool gcc-c++ cronie glibc-devel openssl-devel && \
+RUN if [[ "${RHEL_VERSION%%.*}" -ge 9 ]]; then \
+        cache_compat_packages=''; \
+    else \
+        cache_compat_packages='kyotocabinet-libs'; \
+    fi && \
+    dnf install -y bind-utils $cache_compat_packages initscripts iproute net-tools nmap-ncat gettext autoconf automake libtool gcc-c++ cronie glibc-devel openssl-devel && \
     dnf install -y jq logrotate && \
     dnf clean all
 
