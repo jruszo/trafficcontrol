@@ -36,13 +36,21 @@ TC_VERSION="$(<VERSION)"
 PACKAGE_OS_VERSION="${PACKAGE_OS_VERSION:-ubuntu24.04}"
 DIST_DIR="${TC_DIR}/dist"
 SIMPLE="${SIMPLE:-0}"
+SUDO=()
+
+if command -v sudo >/dev/null 2>&1; then
+	SUDO=(sudo)
+elif [[ "$(id -u)" -ne 0 ]]; then
+	echo "sudo is required when not running as root" >&2
+	exit 1
+fi
 
 mkdir -p "${DIST_DIR}"
 
 APT_UPDATED=0
 apt_update_if_needed() {
 	if [[ "${APT_UPDATED}" -eq 0 ]]; then
-		sudo apt-get update
+		"${SUDO[@]}" apt-get update
 		APT_UPDATED=1
 	fi
 }
@@ -52,9 +60,13 @@ ensure_cmd() {
 	local pkg="$2"
 	if ! command -v "${cmd}" >/dev/null 2>&1; then
 		apt_update_if_needed
-		sudo apt-get install -y --no-install-recommends "${pkg}"
+		"${SUDO[@]}" apt-get install -y --no-install-recommends "${pkg}"
 	fi
 }
+
+# Ensure outbound TLS works inside minimal containerized environments.
+ensure_cmd update-ca-certificates ca-certificates
+"${SUDO[@]}" update-ca-certificates >/dev/null 2>&1 || true
 
 install_npm_tool_if_missing() {
 	local binary="$1"
@@ -62,7 +74,7 @@ install_npm_tool_if_missing() {
 	if command -v "${binary}" >/dev/null 2>&1; then
 		return
 	fi
-	sudo npm install --global --force "${package}"
+	"${SUDO[@]}" npm install --global --force "${package}"
 }
 
 build_number() {
@@ -89,6 +101,8 @@ build_number() {
 	echo "0.unknown"
 }
 
+ensure_cmd git git
+git config --global --add safe.directory "${TC_DIR}" >/dev/null 2>&1 || true
 BUILD_NUMBER="$(build_number)"
 DEB_ARCH="$(dpkg --print-architecture 2>/dev/null || true)"
 if [[ -z "${DEB_ARCH}" ]]; then
@@ -530,16 +544,16 @@ build_traffic_router_deb() {
 	build_tomcat_deb
 
 	local tr_dir="${TC_DIR}/traffic_router"
-	(
-		cd "${tr_dir}"
-		# Install reactor artifacts to the local Maven repo so the follow-up dependency
-		# copy in core does not attempt to resolve sibling modules from remote repos.
-		mvn -B -Dmaven.test.skip=true -pl shared,connector,configuration,geolocation,core -am clean install
 		(
-			cd core
-			mvn -B -Dmaven.test.skip=true dependency:copy-dependencies -DincludeScope=runtime -DoutputDirectory=target/dependency
+			cd "${tr_dir}"
+			# Install reactor artifacts to the local Maven repo so the follow-up dependency
+			# copy in core does not attempt to resolve sibling modules from remote repos.
+			mvn -B -Dmaven.test.skip=true -Dpmd.skip=true -pl shared,connector,configuration,geolocation,core -am clean install
+			(
+				cd core
+				mvn -B -Dmaven.test.skip=true -Dpmd.skip=true dependency:copy-dependencies -DincludeScope=runtime -DoutputDirectory=target/dependency
+			)
 		)
-	)
 
 	local stage
 	stage="$(mktemp -d)"

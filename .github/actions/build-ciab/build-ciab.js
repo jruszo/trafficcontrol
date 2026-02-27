@@ -96,14 +96,16 @@ function copyDebArtifact(sourceDebFile, destinationPathRelativeToCIAB) {
 }
 
 function stageCiabDebArtifacts() {
+	const isTrafficServerDevelopmentDeb = deb =>
+		deb.lower.includes("trafficserver-devel") || deb.lower.includes("trafficserver-dev");
 	const trafficServerDevelDeb = findDebArtifact(
 		"Traffic Server development package",
-		deb => deb.lower.includes("trafficserver-devel"),
+		isTrafficServerDevelopmentDeb,
 		false
 	);
 	const trafficServerDeb = findDebArtifact(
 		"Traffic Server package",
-		deb => deb.lower.includes("trafficserver") && !deb.lower.includes("devel")
+		deb => deb.lower.includes("trafficserver") && !isTrafficServerDevelopmentDeb(deb)
 	);
 	const cacheConfigDeb = findDebArtifact(
 		"Cache Config package",

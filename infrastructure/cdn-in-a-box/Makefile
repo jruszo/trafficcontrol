@@ -30,12 +30,15 @@ BASE_IMAGE := ubuntu
 CIAB_DIR_RELATIVE := $(dir $(MAKEFILE_LIST))
 CIAB_DIR_ABSOLUTE := $(shell cd $(CIAB_DIR_RELATIVE) && pwd)
 TC_DIR := $(CIAB_DIR_RELATIVE)../..
+TC_DIR_ABSOLUTE := $(shell cd $(TC_DIR) && pwd)
 DOCKER_COMPOSE := $(shell \
 	if docker compose version >/dev/null 2>&1; then \
 		echo "docker compose"; \
 	elif command -v docker-compose >/dev/null 2>&1; then \
 		echo "docker-compose"; \
 	fi)
+BUILD_PACKAGES_IMAGE ?= ubuntu:24.04
+PACKAGE_OS_VERSION ?= ubuntu24.04
 
 PKG_COMMAND := $(TC_DIR)/pkg
 PKG_FLAGS := -v -$(deb_VERSION)
@@ -126,6 +129,33 @@ ORT_DIST_deb := $(TC_DIR)/dist/trafficcontrol-cache-config-$(SPECIAL_SAUCE)
 TCH_DIST_deb := $(TC_DIR)/dist/trafficcontrol-health-client-$(SPECIAL_SAUCE)
 
 .PHONY: all build-builders clean debug native nearly-all pull-builders very-clean
+
+define run_build_packages
+	@if command -v apt-get >/dev/null 2>&1; then \
+		ATC_COMPONENT="$(1)" PACKAGE_OS_VERSION="$(PACKAGE_OS_VERSION)" "$(TC_DIR)/.github/actions/build-packages/build-packages.sh"; \
+	else \
+		if ! command -v docker >/dev/null 2>&1; then \
+			echo "docker is required to build $(1) on non-Linux hosts"; \
+			exit 1; \
+		fi; \
+		docker run --rm \
+			-v "$(TC_DIR_ABSOLUTE):/workspace" \
+			-w /workspace \
+			-e ATC_COMPONENT="$(1)" \
+			-e PACKAGE_OS_VERSION="$(PACKAGE_OS_VERSION)" \
+			"$(BUILD_PACKAGES_IMAGE)" \
+			bash -lc "/workspace/.github/actions/build-packages/build-packages.sh"; \
+	fi
+endef
+
+define copy_dist_artifact_to_target
+	@artifact="$$(ls -1t $(TC_DIR)/dist/$(1) 2>/dev/null | head -n1)"; \
+	if [ -z "$$artifact" ]; then \
+		echo "Failed to find package matching $(1) in $(TC_DIR)/dist" >&2; \
+		exit 1; \
+	fi; \
+	cp -f "$$artifact" "$@"
+endef
 
 # Default target; builds all pre-requisite debs from source trees
 all: $(ATS_deb_RELATIVE) $(ORT_deb_RELATIVE) $(TM_deb_RELATIVE) $(TP_deb_RELATIVE) $(TO_deb_RELATIVE) $(TR_deb_RELATIVE) $(TOMCAT_deb_RELATIVE) $(TS_deb_RELATIVE) $(TCH_deb_RELATIVE)
@@ -223,31 +253,56 @@ $(ATS_DIST_deb): $(ATS_SOURCE)
 		echo "Docker Compose was not found. Install Docker Compose plugin support ('docker compose') or the standalone binary ('docker-compose')."; \
 		exit 1; \
 	fi
-	$(DOCKER_COMPOSE) -f $(TC_DIR)/cache-config/testing/docker/docker-compose-ats-build.yml build --parallel trafficserver_build && $(DOCKER_COMPOSE) -f $(TC_DIR)/cache-config/testing/docker/docker-compose-ats-build.yml run --rm trafficserver_build
+	$(DOCKER_COMPOSE) -f $(TC_DIR)/cache-config/testing/docker/docker-compose-ats-build.yml build --parallel trafficserver_build && \
+	$(DOCKER_COMPOSE) -f $(TC_DIR)/cache-config/testing/docker/docker-compose-ats-build.yml run --rm trafficserver_build
+	@ats_deb="$$(ls -1t $(TC_DIR)/dist/trafficserver_[0-9]*.deb 2>/dev/null | head -n1)"; \
+	if [ -z "$$ats_deb" ]; then \
+		echo "Failed to find downloaded Traffic Server package in $(TC_DIR)/dist" >&2; \
+		exit 1; \
+	fi; \
+	cp -f "$$ats_deb" "$@"
 
 $(TM_DIST_deb): $(TM_SOURCE)
-	"$(PKG_COMMAND)" $(PKG_FLAGS) traffic_monitor$(BUILD_SUFFIX)
+	$(call run_build_packages,traffic_monitor)
+	$(call copy_dist_artifact_to_target,traffic_monitor_[0-9]*.deb)
 
 $(TO_DIST_deb): $(TO_SOURCE)
-	"$(PKG_COMMAND)" $(PKG_FLAGS) traffic_ops$(BUILD_SUFFIX)
+	$(call run_build_packages,traffic_ops)
+	$(call copy_dist_artifact_to_target,traffic_ops_[0-9]*.deb)
 
 $(TP_DIST_deb): $(TP_SOURCE)
-	"$(PKG_COMMAND)" $(PKG_FLAGS) traffic_portal$(BUILD_SUFFIX)
+	$(call run_build_packages,traffic_portal)
+	$(call copy_dist_artifact_to_target,traffic_portal_[0-9]*.deb)
 
 $(TP2_DIST_deb): $(TP2_SOURCE)
-	"$(PKG_COMMAND)" -o $(PKG_FLAGS) traffic_portal_v2$(BUILD_SUFFIX)
+	$(call run_build_packages,traffic_portal_v2)
+	$(call copy_dist_artifact_to_target,traffic_portal_v2_[0-9]*.deb)
 
-$(TR_DIST_deb) $(TOMCAT_DIST_deb): $(TR_SOURCE)
-	"$(PKG_COMMAND)" $(PKG_FLAGS) traffic_router$(BUILD_SUFFIX)
+$(TR_DIST_deb): $(TR_SOURCE)
+	$(call run_build_packages,traffic_router)
+	@tr_deb="$$(ls -1t $(TC_DIR)/dist/traffic_router_[0-9]*.deb 2>/dev/null | head -n1)"; \
+	tomcat_deb="$$(ls -1t $(TC_DIR)/dist/tomcat_*.deb 2>/dev/null | head -n1)"; \
+	if [ -z "$$tr_deb" ] || [ -z "$$tomcat_deb" ]; then \
+		echo "Failed to find traffic_router and/or tomcat packages in $(TC_DIR)/dist" >&2; \
+		exit 1; \
+	fi; \
+	cp -f "$$tr_deb" "$(TR_DIST_deb)"; \
+	cp -f "$$tomcat_deb" "$(TOMCAT_DIST_deb)"
+
+$(TOMCAT_DIST_deb): $(TR_DIST_deb)
+	@test -f "$@"
 
 $(TS_DIST_deb): $(TS_SOURCE)
-	"$(PKG_COMMAND)" $(PKG_FLAGS) traffic_stats$(BUILD_SUFFIX)
+	$(call run_build_packages,traffic_stats)
+	$(call copy_dist_artifact_to_target,traffic_stats_[0-9]*.deb)
 
 $(ORT_DIST_deb): $(ORT_SOURCE)
-	"$(PKG_COMMAND)" $(PKG_FLAGS) cache-config$(BUILD_SUFFIX)
+	$(call run_build_packages,cache-config)
+	$(call copy_dist_artifact_to_target,trafficcontrol-cache-config_[0-9]*.deb)
 
 $(TCH_DIST_deb): $(TCH_SOURCE)
-	"$(PKG_COMMAND)" $(PKG_FLAGS) tc-health-client$(BUILD_SUFFIX)
+	$(call run_build_packages,tc-health-client)
+	$(call copy_dist_artifact_to_target,trafficcontrol-health-client_[0-9]*.deb)
 
 clean:
 	cd "$(CIAB_DIR_RELATIVE)"
