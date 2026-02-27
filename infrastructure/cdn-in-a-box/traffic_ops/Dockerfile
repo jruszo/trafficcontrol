@@ -40,15 +40,15 @@ RUN set -o nounset -o errexit -o xtrace && \
 		use_repo=''; \
 		enable_repo=''; \
 	elif [[ "${RHEL_VERSION%%.*}" -ge 9 ]]; then \
-		use_repo='--repo=pgdg13'; \
+		use_repo='--enablerepo=pgdg*'; \
 		enable_repo='--enablerepo=crb'; \
 	else \
-		use_repo='--repo=pgdg13'; \
+		use_repo='--enablerepo=pgdg*'; \
 		enable_repo='--enablerepo=powertools'; \
 	fi; \
 	dnf -y install epel-release libicu; \
 	dnf -y install "https://download.postgresql.org/pub/repos/yum/reporpms/EL-${RHEL_VERSION%%.*}-$(rpm --eval %_arch)/pgdg-redhat-repo-latest.noarch.rpm"; \
-	dnf -y $use_repo -- install postgresql13; \
+	dnf -y $use_repo install postgresql13; \
 	if [[ -n "$enable_repo" ]]; then \
 		dnf -y remove pgdg-redhat-repo; \
 	fi; \
