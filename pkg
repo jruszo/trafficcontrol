@@ -154,7 +154,7 @@ SIMPLE=0
 list=0
 failure=0
 print_help=0
-while getopts h78abdf:lopqvsSL opt; do
+while getopts h789abdf:lopqvsSL opt; do
 	case $opt in
 		\?)
 			failure=1;
@@ -166,6 +166,10 @@ while getopts h78abdf:lopqvsSL opt; do
 		8)
 			BASE_IMAGE=rockylinux
 			RHEL_VERSION=8
+			;;
+		9)
+			BASE_IMAGE=rockylinux
+			RHEL_VERSION=9
 			;;
 		a)
 			all=1
@@ -222,6 +226,7 @@ HELP_TEXT="$(cat <<HELP_TEXT
 Usage: $SELF [options] [projects]
   -7           Build RPMs targeting CentOS 7
   -8           Build RPMs targeting Rocky Linux 8 (default)
+  -9           Build RPMs targeting Rocky Linux 9
   -a           Build all projects, including optional ones.
   -b           Build builder Docker images before building projects
   -d           Disable compiler optimizations for debugging.
