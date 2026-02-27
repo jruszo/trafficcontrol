@@ -34,10 +34,17 @@ ENV OS_DISTRO=$OS_DISTRO
 MAINTAINER dev@trafficcontrol.apache.org
 EXPOSE 80 443
 
-# these packages load for both centos 7 and rockylinux 8
-# no checks required at this time.
-RUN yum install -y epel-release && yum repolist && \
-  yum install -y brotli initscripts jansson jansson-devel \
+# Package repo layout differs between EL8/EL9 for *-devel packages.
+RUN set -o nounset -o errexit -o xtrace && \
+  if [[ "${OS_VERSION%%.*}" -ge 9 ]]; then \
+    enable_repo='--enablerepo=crb'; \
+  elif [[ "${OS_VERSION%%.*}" -ge 8 ]]; then \
+    enable_repo='--enablerepo=powertools'; \
+  else \
+    enable_repo=''; \
+  fi; \
+  yum install -y epel-release && yum repolist && \
+  yum install -y $enable_repo brotli initscripts jansson jansson-devel \
     git gcc hwloc jq lua luajit man-db tcl \
     # libmaxminddb is required by trafficserver
     libmaxminddb \
