@@ -181,7 +181,16 @@ endif
 
 # Relative path output RPM recipies
 $(ATS_RPM_RELATIVE): $(ATS_DIST_RPM)
-	cp -f "$?" "$@" || (rm "$(CIAB_DIR_RELATIVE)/cache/ATS_VERSION"; false)
+	@ats_rpm_src="$?"; \
+	if [ ! -f "$$ats_rpm_src" ]; then \
+		ats_rpm_src="$$(ls -1t $(TC_DIR)/dist/trafficserver-[0-9]*.el$(RHEL_VERSION).$(BUILD_ARCH).rpm 2>/dev/null | head -n1)"; \
+	fi; \
+	if [ -z "$$ats_rpm_src" ] || [ ! -f "$$ats_rpm_src" ]; then \
+		echo "No trafficserver RPM was found in $(TC_DIR)/dist for el$(RHEL_VERSION) $(BUILD_ARCH)." >&2; \
+		rm -f "$(CIAB_DIR_RELATIVE)/cache/ATS_VERSION"; \
+		false; \
+	fi; \
+	cp -f "$$ats_rpm_src" "$@"
 $(TM_RPM_RELATIVE): $(TM_DIST_RPM)
 	cp -f "$?" "$@"
 $(TO_RPM_RELATIVE): $(TO_DIST_RPM)
@@ -203,7 +212,16 @@ $(TCH_RPM_RELATIVE): $(TCH_DIST_RPM)
 
 # Absolute path output RPM recipies
 $(ATS_RPM_ABSOLUTE): $(ATS_DIST_RPM)
-	cp -f "$?" "$@" || (rm "$(CIAB_DIR_ABSOLUTE)/cache/ATS_VERSION"; false)
+	@ats_rpm_src="$?"; \
+	if [ ! -f "$$ats_rpm_src" ]; then \
+		ats_rpm_src="$$(ls -1t $(TC_DIR)/dist/trafficserver-[0-9]*.el$(RHEL_VERSION).$(BUILD_ARCH).rpm 2>/dev/null | head -n1)"; \
+	fi; \
+	if [ -z "$$ats_rpm_src" ] || [ ! -f "$$ats_rpm_src" ]; then \
+		echo "No trafficserver RPM was found in $(TC_DIR)/dist for el$(RHEL_VERSION) $(BUILD_ARCH)." >&2; \
+		rm -f "$(CIAB_DIR_ABSOLUTE)/cache/ATS_VERSION"; \
+		false; \
+	fi; \
+	cp -f "$$ats_rpm_src" "$@"
 $(TM_RPM_ABSOLUTE): $(TM_DIST_RPM)
 	cp -f "$?" "$@"
 $(TO_RPM_ABSOLUTE): $(TO_DIST_RPM)
