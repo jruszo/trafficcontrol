@@ -34,28 +34,40 @@ RUN if [[ "${OS_VERSION%%.*}" -eq 7 ]]; then \
 		yum -y install dnf || exit 1; \
 	fi
 
-RUN set -o nounset -o errexit && \
+RUN set -o nounset -o errexit -o xtrace && \
 	mkdir -p /etc/cron.d; \
 	if [[ "${OS_VERSION%%.*}" -eq 7 ]]; then \
 		enable_repo=''; \
+		postgresql_pkg='postgresql13'; \
+		idn_pkg='libidn-devel'; \
+		iso_pkg='mkisofs'; \
 		# needed for llvm-toolset-7-clang, which is needed for postgresql13-devel-13.X-1PGDG, required by TO rpm
 		dnf -y install gcc centos-release-scl-rh; \
 	elif [[ "${OS_VERSION%%.*}" -ge 9 ]]; then \
 		enable_repo='--enablerepo=crb'; \
+		postgresql_pkg='postgresql'; \
+		idn_pkg='libidn2-devel'; \
+		iso_pkg='genisoimage'; \
 	else \
 		enable_repo='--enablerepo=powertools'; \
+		postgresql_pkg='postgresql13'; \
+		idn_pkg='libidn-devel'; \
+		iso_pkg='mkisofs'; \
 	fi; \
-	dnf -y install "https://download.postgresql.org/pub/repos/yum/reporpms/EL-${OS_VERSION%%.*}-x86_64/pgdg-redhat-repo-latest.noarch.rpm"; \
-	# libicu required by postgresql13
-	dnf -y install libicu; \
-	pgdg_repo="$(dnf -q repolist --all | awk '$1 ~ /^pgdg13/ {print $1; exit}')"; \
-	if [[ -z "$pgdg_repo" ]]; then \
-		echo 'ERROR: expected a pgdg13 repository after installing pgdg-redhat-repo.' >&2; \
-		dnf repolist --all >&2; \
-		exit 1; \
+	dnf -y install epel-release libicu; \
+	if [[ "${OS_VERSION%%.*}" -ge 9 ]]; then \
+		dnf -y install "$postgresql_pkg"; \
+	else \
+		dnf -y install "https://download.postgresql.org/pub/repos/yum/reporpms/EL-${OS_VERSION%%.*}-$(rpm --eval %_arch)/pgdg-redhat-repo-latest.noarch.rpm"; \
+		pgdg_repo="$(dnf -q repolist --all | awk '$1 ~ /^pgdg13/ {print $1; exit}')"; \
+		if [[ -z "$pgdg_repo" ]]; then \
+			echo 'ERROR: expected a pgdg13 repository after installing pgdg-redhat-repo.' >&2; \
+			dnf repolist --all >&2; \
+			exit 1; \
+		fi; \
+		dnf -y --enablerepo="$pgdg_repo" install "$postgresql_pkg"; \
+		dnf -y remove pgdg-redhat-repo; \
 	fi; \
-	dnf -y --enablerepo="$pgdg_repo" install postgresql13; \
-	dnf -y install epel-release; \
 	dnf -y $enable_repo install      \
 		bind-utils           \
 		gettext              \
@@ -63,16 +75,16 @@ RUN set -o nounset -o errexit && \
 		iproute              \
 		isomd5sum            \
 		jq                   \
-		libidn-devel         \
+		$idn_pkg             \
 		libpcap-devel        \
-		mkisofs              \
+		$iso_pkg             \
 		net-tools            \
 		nmap-ncat            \
 		openssl              \
 		perl-Crypt-ScryptKDF \
 		perl-Digest-SHA1     \
 		perl-JSON-PP         \
-		procps		     \
+		procps-ng            \
 		python3              \
 		# rsync is used to copy certs in "Shared SSL certificate generation" step
 		rsync;               \
