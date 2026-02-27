@@ -30,10 +30,15 @@ MAINTAINER dev@trafficcontrol.apache.org
 # docker run --volume /trafficcontrol:$(pwd) ...
 VOLUME /trafficcontrol
 
-# CentOS 7 has pandoc in epel (which we installed above), 8 has it in [pP]ower[tT]ools
-RUN if [[ ${RHEL_VERSION%%.*} -ge 8 ]]; then \
+# CentOS 7 has pandoc in epel, EL8 in [pP]ower[tT]ools, EL9 requires epel + CRB
+RUN yum -y install epel-release && \
+    if [[ ${RHEL_VERSION%%.*} -ge 8 ]]; then \
         yum -y install dnf-plugins-core && \
-        (yum -y config-manager --set-enabled PowerTools || yum -y config-manager --set-enabled powertools) \
+        if [[ ${RHEL_VERSION%%.*} -ge 9 ]]; then \
+            yum -y config-manager --set-enabled crb; \
+        else \
+            (yum -y config-manager --set-enabled PowerTools || yum -y config-manager --set-enabled powertools); \
+        fi; \
     fi && \
     yum -y install pandoc
 
@@ -57,8 +62,7 @@ RUN rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-* && \
         findutils \
         gettext \
         bind-utils \
-        net-tools \
-        epel-release && \
+        net-tools && \
     yum -y clean all
 
 ARG TCH_RPM=infrastructure/cdn-in-a-box/health/trafficcontrol-health-client.rpm

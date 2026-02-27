@@ -38,8 +38,12 @@ RUN rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-* && \
 	# Add skip git's safe.directory check
 	git config --global --add safe.directory '*'
 
-RUN	curl -sL https://rpm.nodesource.com/setup_16.x | bash - && \
-	yum -y install nodejs
+RUN if [[ ${RHEL_VERSION%%.*} -ge 9 ]]; then \
+		yum -y install nodejs; \
+	else \
+		curl -sL https://rpm.nodesource.com/setup_16.x | bash - && \
+		yum -y install nodejs; \
+	fi
 
 RUN npm -g install make grunt-cli sass
 CMD /trafficcontrol/build/clean_build.sh traffic_portal

@@ -34,7 +34,7 @@ jobs:
           docker run --rm \
             --volume "${PWD}:/workspace" \
             --workdir /workspace \
-            rockylinux:8 \
+            rockylinux:9 \
             /bin/bash -lc '
               set -o errexit -o nounset -o pipefail
               dnf -y install epel-release dnf-plugins-core

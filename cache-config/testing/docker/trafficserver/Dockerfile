@@ -39,7 +39,11 @@ RUN set -o errexit; \
     if [[ ${OS_VERSION%%.*} -ge 8 ]]; then \
 		rpm_gpg_key=RPM-GPG-KEY-rockyofficial; \
 		yum install -y 'dnf-command(config-manager)'; \
-		yum config-manager --set-enabled powertools; \
+		if [[ ${OS_VERSION%%.*} -ge 9 ]]; then \
+			yum config-manager --set-enabled crb; \
+		else \
+			yum config-manager --set-enabled powertools; \
+		fi; \
 	else \
 		rpm_gpg_key="RPM-GPG-KEY-CentOS-${OS_VERSION%%.*}"; \
 		yum install -y deltarpm centos-release-scl-rh; \
@@ -56,7 +60,17 @@ RUN set -o errexit; \
 		epel-release && \
 	yum -y clean all
 
-RUN if [[ ${OS_VERSION%%.*} -ge 8 ]]; then \
+RUN if [[ ${OS_VERSION%%.*} -ge 9 ]]; then \
+		os_pkgs=( \
+			brotli \
+			brotli-devel \
+			curl-minimal \
+			jansson \
+			jansson-devel \
+			libmaxminddb \
+			libmaxminddb-devel \
+			libuuid ); \
+	elif [[ ${OS_VERSION%%.*} -ge 8 ]]; then \
 		os_pkgs=( \
 			brotli \
 			brotli-devel \

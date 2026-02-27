@@ -25,7 +25,8 @@ License:  Apache License, Version 2.0
 URL:      https://github.com/jruszo/trafficcontrol/
 Source:   %{_sourcedir}/traffic_portal-%{traffic_control_version}.tgz
 AutoReqProv: no
-Requires: nodejs >= 2:16.0.0
+# Do not pin the NodeJS epoch: EL9 distro nodejs has no epoch while NodeSource uses epoch 2.
+Requires: nodejs >= 16.0.0
 
 %define traffic_portal_home /opt/traffic_portal
 %description

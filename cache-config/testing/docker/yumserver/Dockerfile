@@ -20,7 +20,7 @@
 # Based on CentOS 6.6
 ############################################################
 
-FROM rockylinux:8
+FROM rockylinux:9
 MAINTAINER dev@trafficcontrol.apache.org
 
 RUN dnf install -y httpd createrepo yum-utils

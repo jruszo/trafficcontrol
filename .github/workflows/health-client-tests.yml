@@ -19,7 +19,8 @@ name: TC Health Client Integration Tests
 
 env:
   ATS_VERSION: 9.2.x
-  RHEL_VERSION: 8
+  RHEL_VERSION: 9
+  OS_VERSION: 9
   TARGET_ARCH: x86_64
 
 on:

@@ -45,7 +45,11 @@ ARG RHEL_VERSION=8
 
 RUN if [[ ${RHEL_VERSION%%.*} -ge 8 ]]; then \
 		yum -y install dnf-plugins-core && \
-		yum config-manager --set-enabled powertools; \
+		if [[ ${RHEL_VERSION%%.*} -ge 9 ]]; then \
+			yum config-manager --set-enabled crb; \
+		else \
+			yum config-manager --set-enabled powertools; \
+		fi; \
 	fi
 
 ADD docs/source/requirements.txt /docs.requirements.txt
