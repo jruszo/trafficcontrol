@@ -24,16 +24,8 @@ FROM rockylinux:9
 
 RUN dnf install -y \
 	epel-release \
-    libicu \
-	"https://download.postgresql.org/pub/repos/yum/reporpms/EL-9-$(rpm --eval %_arch)/pgdg-redhat-repo-latest.noarch.rpm" && \
-	pgdg_repo="$(dnf -q repolist --all | awk '$1 ~ /^pgdg13/ {print $1; exit}')" && \
-	if [[ -z "$pgdg_repo" ]]; then \
-		echo 'ERROR: expected a pgdg13 repository after installing pgdg-redhat-repo.' >&2; \
-		dnf repolist --all >&2; \
-		exit 1; \
-	fi && \
-    dnf -y --enablerepo="$pgdg_repo" install postgresql13 && \
-	dnf -y remove pgdg-redhat-repo
+	libicu \
+	postgresql
 
 RUN dnf -y install \
   nmap-ncat \
