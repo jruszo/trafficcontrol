@@ -29,6 +29,10 @@ ENV TC="/go/src/github.com/jruszo/trafficcontrol"
 VOLUME $TC
 EXPOSE 443
 
+# Native modules (e.g. @parcel/watcher) may need to build from source.
+# node-gyp@9 also needs distutils, provided by py3-setuptools on Alpine.
+RUN apk add --no-cache python3 py3-setuptools make g++
+
 COPY --from=certbuilder /server.key /server.crt /
 
 CMD ${TC}/dev/tpv2/run.sh
