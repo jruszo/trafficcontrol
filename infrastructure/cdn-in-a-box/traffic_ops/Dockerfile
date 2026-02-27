@@ -37,18 +37,21 @@ RUN if [[ "${RHEL_VERSION%%.*}" -eq 7 ]]; then \
 RUN set -o nounset -o errexit -o xtrace && \
 	mkdir -p /etc/cron.d; \
 	if [[ "${RHEL_VERSION%%.*}" -eq 7 ]]; then \
-		use_repo=''; \
 		enable_repo=''; \
 	elif [[ "${RHEL_VERSION%%.*}" -ge 9 ]]; then \
-		use_repo='--enablerepo=pgdg*'; \
 		enable_repo='--enablerepo=crb'; \
 	else \
-		use_repo='--enablerepo=pgdg*'; \
 		enable_repo='--enablerepo=powertools'; \
 	fi; \
 	dnf -y install epel-release libicu; \
 	dnf -y install "https://download.postgresql.org/pub/repos/yum/reporpms/EL-${RHEL_VERSION%%.*}-$(rpm --eval %_arch)/pgdg-redhat-repo-latest.noarch.rpm"; \
-	dnf -y $use_repo install postgresql13; \
+	pgdg_repo="$(dnf -q repolist --all | awk '$1 ~ /^pgdg13/ {print $1; exit}')"; \
+	if [[ -z "$pgdg_repo" ]]; then \
+		echo 'ERROR: expected a pgdg13 repository after installing pgdg-redhat-repo.' >&2; \
+		dnf repolist --all >&2; \
+		exit 1; \
+	fi; \
+	dnf -y --enablerepo="$pgdg_repo" install postgresql13; \
 	if [[ -n "$enable_repo" ]]; then \
 		dnf -y remove pgdg-redhat-repo; \
 	fi; \
