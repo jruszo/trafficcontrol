@@ -100,8 +100,7 @@ function stageCiabDebArtifacts() {
 		deb.lower.includes("trafficserver-devel") || deb.lower.includes("trafficserver-dev");
 	const trafficServerDevelDeb = findDebArtifact(
 		"Traffic Server development package",
-		isTrafficServerDevelopmentDeb,
-		false
+		isTrafficServerDevelopmentDeb
 	);
 	const trafficServerDeb = findDebArtifact(
 		"Traffic Server package",

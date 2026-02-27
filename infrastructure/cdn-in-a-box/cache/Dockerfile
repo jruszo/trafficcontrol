@@ -75,13 +75,18 @@ RUN apt-get update && \
 
 FROM common-traffic-server-dependencies AS common-cache-config-layers
 
-COPY infrastructure/cdn-in-a-box/cache/trafficserver.deb /trafficserver.deb
+COPY infrastructure/cdn-in-a-box/cache/trafficserver*.deb /
 COPY traffic_server/plugins/astats_over_http/astats_over_http.c traffic_server/plugins/astats_over_http/Makefile.am /
 
 RUN set -o errexit -o nounset -o xtrace; \
     dpkg -i --force-depends /trafficserver.deb; \
     if [ -e /trafficserver-devel.deb ]; then \
         dpkg -i --force-depends /trafficserver-devel.deb; \
+    elif [ -e /trafficserver-dev.deb ]; then \
+        dpkg -i --force-depends /trafficserver-dev.deb; \
+    else \
+        echo "Missing Traffic Server development package (trafficserver-devel/dev) required for tsxs" >&2; \
+        exit 1; \
     fi; \
     PATH="${PATH}:/opt/trafficserver/bin"; \
     tsxs -v -c astats_over_http.c -o astats_over_http.so && \

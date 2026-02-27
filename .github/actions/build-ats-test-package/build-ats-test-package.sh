@@ -27,8 +27,17 @@ cd "${dist_dir}"
 sudo apt-get update
 
 apt-get download trafficserver
-if apt-cache show trafficserver-dev >/dev/null 2>&1; then
-	apt-get download trafficserver-dev
+downloaded_dev_pkg=0
+for dev_pkg in trafficserver-devel trafficserver-dev; do
+	if apt-cache show "${dev_pkg}" >/dev/null 2>&1; then
+		apt-get download "${dev_pkg}"
+		downloaded_dev_pkg=1
+		break
+	fi
+done
+if (( downloaded_dev_pkg == 0 )); then
+	echo "No Traffic Server development package found (tried trafficserver-devel and trafficserver-dev)" >&2
+	exit 1
 fi
 
 shopt -s nullglob
