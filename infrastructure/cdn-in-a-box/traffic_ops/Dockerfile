@@ -38,21 +38,32 @@ RUN set -o nounset -o errexit -o xtrace && \
 	mkdir -p /etc/cron.d; \
 	if [[ "${RHEL_VERSION%%.*}" -eq 7 ]]; then \
 		enable_repo=''; \
+		postgresql_pkg='postgresql13'; \
+		idn_pkg='libidn-devel'; \
+		iso_pkg='mkisofs'; \
 	elif [[ "${RHEL_VERSION%%.*}" -ge 9 ]]; then \
 		enable_repo='--enablerepo=crb'; \
+		postgresql_pkg='postgresql'; \
+		idn_pkg='libidn2-devel'; \
+		iso_pkg='genisoimage'; \
 	else \
 		enable_repo='--enablerepo=powertools'; \
+		postgresql_pkg='postgresql13'; \
+		idn_pkg='libidn-devel'; \
+		iso_pkg='mkisofs'; \
 	fi; \
 	dnf -y install epel-release libicu; \
-	dnf -y install "https://download.postgresql.org/pub/repos/yum/reporpms/EL-${RHEL_VERSION%%.*}-$(rpm --eval %_arch)/pgdg-redhat-repo-latest.noarch.rpm"; \
-	pgdg_repo="$(dnf -q repolist --all | awk '$1 ~ /^pgdg13/ {print $1; exit}')"; \
-	if [[ -z "$pgdg_repo" ]]; then \
-		echo 'ERROR: expected a pgdg13 repository after installing pgdg-redhat-repo.' >&2; \
-		dnf repolist --all >&2; \
-		exit 1; \
-	fi; \
-	dnf -y --enablerepo="$pgdg_repo" install postgresql13; \
-	if [[ -n "$enable_repo" ]]; then \
+	if [[ "${RHEL_VERSION%%.*}" -ge 9 ]]; then \
+		dnf -y install "$postgresql_pkg"; \
+	else \
+		dnf -y install "https://download.postgresql.org/pub/repos/yum/reporpms/EL-${RHEL_VERSION%%.*}-$(rpm --eval %_arch)/pgdg-redhat-repo-latest.noarch.rpm"; \
+		pgdg_repo="$(dnf -q repolist --all | awk '$1 ~ /^pgdg13/ {print $1; exit}')"; \
+		if [[ -z "$pgdg_repo" ]]; then \
+			echo 'ERROR: expected a pgdg13 repository after installing pgdg-redhat-repo.' >&2; \
+			dnf repolist --all >&2; \
+			exit 1; \
+		fi; \
+		dnf -y --enablerepo="$pgdg_repo" install "$postgresql_pkg"; \
 		dnf -y remove pgdg-redhat-repo; \
 	fi; \
 	dnf -y $enable_repo install \
@@ -77,9 +88,9 @@ RUN set -o nounset -o errexit -o xtrace && \
 		expat-devel          \
 		libcap               \
 		libcurl-devel        \
-		libidn-devel         \
+		$idn_pkg             \
 		libpcap-devel        \
-		mkisofs              \
+		$iso_pkg             \
 		openssl-devel        \
 		perl-core            \
 		perl-Crypt-ScryptKDF \
