@@ -20,12 +20,12 @@
 # Based on CentOS 7.2
 ############################################################
 
-FROM rockylinux:8
+FROM rockylinux:9
 
 RUN dnf install -y \
 	epel-release \
     libicu \
-	"https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-$(rpm --eval %_arch)/pgdg-redhat-repo-latest.noarch.rpm" && \
+	"https://download.postgresql.org/pub/repos/yum/reporpms/EL-9-$(rpm --eval %_arch)/pgdg-redhat-repo-latest.noarch.rpm" && \
     dnf -y --repo=pgdg13 install postgresql13 && \
 	dnf -y remove pgdg-redhat-repo
 
